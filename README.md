@@ -4,42 +4,66 @@
 
 ---
 
-## 1. Project Overview
+## 1. Project Architecture (Decoupled Services)
 
-The **finance** repository provides capabilities for calculation engines, transaction management, expense tracking, and financial forecasting. The codebase adheres to modular architecture principles, comprehensive technical documentation in English, and optimized workflows for AI agent-assisted engineering.
-
----
-
-## 2. AI Collaboration & Git Workflow
-
-- **Agent Instructions**: Read `AGENTS.md` before making code or architectural modifications.
-- **Git Conventions**: Review `docs/GIT_CONVENTIONS.md` for branch naming, Conventional Commits format, and mandatory approval gates.
-- **Domain Language**: Review `CONTEXT.md` for domain terminology and data models.
-
----
-
-## 3. Directory Structure
+This repository contains two completely decoupled, standalone services that can be developed and deployed independently:
 
 ```text
 finance/
-├── .agents/                    # Tooling and engineering skills for AI agents
-├── AGENTS.md                   # Core agent guidelines & Git workflow rules
-├── README.md                   # Project overview (this file)
-├── CONTEXT.md                  # Ubiquitous language & core domain model
-└── docs/                       # Project documentation repository
-    ├── GIT_CONVENTIONS.md      # Branch naming, commit message & agent workflow rules
-    ├── specs/                  # Feature specifications and requirements
-    ├── adr/                    # Architecture Decision Records
-    ├── guides/                 # Technical and runbook guides
-    └── agents/                 # Issue tracker, triage labels & domain docs configuration
+├── AGENTS.md                  # Core AI Agent guidelines & workflow rules
+├── README.md                  # Project overview (this file)
+├── CONTEXT.md                 # Domain ubiquitous language & core data models
+├── docker-compose.yml         # Local PostgreSQL 16 database service
+├── .oxlintrc.json             # Root OXC (Rust) linter configuration
+├── .env.example               # Environment variables template
+├── docs/                      # Project documentation (ADRs, Git conventions, Specs)
+│
+├── frontend/                  # Standalone Next.js 15 Web Application
+│   ├── src/app/               # App Router with HeroUI integration
+│   ├── package.json           # Independent dependencies & deployment target (Vercel/Netlify)
+│   └── tsconfig.json
+│
+└── backend/                   # Standalone NestJS REST API Service
+    ├── src/                   # Modular architecture with TypeORM & Swagger
+    ├── package.json           # Independent dependencies & deployment target (Railway/Render/Docker)
+    └── tsconfig.json
 ```
 
 ---
 
-## 4. Git Approval Gate
+## 2. Quick Start
 
-Every AI Agent operating in this repo adheres to a strict **Propose-First** gate:
-1. Agent proposes: Branch name (`<type>/<issue>-<slug>`), Scope of work, and Draft commit message.
+### Start Local PostgreSQL Database
+```bash
+docker compose up -d
+```
+
+### Run Frontend (Next.js 15 + HeroUI)
+```bash
+cd frontend
+pnpm dev
+# App running at: http://localhost:3000
+```
+
+### Run Backend (NestJS + TypeORM)
+```bash
+cd backend
+pnpm start:dev
+# API running at: http://localhost:4000
+# Swagger docs: http://localhost:4000/api/docs
+```
+
+### Run Linter (OXC)
+```bash
+pnpm dlx oxlint frontend backend
+```
+
+---
+
+## 3. Git Workflow & Approval Gate
+
+AI Agents operating in this repository adhere to a strict **Propose-First** human-in-the-loop gate:
+1. Agent proposes planned scope of work and draft commit message.
 2. Maintainer reviews and approves.
-3. Agent executes, runs tests, and creates a local commit.
+3. Agent executes, verifies, and commits directly on `main`.
 4. Agent asks for confirmation before executing `git push`.
