@@ -73,7 +73,17 @@ erDiagram
   - `transaction_date`: Timestamptz
   - `note`: Text (Optional)
 
+- **Budget**:
+  - `id`: UUID (Primary Key)
+  - `user_id`: String (Clerk User ID)
+  - `category_id`: UUID (Foreign Key to Category, Nullable for Overall Monthly Budget)
+  - `amount`: Numeric (Monthly limit in VND)
+  - `month`: Integer (1–12)
+  - `year`: Integer
+  - `is_rollover`: Boolean (Default: false)
+
 - **Calculations & Invariants**:
   - **Net Worth**: `SUM(balance of CASH & BANK accounts) - SUM(balance of CREDIT_CARD accounts)`
   - **Transfer Invariant**: A transfer from Account A to Account B decrements A by `amount` and increments B by `amount`. Total net worth is unchanged.
   - **Budget Exclusion**: Transfers are never counted toward category expense budgets.
+  - **Budget Health Status**: Green (<75%), Amber (75–99%), Rose (>=100%). Over-budget transactions emit soft warnings and are never blocked.
