@@ -81,7 +81,19 @@ erDiagram
   - `amount`: Numeric (Monthly limit in VND)
   - `month`: Integer (1–12)
   - `year`: Integer
-  - `is_rollover`: Boolean (Default: false)
+- **RecurringTransaction**:
+  - `id`: UUID (Primary Key)
+  - `user_id`: String (Clerk User ID)
+  - `name`: String (e.g. "Rent", "Spotify", "Internet")
+  - `type`: Enum (`EXPENSE`, `INCOME`)
+  - `amount`: Numeric (Default or estimated amount)
+  - `is_variable_amount`: Boolean (True for fluctuating bills like electricity)
+  - `account_id`: UUID (Target payment account)
+  - `category_id`: UUID (Classification)
+  - `frequency`: Enum (`DAILY`, `WEEKLY`, `MONTHLY`, `YEARLY`)
+  - `due_day`: Integer (Day of month or day of week)
+  - `next_due_date`: Date
+  - `is_active`: Boolean (Default: true)
 
 - **Calculations & Invariants**:
   - **Net Worth**: `SUM(balance of CASH & BANK accounts) - SUM(balance of CREDIT_CARD accounts)`
