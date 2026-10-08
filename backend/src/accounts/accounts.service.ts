@@ -26,23 +26,23 @@ export class AccountsService {
   ): Promise<Account[]> {
     let accounts = await this.accountRepository.find({
       where: {
-        user_id: userId,
-        ...(includeArchived ? {} : { is_archived: false }),
+        userId,
+        ...(includeArchived ? {} : { isArchived: false }),
       },
       order: {
-        created_at: 'ASC',
+        createdAt: 'ASC',
       },
     });
 
     // Auto-provision 1 default 0 ₫ Cash wallet if user has never created an account
     if (accounts.length === 0 && !includeArchived) {
       const defaultCashAccount = this.accountRepository.create({
-        user_id: userId,
+        userId,
         name: 'Tiền mặt',
         type: 'CASH',
         currency: 'VND',
-        current_balance: 0,
-        is_archived: false,
+        currentBalance: 0,
+        isArchived: false,
       });
 
       await this.accountRepository.save(defaultCashAccount);
@@ -54,7 +54,7 @@ export class AccountsService {
 
   async findOne(userId: string, id: string): Promise<Account> {
     const account = await this.accountRepository.findOne({
-      where: { id, user_id: userId },
+      where: { id, userId },
     });
 
     if (!account) {
@@ -66,7 +66,7 @@ export class AccountsService {
 
   async create(userId: string, dto: CreateAccountDto): Promise<Account> {
     const existing = await this.accountRepository.findOne({
-      where: { user_id: userId, name: dto.name },
+      where: { userId, name: dto.name },
     });
 
     if (existing) {
@@ -76,14 +76,14 @@ export class AccountsService {
     }
 
     const account = this.accountRepository.create({
-      user_id: userId,
+      userId,
       name: dto.name,
       type: dto.type,
       currency: dto.currency || 'VND',
-      current_balance: dto.initial_balance || 0,
-      credit_limit: dto.credit_limit ?? null,
-      statement_day: dto.statement_day ?? null,
-      is_archived: false,
+      currentBalance: dto.initialBalance || 0,
+      creditLimit: dto.creditLimit ?? null,
+      statementDay: dto.statementDay ?? null,
+      isArchived: false,
     });
 
     return await this.accountRepository.save(account);
@@ -98,7 +98,7 @@ export class AccountsService {
 
     if (dto.name && dto.name !== account.name) {
       const existing = await this.accountRepository.findOne({
-        where: { user_id: userId, name: dto.name },
+        where: { userId, name: dto.name },
       });
       if (existing && existing.id !== id) {
         throw new ConflictException(
@@ -108,16 +108,16 @@ export class AccountsService {
       account.name = dto.name;
     }
 
-    if (dto.credit_limit !== undefined) {
-      account.credit_limit = dto.credit_limit;
+    if (dto.creditLimit !== undefined) {
+      account.creditLimit = dto.creditLimit;
     }
 
-    if (dto.statement_day !== undefined) {
-      account.statement_day = dto.statement_day;
+    if (dto.statementDay !== undefined) {
+      account.statementDay = dto.statementDay;
     }
 
-    if (dto.is_archived !== undefined) {
-      account.is_archived = dto.is_archived;
+    if (dto.isArchived !== undefined) {
+      account.isArchived = dto.isArchived;
     }
 
     return await this.accountRepository.save(account);
@@ -126,7 +126,7 @@ export class AccountsService {
   async remove(userId: string, id: string): Promise<void> {
     const account = await this.findOne(userId, id);
     // Soft delete / archive to preserve transaction relational history
-    account.is_archived = true;
+    account.isArchived = true;
     await this.accountRepository.save(account);
   }
 }

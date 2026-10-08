@@ -28,37 +28,37 @@ describe('AccountsService', () => {
       const result = await service.findAll('user-1');
 
       expect(repository.find).toHaveBeenCalledWith({
-        where: { user_id: 'user-1', is_archived: false },
-        order: { created_at: 'ASC' },
+        where: { userId: 'user-1', isArchived: false },
+        order: { createdAt: 'ASC' },
       });
       expect(repository.create).toHaveBeenCalledWith({
-        user_id: 'user-1',
+        userId: 'user-1',
         name: 'Tiền mặt',
         type: 'CASH',
         currency: 'VND',
-        current_balance: 0,
-        is_archived: false,
+        currentBalance: 0,
+        isArchived: false,
       });
       expect(repository.save).toHaveBeenCalled();
       expect(result).toHaveLength(1);
       expect(result[0].name).toBe('Tiền mặt');
-      expect(result[0].current_balance).toBe(0);
+      expect(result[0].currentBalance).toBe(0);
     });
 
     it('should return existing accounts without creating a new one', async () => {
       const existingAccounts = [
         {
           id: 'acc-1',
-          user_id: 'user-1',
+          userId: 'user-1',
           name: 'Techcombank',
           type: 'BANK',
           currency: 'VND',
-          current_balance: 5000000,
-          credit_limit: null,
-          statement_day: null,
-          is_archived: false,
-          created_at: new Date(),
-          updated_at: new Date(),
+          currentBalance: 5000000,
+          creditLimit: null,
+          statementDay: null,
+          isArchived: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         } as Account,
       ];
       vi.mocked(repository.find!).mockResolvedValueOnce(existingAccounts);
@@ -77,24 +77,24 @@ describe('AccountsService', () => {
       const dto = {
         name: 'VPBank StepUp',
         type: 'CREDIT_CARD' as const,
-        initial_balance: 0,
-        credit_limit: 20000000,
-        statement_day: 20,
+        initialBalance: 0,
+        creditLimit: 20000000,
+        statementDay: 20,
       };
 
       const result = await service.create('user-1', dto);
 
       expect(repository.findOne).toHaveBeenCalledWith({
-        where: { user_id: 'user-1', name: 'VPBank StepUp' },
+        where: { userId: 'user-1', name: 'VPBank StepUp' },
       });
       expect(repository.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          user_id: 'user-1',
+          userId: 'user-1',
           name: 'VPBank StepUp',
           type: 'CREDIT_CARD',
-          current_balance: 0,
-          credit_limit: 20000000,
-          statement_day: 20,
+          currentBalance: 0,
+          creditLimit: 20000000,
+          statementDay: 20,
         }),
       );
       expect(result.name).toBe('VPBank StepUp');
@@ -103,7 +103,7 @@ describe('AccountsService', () => {
     it('should throw ConflictException if account name already exists for user', async () => {
       vi.mocked(repository.findOne!).mockResolvedValueOnce({
         id: 'acc-existing',
-        user_id: 'user-1',
+        userId: 'user-1',
         name: 'Tiền mặt',
       } as Account);
 
@@ -111,7 +111,7 @@ describe('AccountsService', () => {
         service.create('user-1', {
           name: 'Tiền mặt',
           type: 'CASH',
-          initial_balance: 0,
+          initialBalance: 0,
         }),
       ).rejects.toThrow(ConflictException);
     });
@@ -119,7 +119,7 @@ describe('AccountsService', () => {
 
   describe('findOne', () => {
     it('should return account when found', async () => {
-      const account = { id: 'acc-1', user_id: 'user-1', name: 'Tiền mặt' } as Account;
+      const account = { id: 'acc-1', userId: 'user-1', name: 'Tiền mặt' } as Account;
       vi.mocked(repository.findOne!).mockResolvedValueOnce(account);
 
       const result = await service.findOne('user-1', 'acc-1');
@@ -139,9 +139,9 @@ describe('AccountsService', () => {
     it('should update account attributes', async () => {
       const account = {
         id: 'acc-1',
-        user_id: 'user-1',
+        userId: 'user-1',
         name: 'Ví Tiền',
-        credit_limit: null,
+        creditLimit: null,
       } as Account;
       vi.mocked(repository.findOne!).mockResolvedValueOnce(account);
 
@@ -158,15 +158,15 @@ describe('AccountsService', () => {
     it('should soft-delete/archive the account', async () => {
       const account = {
         id: 'acc-1',
-        user_id: 'user-1',
+        userId: 'user-1',
         name: 'Ví Cũ',
-        is_archived: false,
+        isArchived: false,
       } as Account;
       vi.mocked(repository.findOne!).mockResolvedValueOnce(account);
 
       await service.remove('user-1', 'acc-1');
 
-      expect(account.is_archived).toBe(true);
+      expect(account.isArchived).toBe(true);
       expect(repository.save).toHaveBeenCalledWith(account);
     });
   });

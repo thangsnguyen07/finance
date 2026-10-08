@@ -74,11 +74,11 @@ export default function AccountsPage() {
   );
 
   const totalAssets = assetAccounts.reduce(
-    (sum, acc) => sum + (acc.current_balance || 0),
+    (sum, acc) => sum + (acc.currentBalance || 0),
     0,
   );
   const totalDebt = creditAccounts.reduce(
-    (sum, acc) => sum + (acc.current_balance || 0),
+    (sum, acc) => sum + (acc.currentBalance || 0),
     0,
   );
   const netWorth = totalAssets - totalDebt;
@@ -296,8 +296,8 @@ function AccountSection({
           const Icon = config.icon;
           const isMenuOpen = activeMenuId === account.id;
 
-          const balance = account.current_balance || 0;
-          const creditLimit = account.credit_limit || 0;
+          const balance = account.currentBalance || 0;
+          const creditLimit = account.creditLimit || 0;
           const remainingLimit = creditLimit - balance;
 
           return (
@@ -319,9 +319,9 @@ function AccountSection({
                     <span className="text-[11px] text-muted">
                       {config.label}
                     </span>
-                    {account.statement_day && (
+                    {account.statementDay && (
                       <span className="text-[10px] px-1.5 py-0.2 rounded bg-surface-secondary text-muted">
-                        Sao kê: ngày {account.statement_day}
+                        Sao kê: ngày {account.statementDay}
                       </span>
                     )}
                   </div>

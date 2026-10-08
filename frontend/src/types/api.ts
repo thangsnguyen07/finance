@@ -7,32 +7,32 @@ export type AccountType =
 
 export interface AccountResponse {
   id: string;
-  user_id: string;
+  userId: string;
   name: string;
   type: AccountType;
   currency: 'VND';
-  current_balance: number; // Stored in VND
-  credit_limit?: number | null;
-  statement_day?: number | null;
-  is_archived: boolean;
-  created_at: string;
-  updated_at: string;
+  currentBalance: number; // Stored in integer VND
+  creditLimit?: number | null;
+  statementDay?: number | null;
+  isArchived: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateAccountDto {
   name: string;
   type: AccountType;
-  initial_balance: number;
+  initialBalance: number;
   currency?: 'VND';
-  credit_limit?: number;
-  statement_day?: number;
+  creditLimit?: number;
+  statementDay?: number;
 }
 
 export interface UpdateAccountDto {
   name?: string;
-  credit_limit?: number;
-  statement_day?: number;
-  is_archived?: boolean;
+  creditLimit?: number;
+  statementDay?: number;
+  isArchived?: boolean;
 }
 
 export interface ApiErrorResponse {

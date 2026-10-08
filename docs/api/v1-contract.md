@@ -62,23 +62,23 @@ export type AccountType = 'CASH' | 'BANK' | 'CREDIT_CARD' | 'E_WALLET' | 'INVEST
 
 export interface AccountResponse {
   id: string; // UUID
-  user_id: string;
+  userId: string;
   name: string;
   type: AccountType;
   currency: 'VND';
-  current_balance: number; // Stored as integer VND in DB
-  credit_limit?: number | null; // For CREDIT_CARD
-  statement_day?: number | null; // Day of month (1-31)
-  is_archived: boolean;
-  created_at: string; // ISO 8601
-  updated_at: string;
+  currentBalance: number; // Stored as integer VND in DB
+  creditLimit?: number | null; // For CREDIT_CARD
+  statementDay?: number | null; // Day of month (1-31)
+  isArchived: boolean;
+  createdAt: string; // ISO 8601
+  updatedAt: string;
 }
 ```
 
 ### 3.2 `GET /api/v1/accounts`
 Returns all active accounts for the authenticated user.
 - **Query Parameters**:
-  - `include_archived` (optional boolean, default `false`)
+  - `includeArchived` (optional boolean, default `false`)
 - **Response `200 OK`**: `AccountResponse[]`
 
 ### 3.3 `POST /api/v1/accounts`
@@ -88,10 +88,10 @@ Creates a new account/wallet.
   export interface CreateAccountDto {
     name: string; // Max 100 chars
     type: AccountType;
-    initial_balance: number; // >= 0
+    initialBalance: number; // >= 0
     currency?: 'VND'; // Defaults to VND
-    credit_limit?: number; // Optional for CREDIT_CARD
-    statement_day?: number; // 1-31 optional
+    creditLimit?: number; // Optional for CREDIT_CARD
+    statementDay?: number; // 1-31 optional
   }
   ```
 - **Response `201 Created`**: `AccountResponse`
@@ -106,9 +106,9 @@ Updates mutable account attributes (balance is modified exclusively via transact
   ```typescript
   export interface UpdateAccountDto {
     name?: string;
-    credit_limit?: number;
-    statement_day?: number;
-    is_archived?: boolean;
+    creditLimit?: number;
+    statementDay?: number;
+    isArchived?: boolean;
   }
   ```
 - **Response `200 OK`**: `AccountResponse`

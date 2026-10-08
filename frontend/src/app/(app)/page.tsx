@@ -24,11 +24,11 @@ export default function DashboardPage() {
 
   const totalAssets = (accounts || [])
     .filter((a) => a.type !== 'CREDIT_CARD')
-    .reduce((sum, a) => sum + (a.current_balance || 0), 0);
+    .reduce((sum, a) => sum + (a.currentBalance || 0), 0);
 
   const totalDebt = (accounts || [])
     .filter((a) => a.type === 'CREDIT_CARD')
-    .reduce((sum, a) => sum + (a.current_balance || 0), 0);
+    .reduce((sum, a) => sum + (a.currentBalance || 0), 0);
 
   const netWorth = totalAssets - totalDebt;
 
@@ -146,7 +146,7 @@ export default function DashboardPage() {
               >
                 <span className="font-medium text-foreground">{acc.name}</span>
                 <span className="font-mono font-semibold text-foreground">
-                  {formatVND(acc.current_balance || 0)}
+                  {formatVND(acc.currentBalance || 0)}
                 </span>
               </div>
             ))}

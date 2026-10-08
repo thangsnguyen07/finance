@@ -33,7 +33,7 @@ export class CreateAccountDto {
     example: 0,
   })
   @IsInt()
-  initial_balance: number;
+  initialBalance: number;
 
   @ApiPropertyOptional({ default: 'VND', example: 'VND' })
   @IsOptional()
@@ -47,7 +47,7 @@ export class CreateAccountDto {
   @IsOptional()
   @IsInt()
   @Min(0)
-  credit_limit?: number;
+  creditLimit?: number;
 
   @ApiPropertyOptional({
     description: 'Statement closing day of month (1-31)',
@@ -57,5 +57,5 @@ export class CreateAccountDto {
   @IsInt()
   @Min(1)
   @Max(31)
-  statement_day?: number;
+  statementDay?: number;
 }

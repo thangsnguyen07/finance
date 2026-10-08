@@ -26,7 +26,7 @@ export class UpdateAccountDto {
   @IsOptional()
   @IsInt()
   @Min(0)
-  credit_limit?: number;
+  creditLimit?: number;
 
   @ApiPropertyOptional({
     description: 'Updated statement closing day (1-31)',
@@ -36,7 +36,7 @@ export class UpdateAccountDto {
   @IsInt()
   @Min(1)
   @Max(31)
-  statement_day?: number;
+  statementDay?: number;
 
   @ApiPropertyOptional({
     description: 'Whether account is archived',
@@ -44,5 +44,5 @@ export class UpdateAccountDto {
   })
   @IsOptional()
   @IsBoolean()
-  is_archived?: boolean;
+  isArchived?: boolean;
 }

@@ -47,9 +47,9 @@ export function CreateAccountModal({ isOpen, onClose }: CreateAccountModalProps)
       await createMutation.mutateAsync({
         name: name.trim(),
         type,
-        initial_balance: isNaN(parsedBalance) ? 0 : parsedBalance,
-        credit_limit: parsedCreditLimit,
-        statement_day: parsedStatementDay,
+        initialBalance: isNaN(parsedBalance) ? 0 : parsedBalance,
+        creditLimit: parsedCreditLimit,
+        statementDay: parsedStatementDay,
       });
 
       // Reset form on success

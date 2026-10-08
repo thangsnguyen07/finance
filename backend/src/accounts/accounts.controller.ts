@@ -29,9 +29,11 @@ export class AccountsController {
   @ApiResponse({ status: 200, description: 'List of accounts' })
   async findAll(
     @CurrentUser() userId: string,
-    @Query('include_archived') includeArchived?: string,
+    @Query('includeArchived') includeArchived?: string,
+    @Query('include_archived') legacyIncludeArchived?: string,
   ): Promise<Account[]> {
-    const shouldIncludeArchived = includeArchived === 'true';
+    const shouldIncludeArchived =
+      includeArchived === 'true' || legacyIncludeArchived === 'true';
     return await this.accountsService.findAll(userId, shouldIncludeArchived);
   }
 

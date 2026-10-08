@@ -53,10 +53,12 @@ Avoid defining duplicate hand-rolled variations of types. Leverage TypeScript ut
 - **Parameter Consolidation**: Keep function parameters <= 2. When more arguments are required, consolidate into a typed DTO/Options object.
 - **No Boolean Flags as Function Parameters**: A boolean argument (`doSomething(flag: boolean)`) signals that the function is doing two separate things based on an `if/else`. Split into two distinct, descriptive functions instead.
 
-### 2.6 Naming Conventions & Boolean Prefixes
-- Booleans must use prefixes: `is`, `has`, `should`, `can` (e.g. `is_archived`, `isLoading`, `hasOverdueBills`).
-- Functions describing actions start with verbs (`createAccount`, `calculateNetWorth`).
-- Consistent English naming across all layers.
+### 2.6 Naming Conventions & Casing Enforcement
+- **Strict `camelCase` for Variables & Properties**: All variables, object properties, function parameters, methods, and REST API JSON payloads must strictly use `camelCase` (`userId`, `currentBalance`, `creditLimit`, `statementDay`). Snake_case is prohibited for identifiers.
+- **`UPPER_SNAKE_CASE` Strictly for Constants**: Only constant values or immutable global configurations may use upper snake case (`BIGINT_TRANSFORMER`, `DEFAULT_DEV_USER_ID`, `ACCOUNTS_QUERY_KEY`).
+- **Boolean Prefixes**: Booleans must use descriptive prefixes: `is`, `has`, `should`, `can` (`isArchived`, `isLoading`, `hasOverdueBills`).
+- **Verb-Prefixed Functions**: Functions describing actions start with verbs (`createAccount`, `calculateNetWorth`).
+- **Consistent English**: English-only naming across all architectural layers.
 
 ### 2.7 Defensive Boundaries ("Do Not Trust Any Data")
 - **Backend Ingress**: Every incoming HTTP request must pass through `ValidationPipe` with `class-validator` DTOs (`whitelist: true`, `forbidNonWhitelisted: true`).

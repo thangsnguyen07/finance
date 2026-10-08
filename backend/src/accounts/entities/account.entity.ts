@@ -15,8 +15,8 @@ export type AccountType =
   | 'INVESTMENT';
 
 // PostgreSQL bigint returns as string to prevent 64-bit precision loss.
-// Transformer converts bigint to JavaScript number for VND integer currency.
-const bigintTransformer = {
+// Transformer converts bigint to JavaScript number for integer VND currency.
+const BIGINT_TRANSFORMER = {
   to: (value: number | null | undefined): string | null => {
     if (value === null || value === undefined) return null;
     return value.toString();
@@ -28,14 +28,14 @@ const bigintTransformer = {
 };
 
 @Entity('accounts')
-@Index(['user_id', 'name'], { unique: true })
+@Index(['userId', 'name'], { unique: true })
 export class Account {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Index()
-  @Column({ type: 'varchar', length: 255 })
-  user_id: string;
+  @Column({ name: 'user_id', type: 'varchar', length: 255 })
+  userId: string;
 
   @Column({ type: 'varchar', length: 100 })
   name: string;
@@ -51,28 +51,30 @@ export class Account {
   currency: string;
 
   @Column({
+    name: 'current_balance',
     type: 'bigint',
     default: 0,
-    transformer: bigintTransformer,
+    transformer: BIGINT_TRANSFORMER,
   })
-  current_balance: number;
+  currentBalance: number;
 
   @Column({
+    name: 'credit_limit',
     type: 'bigint',
     nullable: true,
-    transformer: bigintTransformer,
+    transformer: BIGINT_TRANSFORMER,
   })
-  credit_limit: number | null;
+  creditLimit: number | null;
 
-  @Column({ type: 'int', nullable: true })
-  statement_day: number | null;
+  @Column({ name: 'statement_day', type: 'int', nullable: true })
+  statementDay: number | null;
 
-  @Column({ type: 'boolean', default: false })
-  is_archived: boolean;
+  @Column({ name: 'is_archived', type: 'boolean', default: false })
+  isArchived: boolean;
 
-  @CreateDateColumn({ type: 'timestamptz' })
-  created_at: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updated_at: Date;
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
+  updatedAt: Date;
 }
