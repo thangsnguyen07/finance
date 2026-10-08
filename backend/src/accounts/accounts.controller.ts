@@ -12,6 +12,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Account } from './entities/account.entity.js';
 import { AccountsService } from './accounts.service.js';
 import { CreateAccountDto } from './dto/create-account.dto.js';
 import { UpdateAccountDto } from './dto/update-account.dto.js';
@@ -29,7 +30,7 @@ export class AccountsController {
   async findAll(
     @CurrentUser() userId: string,
     @Query('include_archived') includeArchived?: string,
-  ) {
+  ): Promise<Account[]> {
     const shouldIncludeArchived = includeArchived === 'true';
     return await this.accountsService.findAll(userId, shouldIncludeArchived);
   }
@@ -41,7 +42,7 @@ export class AccountsController {
   async create(
     @CurrentUser() userId: string,
     @Body() createAccountDto: CreateAccountDto,
-  ) {
+  ): Promise<Account> {
     return await this.accountsService.create(userId, createAccountDto);
   }
 
@@ -52,7 +53,7 @@ export class AccountsController {
   async findOne(
     @CurrentUser() userId: string,
     @Param('id', ParseUUIDPipe) id: string,
-  ) {
+  ): Promise<Account> {
     return await this.accountsService.findOne(userId, id);
   }
 
@@ -64,7 +65,7 @@ export class AccountsController {
     @CurrentUser() userId: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateAccountDto: UpdateAccountDto,
-  ) {
+  ): Promise<Account> {
     return await this.accountsService.update(userId, id, updateAccountDto);
   }
 
@@ -76,7 +77,7 @@ export class AccountsController {
   async remove(
     @CurrentUser() userId: string,
     @Param('id', ParseUUIDPipe) id: string,
-  ) {
+  ): Promise<void> {
     await this.accountsService.remove(userId, id);
   }
 }
