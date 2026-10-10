@@ -1,0 +1,14 @@
+{
+  "name": "finance",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel --filter frontend --filter backend dev",
+    "dev:backend": "pnpm --filter backend dev",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "build": "pnpm --filter frontend build && pnpm --filter backend build",
+    "lint": "pnpm --filter frontend lint && pnpm --filter backend lint",
+    "test": "pnpm --filter backend test"
+  },
+  "packageManager": "pnpm@10.6.4"
+}
