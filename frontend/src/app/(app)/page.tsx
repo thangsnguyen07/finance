@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import {
-  Wallet,
   Paperclip,
   ArrowDownRight,
   ArrowUpRight,
@@ -38,28 +37,18 @@ export default function DashboardPage() {
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* 1. HERO: SỔ CÁI TÀI SẢN & THƯỚC ĐO NGÂN SÁCH GỖ K3 */}
       <div className="relative bg-surface border border-border rounded-xl p-5 sm:p-6 shadow-xs overflow-hidden space-y-4">
-        <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-3">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] font-sans uppercase font-bold tracking-wider text-muted">
-                Sổ Cái Tổng Hợp • Số Dư Tích Lũy
-              </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100/90 text-emerald-800 border border-emerald-300">
-                +4.2% T10
-              </span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-serif font-black text-foreground tracking-tight tabular-nums">
-              {isLoading ? '...' : formatVND(netWorth)}
-            </h1>
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-sans uppercase font-bold tracking-wider text-muted">
+              Sổ Cái Tổng Hợp • Số Dư Tích Lũy
+            </span>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100/90 text-emerald-800 border border-emerald-300">
+              +4.2% T10
+            </span>
           </div>
-
-          <Link
-            href="/accounts"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-surface-secondary hover:bg-surface-tertiary text-foreground text-xs font-medium border border-border transition-colors self-start shadow-2xs"
-          >
-            <Wallet className="w-3.5 h-3.5 text-accent" />
-            <span>Xem {accounts?.length || 0} ví</span>
-          </Link>
+          <h1 className="text-3xl sm:text-4xl font-serif font-black text-foreground tracking-tight tabular-nums">
+            {isLoading ? '...' : formatVND(netWorth)}
+          </h1>
         </div>
 
         {/* THƯỚC ĐO NGÂN SÁCH GỖ SỒI K3 */}
