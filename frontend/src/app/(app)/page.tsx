@@ -7,7 +7,6 @@ import {
   PieChart,
   ArrowRight,
   Wallet,
-  Sparkles,
 } from 'lucide-react';
 import { useAccounts } from '@/hooks/use-accounts';
 
@@ -34,21 +33,14 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
-      {/* Welcome Banner */}
-      <div className="bg-surface border border-border rounded-lg p-6 shadow-xs relative overflow-hidden">
+      {/* Welcome & Net Worth Ledger */}
+      <div className="bg-surface border border-border rounded-lg p-5 shadow-xs relative overflow-hidden">
         <div className="relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-accent/10 text-accent text-xs font-medium mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Paperlike Visual Identity</span>
-          </div>
-          <h1 className="font-serif font-bold text-2xl text-foreground tracking-tight">
+          <h1 className="font-serif font-bold text-xl sm:text-2xl text-foreground tracking-tight">
             Chào mừng trở lại, Thang Nguyen
           </h1>
-          <p className="text-xs text-muted mt-1 max-w-md">
-            Sổ ghi chép tài chính cá nhân tinh tế, không chói mắt, ghi nhận trung thực dòng tiền.
-          </p>
 
-          <div className="mt-5 pt-4 border-t border-border/60 flex flex-wrap items-center gap-6">
+          <div className="mt-4 pt-4 border-t border-border/60 flex flex-wrap items-center gap-6">
             <div>
               <span className="text-xs text-muted block">Tài sản ròng hiện tại</span>
               <span className="font-serif text-2xl font-bold text-foreground">
