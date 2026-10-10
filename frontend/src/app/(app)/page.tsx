@@ -91,14 +91,6 @@ export default function DashboardPage() {
             <span className="font-bold text-foreground">Còn lại: 7.250.000 ₫</span>
           </div>
         </div>
-
-        {/* Chú thích bút máy viết tay */}
-        <p className="text-sm font-hand text-muted pt-2 border-t border-border/70 flex items-center justify-between">
-          <span>✍️ Dòng tiền ròng tháng 10 đang thặng dư +4.800.000 ₫</span>
-          <span className="font-sans text-[10px] text-muted font-medium">
-            Cập nhật gần nhất
-          </span>
-        </p>
       </div>
 
       {/* 2. POCKET CARDS: KHAY KẸP VÍ TIỀN & THẺ THANH TOÁN (Horizontal Carousel) */}
