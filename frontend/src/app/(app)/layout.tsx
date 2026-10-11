@@ -4,13 +4,14 @@ import { useState } from 'react';
 import { Sidebar } from '@/components/navigation/sidebar';
 import { BottomNav } from '@/components/navigation/bottom-nav';
 import { NotebookHeader } from '@/components/navigation/notebook-header';
+import { QuickEntryModal } from '@/components/transactions/quick-entry-modal';
 
 export default function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [, setIsQuickEntryOpen] = useState(false);
+  const [isQuickEntryOpen, setIsQuickEntryOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
@@ -27,6 +28,12 @@ export default function AppLayout({
 
       {/* Mobile Bottom Navigation */}
       <BottomNav onQuickEntryClick={() => setIsQuickEntryOpen(true)} />
+
+      {/* Global Quick Entry Modal */}
+      <QuickEntryModal
+        isOpen={isQuickEntryOpen}
+        onClose={() => setIsQuickEntryOpen(false)}
+      />
     </div>
   );
 }
