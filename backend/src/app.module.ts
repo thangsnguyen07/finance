@@ -4,10 +4,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AccountsModule } from './accounts/accounts.module.js';
+import { CategoriesModule } from './categories/categories.module.js';
+import { TransactionsModule } from './transactions/transactions.module.js';
 
 @Module({
   imports: [
     AccountsModule,
+    CategoriesModule,
+    TransactionsModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env.local', '.env', '../.env'],
