@@ -273,7 +273,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
             </div>
           </div>
 
-          {/* 3. Account Selector (Source & Target for Transfer) */}
+          {/* 3. Account Selector & Date (Consistent across all tabs) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted mb-1.5">
@@ -295,70 +295,77 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
               </select>
             </div>
 
-            {txType === 'TRANSFER' ? (
-              <div>
-                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted mb-1.5">
-                  <ArrowRightLeft className="w-3.5 h-3.5" />
-                  <span>Sang ví đích</span>
-                </label>
-                <select
-                  value={effectiveTargetAccountId}
-                  onChange={(e) => setTargetAccountId(e.target.value)}
-                  className="w-full px-3 py-2 text-xs font-medium bg-surface border border-border rounded-lg text-foreground focus:outline-none focus:border-accent"
-                >
-                  {(accounts || []).map((acc) => (
-                    <option key={acc.id} value={acc.id}>
-                      {acc.name} ({acc.currentBalance.toLocaleString('vi-VN')} ₫)
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ) : (
-              <div>
-                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted mb-1.5">
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>Ngày ghi sổ</span>
-                </label>
-                <input
-                  type="date"
-                  value={transactionDate}
-                  onChange={(e) => setTransactionDate(e.target.value)}
-                  className="w-full px-3 py-2 text-xs font-mono bg-surface border border-border rounded-lg text-foreground focus:outline-none focus:border-accent"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* 4. Category 1-Tap Selector (For EXPENSE & INCOME) */}
-          {txType !== 'TRANSFER' && (
             <div>
               <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted mb-1.5">
-                <Tag className="w-3.5 h-3.5" />
-                <span>
-                  Danh mục ({txType === 'EXPENSE' ? 'Chi tiêu' : 'Thu nhập'})
-                </span>
+                <Calendar className="w-3.5 h-3.5" />
+                <span>Ngày ghi sổ</span>
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-36 overflow-y-auto p-0.5">
-                {filteredCategories.map((cat) => {
-                  const isSelected = effectiveCategoryId === cat.id;
-                  return (
-                    <button
-                      key={cat.id}
-                      type="button"
-                      onClick={() => setCategoryId(cat.id)}
-                      className={`px-3 py-2 rounded-lg border text-left text-xs transition-all truncate cursor-pointer ${
-                        isSelected
-                          ? 'border-accent bg-accent/10 text-accent font-bold shadow-2xs'
-                          : 'border-border bg-surface hover:border-border/80 text-foreground'
-                      }`}
-                    >
-                      {cat.name}
-                    </button>
-                  );
-                })}
-              </div>
+              <input
+                type="date"
+                value={transactionDate}
+                onChange={(e) => setTransactionDate(e.target.value)}
+                className="w-full px-3 py-2 text-xs font-mono bg-surface border border-border rounded-lg text-foreground focus:outline-none focus:border-accent"
+              />
             </div>
-          )}
+          </div>
+
+          {/* 4. Fixed-Height Dynamic Slot: Category Grid (EXPENSE/INCOME) or Target Account (TRANSFER) */}
+          <div className="h-[152px] flex flex-col">
+            {txType !== 'TRANSFER' ? (
+              <>
+                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted mb-1.5 shrink-0">
+                  <Tag className="w-3.5 h-3.5" />
+                  <span>
+                    Danh mục ({txType === 'EXPENSE' ? 'Chi tiêu' : 'Thu nhập'})
+                  </span>
+                </label>
+                <div className="grid grid-cols-2 gap-2 flex-1 content-start overflow-y-auto p-0.5">
+                  {filteredCategories.map((cat) => {
+                    const isSelected = effectiveCategoryId === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => setCategoryId(cat.id)}
+                        className={`h-9 px-3 rounded-lg border text-left text-xs transition-all truncate cursor-pointer ${
+                          isSelected
+                            ? 'border-accent bg-accent/10 text-accent font-bold shadow-2xs'
+                            : 'border-border bg-surface hover:border-border/80 text-foreground'
+                        }`}
+                      >
+                        {cat.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <>
+                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted mb-1.5 shrink-0">
+                  <ArrowRightLeft className="w-3.5 h-3.5" />
+                  <span>Sang ví đích nhận tiền</span>
+                </label>
+                <div className="flex-1 flex flex-col justify-between bg-surface-secondary/30 border border-border rounded-xl p-3">
+                  <select
+                    value={effectiveTargetAccountId}
+                    onChange={(e) => setTargetAccountId(e.target.value)}
+                    className="w-full px-3 py-2 text-xs font-medium bg-surface border border-border rounded-lg text-foreground focus:outline-none focus:border-accent"
+                  >
+                    {(accounts || []).map((acc) => (
+                      <option key={acc.id} value={acc.id}>
+                        {acc.name} ({acc.currentBalance.toLocaleString('vi-VN')}{' '}
+                        ₫)
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-[11px] text-muted leading-relaxed px-0.5">
+                    💡 Chuyển khoản nội bộ sẽ tự động trừ số dư ví nguồn và cộng
+                    vào ví đích (hoặc giảm dư nợ nếu ví đích là Thẻ tín dụng).
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
 
           {/* 5. Note / Description */}
           <div>
