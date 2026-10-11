@@ -7,6 +7,7 @@ import {
   Receipt,
   Plus,
   PieChart,
+  BarChart3,
   Landmark,
   Settings,
   BookOpen,
@@ -39,13 +40,19 @@ export function Sidebar({ onQuickEntryClick }: SidebarProps) {
       isActive: pathname.startsWith('/budgets'),
     },
     {
+      label: 'Báo cáo dòng tiền',
+      href: '/reports',
+      icon: BarChart3,
+      isActive: pathname.startsWith('/reports'),
+    },
+    {
       label: 'Ví & Tài khoản',
       href: '/accounts',
       icon: Landmark,
       isActive: pathname.startsWith('/accounts'),
     },
     {
-      label: 'Cài đặt',
+      label: 'Cài đặt sổ',
       href: '/settings',
       icon: Settings,
       isActive: pathname.startsWith('/settings'),
