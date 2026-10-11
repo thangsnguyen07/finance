@@ -82,6 +82,18 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
     }
   };
 
+  const handleClose = () => {
+    setTxType('EXPENSE');
+    setRawAmount(0);
+    setAccountId('');
+    setTargetAccountId('');
+    setCategoryId('');
+    setTransactionDate(getTodayDateString());
+    setDescription('');
+    setError(null);
+    onClose();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -128,9 +140,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
         description: description.trim() || undefined,
       });
 
-      setRawAmount(0);
-      setDescription('');
-      onClose();
+      handleClose();
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -141,8 +151,12 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-foreground/30 backdrop-blur-xs animate-in fade-in duration-150">
+    <div
+      onClick={handleClose}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-foreground/30 backdrop-blur-xs animate-in fade-in duration-150"
+    >
       <div
+        onClick={(e) => e.stopPropagation()}
         className="w-full max-w-lg bg-surface text-foreground border-t sm:border border-border rounded-t-2xl sm:rounded-xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-150"
         role="dialog"
         aria-modal="true"
@@ -159,7 +173,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
           </div>
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             className="p-1.5 rounded-md text-muted hover:text-foreground hover:bg-surface-secondary transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
@@ -386,7 +400,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
           <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               disabled={createTransactionMutation.isPending}
               className="px-4 py-2 text-xs font-medium text-muted hover:text-foreground transition-colors cursor-pointer"
             >
