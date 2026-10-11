@@ -5,12 +5,14 @@ import {
   Paperclip,
   ArrowDownRight,
   ArrowUpRight,
+  ArrowLeftRight,
   Plus,
   CreditCard,
   Banknote,
   CheckCircle2,
 } from 'lucide-react';
 import { useAccounts } from '@/hooks/use-accounts';
+import { useTransactions } from '@/hooks/use-transactions';
 
 function formatVND(amount: number): string {
   return new Intl.NumberFormat('vi-VN', {
@@ -20,8 +22,19 @@ function formatVND(amount: number): string {
   }).format(amount);
 }
 
+function formatShortDate(iso: string): string {
+  return new Intl.DateTimeFormat('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(iso));
+}
+
 export default function DashboardPage() {
   const { data: accounts, isLoading } = useAccounts();
+  const { data: txData, isLoading: isTxLoading } = useTransactions({ limit: 5 });
+  const recentTransactions = txData?.items || [];
 
   const totalAssets = (accounts || [])
     .filter((a) => a.type !== 'CREDIT_CARD')
@@ -186,7 +199,7 @@ export default function DashboardPage() {
 
       {/* 3. RULED LEDGER & POST-IT NOTE */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Left 2 Cols: Nhật Ký Ghi Sổ 3 Dòng Kẻ Gần Nhất */}
+        {/* Left 2 Cols: Nhật Ký Ghi Sổ Gần Nhất */}
         <div className="lg:col-span-2 bg-surface border border-border rounded-xl p-5 shadow-xs">
           <div className="flex items-center justify-between pb-3 border-b border-border/80">
             <h2 className="text-xs font-bold uppercase tracking-wider text-muted font-sans flex items-center gap-1.5">
@@ -201,62 +214,74 @@ export default function DashboardPage() {
           </div>
 
           <div className="divide-y divide-border/60 mt-1">
-            <div className="py-2.5 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-danger/10 text-danger flex items-center justify-center">
-                  <ArrowDownRight className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-medium text-foreground block">
-                    Cà phê sáng & Bánh mì
-                  </span>
-                  <span className="text-[10px] text-muted font-sans">
-                    08:30 • Tiền mặt
-                  </span>
-                </div>
+            {isTxLoading ? (
+              <div className="py-6 text-center text-xs text-muted">
+                Đang tải nhật ký giao dịch...
               </div>
-              <span className="font-mono font-bold text-danger">
-                -45.000 ₫
-              </span>
-            </div>
-
-            <div className="py-2.5 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-danger/10 text-danger flex items-center justify-center">
-                  <ArrowDownRight className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-medium text-foreground block">
-                    Siêu thị VinMart cuối tuần
-                  </span>
-                  <span className="text-[10px] text-muted font-sans">
-                    Hôm qua • Vietcombank
-                  </span>
-                </div>
+            ) : recentTransactions.length === 0 ? (
+              <div className="py-6 text-center text-xs text-muted">
+                Chưa có bút toán nào được ghi nhận. Nhấn nút <strong>+</strong> để ghi nhanh!
               </div>
-              <span className="font-mono font-bold text-danger">
-                -420.000 ₫
-              </span>
-            </div>
-
-            <div className="py-2.5 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-success/10 text-success flex items-center justify-center">
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-medium text-foreground block">
-                    Lương công ty tháng 10
-                  </span>
-                  <span className="text-[10px] text-muted font-sans">
-                    05/10 • Techcombank
-                  </span>
-                </div>
-              </div>
-              <span className="font-mono font-bold text-success">
-                +25.000.000 ₫
-              </span>
-            </div>
+            ) : (
+              recentTransactions.map((tx) => {
+                const isExpense = tx.type === 'EXPENSE';
+                const isIncome = tx.type === 'INCOME';
+                return (
+                  <div
+                    key={tx.id}
+                    className="py-2.5 flex items-center justify-between text-xs"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div
+                        className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
+                          isExpense
+                            ? 'bg-danger/10 text-danger'
+                            : isIncome
+                              ? 'bg-success/10 text-success'
+                              : 'bg-accent/10 text-accent'
+                        }`}
+                      >
+                        {isExpense ? (
+                          <ArrowDownRight className="w-4 h-4" />
+                        ) : isIncome ? (
+                          <ArrowUpRight className="w-4 h-4" />
+                        ) : (
+                          <ArrowLeftRight className="w-4 h-4" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <span className="font-medium text-foreground block truncate">
+                          {tx.description ||
+                            tx.category?.name ||
+                            (tx.type === 'TRANSFER'
+                              ? 'Chuyển khoản nội bộ'
+                              : 'Giao dịch')}
+                        </span>
+                        <span className="text-[10px] text-muted font-sans">
+                          {formatShortDate(tx.transactionDate)} •{' '}
+                          {tx.account?.name || 'Ví'}
+                          {tx.type === 'TRANSFER' && tx.targetAccount
+                            ? ` → ${tx.targetAccount.name}`
+                            : ''}
+                        </span>
+                      </div>
+                    </div>
+                    <span
+                      className={`font-mono font-bold shrink-0 ml-2 ${
+                        isExpense
+                          ? 'text-danger'
+                          : isIncome
+                            ? 'text-success'
+                            : 'text-foreground'
+                      }`}
+                    >
+                      {isExpense ? '-' : isIncome ? '+' : ''}
+                      {formatVND(tx.amount)}
+                    </span>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 
