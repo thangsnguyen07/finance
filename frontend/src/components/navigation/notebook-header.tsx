@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
-import { NotebookTabs, BarChart3, Settings } from 'lucide-react';
+import { NotebookTabs, Settings } from 'lucide-react';
 
 const WEEKDAYS = [
   'Chủ Nhật',
@@ -33,7 +33,6 @@ export function NotebookHeader() {
     () => '',
   );
 
-  const isReportsActive = pathname.startsWith('/reports');
   const isSettingsActive = pathname.startsWith('/settings');
 
   return (
@@ -54,35 +53,24 @@ export function NotebookHeader() {
           </div>
         </Link>
 
-        {/* Right: Quick Bookmark Tabs (Reports & Settings) + Vintage Ink Audit Stamp */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          <Link
-            href="/reports"
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium border transition-colors ${
-              isReportsActive
-                ? 'bg-accent text-accent-foreground border-accent shadow-2xs'
-                : 'bg-surface text-foreground border-border hover:border-accent/60'
-            }`}
-          >
-            <BarChart3 className="w-3.5 h-3.5" />
-            <span>Báo cáo</span>
-          </Link>
+        {/* Right: Vintage Ink Audit Stamp + Compact Icon Settings Trigger on Mobile/Tablet */}
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="px-2 py-0.5 rounded text-[9px] font-bold font-mono tracking-wider border-2 border-dashed border-danger/80 text-danger rotate-[2deg] shadow-2xs select-none hover:rotate-0 transition-transform">
+            ✓ SỔ ĐÃ KIỂM KÊ
+          </div>
 
           <Link
             href="/settings"
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium border transition-colors ${
+            title="Cài đặt sổ & Danh mục"
+            aria-label="Cài đặt sổ & Danh mục"
+            className={`lg:hidden p-1.5 rounded-md border transition-colors ${
               isSettingsActive
-                ? 'bg-accent text-accent-foreground border-accent shadow-2xs'
-                : 'bg-surface text-foreground border-border hover:border-accent/60'
+                ? 'bg-accent text-accent-foreground border-accent'
+                : 'bg-surface text-muted hover:text-foreground border-border'
             }`}
           >
-            <Settings className="w-3.5 h-3.5" />
-            <span>Danh mục</span>
+            <Settings className="w-4 h-4" />
           </Link>
-
-          <div className="hidden sm:block px-2 py-0.5 rounded text-[9px] font-bold font-mono tracking-wider border-2 border-dashed border-danger/80 text-danger rotate-[2deg] shadow-2xs select-none hover:rotate-0 transition-transform">
-            ✓ SỔ ĐÃ KIỂM KÊ
-          </div>
         </div>
       </div>
     </header>

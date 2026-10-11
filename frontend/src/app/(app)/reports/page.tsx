@@ -8,8 +8,10 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   BarChart3,
+  Receipt,
   Loader2,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useTransactions } from '@/hooks/use-transactions';
 import type { TransactionResponse } from '@/types/api';
 
@@ -457,26 +459,36 @@ export default function ReportsPage() {
           </p>
         </div>
 
-        <div className="inline-flex items-center bg-surface border border-border rounded-lg p-1 shadow-2xs self-start sm:self-auto">
-          <button
-            type="button"
-            onClick={() => setSelectedMonth((prev) => shiftMonth(prev, -1))}
-            className="p-1.5 rounded-md text-muted hover:text-foreground hover:bg-surface-secondary transition-colors cursor-pointer"
-            aria-label="Tháng trước"
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <Link
+            href="/transactions"
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium bg-surface border border-border hover:border-accent text-foreground rounded-lg shadow-2xs transition-colors"
           >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <span className="px-3 text-xs font-serif font-bold text-foreground min-w-[116px] text-center">
-            {formatMonthDisplay(selectedMonth)}
-          </span>
-          <button
-            type="button"
-            onClick={() => setSelectedMonth((prev) => shiftMonth(prev, 1))}
-            className="p-1.5 rounded-md text-muted hover:text-foreground hover:bg-surface-secondary transition-colors cursor-pointer"
-            aria-label="Tháng sau"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+            <Receipt className="w-3.5 h-3.5 text-accent" />
+            <span>Xem nhật ký</span>
+          </Link>
+
+          <div className="inline-flex items-center bg-surface border border-border rounded-lg p-1 shadow-2xs">
+            <button
+              type="button"
+              onClick={() => setSelectedMonth((prev) => shiftMonth(prev, -1))}
+              className="p-1.5 rounded-md text-muted hover:text-foreground hover:bg-surface-secondary transition-colors cursor-pointer"
+              aria-label="Tháng trước"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <span className="px-3 text-xs font-serif font-bold text-foreground min-w-[116px] text-center">
+              {formatMonthDisplay(selectedMonth)}
+            </span>
+            <button
+              type="button"
+              onClick={() => setSelectedMonth((prev) => shiftMonth(prev, 1))}
+              className="p-1.5 rounded-md text-muted hover:text-foreground hover:bg-surface-secondary transition-colors cursor-pointer"
+              aria-label="Tháng sau"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 
