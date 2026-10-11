@@ -1,7 +1,6 @@
 'use client';
 
-import { Card } from '@heroui/react';
-import { formatVND } from '@/lib/formatters';
+import { Card, CurrencyText } from '@/components/ui';
 import type { UnbudgetedCategoryResponse } from '../types/budget.types';
 
 interface UnbudgetedCategoryGridProps {
@@ -16,18 +15,20 @@ export function UnbudgetedCategoryGrid({
   if (categories.length === 0) return null;
 
   return (
-    <Card className="bg-surface-secondary/40 border border-border rounded-xl p-5 shadow-2xs">
-      <Card.Header className="p-0 pb-3">
-        <Card.Title className="font-serif font-bold text-sm text-foreground">
-          Danh mục chưa đặt hạn mức ({categories.length})
-        </Card.Title>
-        <Card.Description className="text-xs text-muted mt-0.5">
-          Chọn một danh mục bên dưới để thiết lập phong bì hạn mức ngay
-        </Card.Description>
+    <Card variant="muted">
+      <Card.Header>
+        <div>
+          <Card.Title className="text-sm">
+            Danh mục chưa đặt hạn mức ({categories.length})
+          </Card.Title>
+          <Card.Description>
+            Chọn một danh mục bên dưới để thiết lập phong bì hạn mức ngay
+          </Card.Description>
+        </div>
       </Card.Header>
 
-      <Card.Content className="p-0 pt-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+      <Card.Content>
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((cat) => {
             const suggestedAmount =
               cat.spentAmount > 0
@@ -41,19 +42,24 @@ export function UnbudgetedCategoryGrid({
                 onClick={() =>
                   onSelectCategory(cat.categoryId, suggestedAmount)
                 }
-                className="flex items-center justify-between p-3 bg-surface border border-border hover:border-accent rounded-lg text-left transition-colors cursor-pointer group"
+                className="group flex cursor-pointer items-center justify-between rounded-lg border border-ledger-border bg-paper-surface p-3 text-left transition-colors hover:border-accent-coral"
               >
                 <div className="min-w-0 pr-2">
-                  <span className="text-xs font-semibold text-foreground block truncate group-hover:text-accent">
+                  <span className="block truncate text-xs font-semibold text-ink-primary group-hover:text-accent-coral">
                     {cat.categoryName}
                   </span>
-                  <span className="text-[11px] font-mono text-muted tabular-nums">
-                    {cat.spentAmount > 0
-                      ? `Tháng này đã chi: ${formatVND(cat.spentAmount)}`
-                      : 'Chưa phát sinh chi tiêu'}
+                  <span className="font-mono text-[11px] tabular-nums text-ink-secondary">
+                    {cat.spentAmount > 0 ? (
+                      <>
+                        Tháng này đã chi:{' '}
+                        <CurrencyText amount={cat.spentAmount} />
+                      </>
+                    ) : (
+                      'Chưa phát sinh chi tiêu'
+                    )}
                   </span>
                 </div>
-                <span className="text-xs font-semibold text-accent shrink-0">
+                <span className="shrink-0 text-xs font-semibold text-accent-coral">
                   + Đặt hạn mức
                 </span>
               </button>

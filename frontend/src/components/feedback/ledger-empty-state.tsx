@@ -1,12 +1,13 @@
 'use client';
 
-import { Card } from '@heroui/react';
+import type { ReactNode } from 'react';
+import { Card } from '@/components/ui/card';
 
 interface LedgerEmptyStateProps {
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   title: string;
   description: string;
-  action?: React.ReactNode;
+  action?: ReactNode;
 }
 
 export function LedgerEmptyState({
@@ -16,13 +17,13 @@ export function LedgerEmptyState({
   action,
 }: LedgerEmptyStateProps) {
   return (
-    <Card className="text-center py-12 px-4 border border-dashed border-border rounded-xl bg-surface/50 shadow-none">
-      <Card.Content className="p-0 flex flex-col items-center">
-        {icon ? <div className="mb-3 text-muted">{icon}</div> : null}
-        <h3 className="font-serif font-bold text-base text-foreground">
+    <Card variant="dashed" padding="lg" className="text-center">
+      <Card.Content className="flex flex-col items-center py-4">
+        {icon ? <div className="mb-3 text-ink-secondary">{icon}</div> : null}
+        <h3 className="font-serif text-base font-bold text-ink-primary">
           {title}
         </h3>
-        <p className="text-xs text-muted max-w-md mx-auto mt-1 mb-4">
+        <p className="mx-auto mt-1 mb-4 max-w-md text-xs text-ink-secondary">
           {description}
         </p>
         {action}

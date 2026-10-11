@@ -1,7 +1,7 @@
 'use client';
 
-import { PageHeader } from '@/components/ui/page-header';
-import { LedgerLoadingState } from '@/components/feedback/ledger-loading-state';
+import { PageHeader } from '@/components/ui';
+import { LedgerLoadingState } from '@/components/feedback';
 import { useCategories } from '../hooks/use-categories';
 import { CreateCategoryForm } from './create-category-form';
 import { CategoryDirectoryCard } from './category-directory-card';
@@ -30,7 +30,7 @@ export function SettingsView() {
       {isLoading ? (
         <LedgerLoadingState message="Đang tải danh bạ danh mục..." />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <CategoryDirectoryCard
             title="Danh mục Chi tiêu"
             type="EXPENSE"

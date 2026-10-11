@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@heroui/react';
 import { Plus } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
-import { MonthNavigator } from '@/components/ui/month-navigator';
-import { LedgerLoadingState } from '@/components/feedback/ledger-loading-state';
+import { Button, Alert, PageHeader, MonthNavigator } from '@/components/ui';
+import { LedgerLoadingState } from '@/components/feedback';
 import { getCurrentMonthString } from '@/lib/date-utils';
 import { useBudgets } from '../hooks/use-budgets';
 import { BudgetRulerSummaryCard } from './budget-ruler-summary-card';
@@ -55,12 +53,11 @@ export function BudgetsView() {
         <PageHeader.Actions>
           <MonthNavigator month={selectedMonth} onChange={setSelectedMonth} />
           <Button
-            variant="primary"
+            tone="primary"
             size="sm"
             onPress={() => openCreateModal()}
-            className="px-3.5 py-2 text-xs font-bold bg-amber-900 hover:bg-amber-800 text-amber-100 rounded-lg shadow-xs flex items-center gap-1.5"
           >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <Plus className="h-4 w-4 stroke-[2.5]" />
             <span>Đặt hạn mức</span>
           </Button>
         </PageHeader.Actions>
@@ -78,11 +75,11 @@ export function BudgetsView() {
       {isLoading ? (
         <LedgerLoadingState message="Đang đối chiếu sổ ngân sách tháng..." />
       ) : error ? (
-        <div className="p-4 bg-danger/10 border border-danger/20 text-danger text-xs rounded-lg">
+        <Alert variant="danger">
           {error instanceof Error
             ? error.message
             : 'Không thể tải dữ liệu ngân sách tháng'}
-        </div>
+        </Alert>
       ) : (
         <div className="space-y-6">
           <BudgetEnvelopeList

@@ -1,15 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Card } from '@heroui/react';
 import {
   Plus,
   Tag,
   ArrowDownRight,
   ArrowUpRight,
-  Loader2,
-  CheckCircle2,
 } from 'lucide-react';
+import {
+  Card,
+  Button,
+  Field,
+  Alert,
+  SegmentedControl,
+} from '@/components/ui';
 import { CATEGORY_COLOR_SWATCHES } from '../constants/category.constants';
 import { useCreateCategory } from '../hooks/use-categories';
 import type { CategoryType } from '../types/category.types';
@@ -22,6 +26,11 @@ export function CreateCategoryForm() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const createCategoryMutation = useCreateCategory();
+
+  const handleTypeChange = (nextType: CategoryType) => {
+    setCategoryType(nextType);
+    setSelectedColor(nextType === 'EXPENSE' ? '#991B1B' : '#166534');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,90 +61,75 @@ export function CreateCategoryForm() {
   };
 
   return (
-    <Card className="bg-surface border border-border rounded-xl p-5 sm:p-6 shadow-xs">
-      <Card.Header className="p-0 pb-4 border-b border-border/70">
-        <Card.Title className="font-serif font-bold text-base text-foreground flex items-center gap-2">
-          <Tag className="w-4 h-4 text-accent" />
-          <span>Tạo danh mục tùy chỉnh mới</span>
-        </Card.Title>
-        <Card.Description className="text-xs text-muted mt-0.5">
-          Danh mục mới sẽ xuất hiện ngay trong cửa sổ Ghi sổ nhanh và Sổ ngân
-          sách tháng
-        </Card.Description>
+    <Card>
+      <Card.Header bordered>
+        <div>
+          <Card.Title className="flex items-center gap-2">
+            <Tag className="h-4 w-4 text-accent-coral" />
+            <span>Tạo danh mục tùy chỉnh mới</span>
+          </Card.Title>
+          <Card.Description>
+            Danh mục mới sẽ xuất hiện ngay trong cửa sổ Ghi sổ nhanh và Sổ ngân
+            sách tháng
+          </Card.Description>
+        </div>
       </Card.Header>
 
-      <Card.Content className="p-0 pt-4">
+      <Card.Content>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error ? (
-            <div className="p-3 text-xs text-danger bg-danger/10 border border-danger/20 rounded-md">
-              {error}
-            </div>
-          ) : null}
+          {error ? <Alert variant="danger">{error}</Alert> : null}
+          {successMsg ? <Alert variant="success">{successMsg}</Alert> : null}
 
-          {successMsg ? (
-            <div className="p-3 text-xs text-success bg-success/10 border border-success/20 rounded-md flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 shrink-0" />
-              <span>{successMsg}</span>
-            </div>
-          ) : null}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <Field.Root>
+              <Field.Label>Nhóm danh mục</Field.Label>
+              <SegmentedControl<CategoryType>
+                value={categoryType}
+                onChange={handleTypeChange}
+                fullWidth
+                size="sm"
+                options={[
+                  {
+                    value: 'EXPENSE',
+                    label: (
+                      <span className="inline-flex items-center gap-1">
+                        <ArrowDownRight className="h-3.5 w-3.5" />
+                        <span>Chi tiêu</span>
+                      </span>
+                    ),
+                    activeClassName: 'bg-accent-coral text-paper-surface shadow-2xs',
+                  },
+                  {
+                    value: 'INCOME',
+                    label: (
+                      <span className="inline-flex items-center gap-1">
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                        <span>Thu nhập</span>
+                      </span>
+                    ),
+                    activeClassName: 'bg-accent-teal text-paper-surface shadow-2xs',
+                  },
+                ]}
+              />
+            </Field.Root>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label className="text-xs font-semibold text-foreground block mb-1.5">
-                Nhóm danh mục
-              </label>
-              <div className="grid grid-cols-2 gap-1.5 p-1 bg-surface-secondary rounded-lg border border-border">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCategoryType('EXPENSE');
-                    setSelectedColor('#991B1B');
-                  }}
-                  className={`flex items-center justify-center gap-1 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
-                    categoryType === 'EXPENSE'
-                      ? 'bg-danger text-white shadow-2xs'
-                      : 'text-muted hover:text-foreground'
-                  }`}
-                >
-                  <ArrowDownRight className="w-3.5 h-3.5" />
-                  <span>Chi tiêu</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCategoryType('INCOME');
-                    setSelectedColor('#166534');
-                  }}
-                  className={`flex items-center justify-center gap-1 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
-                    categoryType === 'INCOME'
-                      ? 'bg-success text-white shadow-2xs'
-                      : 'text-muted hover:text-foreground'
-                  }`}
-                >
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                  <span>Thu nhập</span>
-                </button>
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label className="text-xs font-semibold text-foreground block mb-1.5">
-                Tên danh mục
-              </label>
-              <input
+            <Field.Root className="sm:col-span-2">
+              <Field.Label>Tên danh mục</Field.Label>
+              <Field.Input
                 type="text"
                 value={categoryName}
                 onChange={(e) => setCategoryName(e.target.value)}
                 placeholder="VD: Gửi xe tháng, Hiếu hỉ, Freelance..."
                 maxLength={100}
-                className="w-full px-3.5 py-2 text-xs bg-surface border border-border rounded-lg text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent"
               />
-            </div>
+            </Field.Root>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs text-muted mr-1">Màu mực đánh dấu:</span>
+          <div className="flex flex-col justify-between gap-4 pt-2 sm:flex-row sm:items-center">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-xs text-ink-secondary">
+                Màu mực đánh dấu:
+              </span>
               {CATEGORY_COLOR_SWATCHES.map((swatch) => {
                 const isSelected = selectedColor === swatch.value;
                 return (
@@ -143,14 +137,14 @@ export function CreateCategoryForm() {
                     key={swatch.value}
                     type="button"
                     onClick={() => setSelectedColor(swatch.value)}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs border transition-all cursor-pointer ${
+                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition-all ${
                       isSelected
-                        ? 'border-foreground bg-surface-secondary font-bold text-foreground'
-                        : 'border-border bg-surface text-muted hover:text-foreground'
+                        ? 'border-ink-primary bg-paper-muted font-bold text-ink-primary'
+                        : 'border-ledger-border bg-paper-surface text-ink-secondary hover:text-ink-primary'
                     }`}
                   >
                     <span
-                      className="w-2.5 h-2.5 rounded-full"
+                      className="h-2.5 w-2.5 rounded-full"
                       style={{ backgroundColor: swatch.value }}
                     />
                     <span>{swatch.label}</span>
@@ -161,16 +155,14 @@ export function CreateCategoryForm() {
 
             <Button
               type="submit"
-              variant="primary"
+              tone="primary"
               size="sm"
-              isDisabled={createCategoryMutation.isPending}
-              className="px-4 py-2 text-xs font-bold bg-amber-900 hover:bg-amber-800 text-amber-100 rounded-lg shadow-xs flex items-center gap-1.5 self-end sm:self-auto"
+              isLoading={createCategoryMutation.isPending}
+              className="self-end sm:self-auto"
             >
-              {createCategoryMutation.isPending ? (
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              ) : (
-                <Plus className="w-4 h-4" />
-              )}
+              {!createCategoryMutation.isPending ? (
+                <Plus className="h-4 w-4" />
+              ) : null}
               <span>Thêm danh mục</span>
             </Button>
           </div>

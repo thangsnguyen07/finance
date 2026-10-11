@@ -1,8 +1,7 @@
 'use client';
 
-import { Button, Card, Chip } from '@heroui/react';
 import { Pencil } from 'lucide-react';
-import { formatVND } from '@/lib/formatters';
+import { Button, Card, Badge, CurrencyText } from '@/components/ui';
 import { BUDGET_STATUS_CONFIG } from '../constants/budget.constants';
 import type { BudgetEnvelopeResponse } from '../types/budget.types';
 
@@ -18,39 +17,32 @@ export function BudgetEnvelopeList({
   onOpenEdit,
 }: BudgetEnvelopeListProps) {
   return (
-    <Card className="bg-surface border border-border rounded-xl p-5 shadow-xs">
-      <Card.Header className="p-0 pb-3 border-b border-border flex items-center justify-between">
+    <Card>
+      <Card.Header bordered>
         <div>
-          <Card.Title className="font-serif font-bold text-base text-foreground">
-            Phong bì đã đặt hạn mức ({envelopes.length})
-          </Card.Title>
-          <Card.Description className="text-xs text-muted mt-0.5">
+          <Card.Title>Phong bì đã đặt hạn mức ({envelopes.length})</Card.Title>
+          <Card.Description>
             Sắp xếp tự động theo mức độ sử dụng từ cao xuống thấp
           </Card.Description>
         </div>
       </Card.Header>
 
-      <Card.Content className="p-0">
+      <Card.Content>
         {envelopes.length === 0 ? (
-          <div className="py-10 text-center space-y-3">
-            <p className="font-serif text-base font-bold text-foreground">
+          <div className="space-y-3 py-10 text-center">
+            <p className="font-serif text-base font-bold text-ink-primary">
               Tháng này chưa có phong bì ngân sách nào
             </p>
-            <p className="text-xs text-muted max-w-md mx-auto">
+            <p className="mx-auto max-w-md text-xs text-ink-secondary">
               Đặt hạn mức cho các danh mục chi tiêu lớn như Ăn uống, Tiền nhà
               hoặc Di chuyển để thước đo K3 theo dõi tự động mỗi khi bạn ghi sổ.
             </p>
-            <Button
-              variant="primary"
-              size="sm"
-              onPress={onOpenCreate}
-              className="px-4 py-2 text-xs font-bold bg-amber-900 text-amber-100 rounded-lg"
-            >
+            <Button tone="primary" size="sm" onPress={onOpenCreate}>
               Đặt hạn mức đầu tiên
             </Button>
           </div>
         ) : (
-          <div className="divide-y divide-border/70">
+          <div className="divide-y divide-ledger-border/70">
             {envelopes.map((env) => {
               const badge = BUDGET_STATUS_CONFIG[env.status];
               const StatusIcon = badge.icon;
@@ -60,74 +52,85 @@ export function BudgetEnvelopeList({
               );
 
               return (
-                <div key={env.id} className="py-4 flex flex-col gap-2.5 group">
+                <div key={env.id} className="group flex flex-col gap-2.5 py-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-semibold text-sm text-foreground">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-sm font-semibold text-ink-primary">
                           {env.categoryName}
                         </h3>
-                        <Chip
+                        <Badge
                           size="sm"
                           color={badge.color}
                           variant="soft"
-                          className="text-[11px] font-medium flex items-center gap-1"
+                          className="flex items-center gap-1"
                         >
-                          <StatusIcon className="w-3 h-3" />
+                          <StatusIcon className="h-3 w-3" />
                           <span>{badge.label}</span>
-                        </Chip>
+                        </Badge>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex shrink-0 items-center gap-2">
                       <div className="text-right font-mono tabular-nums">
-                        <span className="text-sm font-bold text-foreground">
-                          {formatVND(env.spentAmount)}
-                        </span>
-                        <span className="text-xs text-muted">
+                        <CurrencyText
+                          amount={env.spentAmount}
+                          className="text-sm font-bold text-ink-primary"
+                        />
+                        <span className="text-xs text-ink-secondary">
                           {' '}
-                          / {formatVND(env.budgetAmount)}
+                          / <CurrencyText amount={env.budgetAmount} />
                         </span>
                       </div>
 
                       <Button
                         isIconOnly
                         size="sm"
-                        variant="ghost"
+                        tone="ghost"
                         onPress={() => onOpenEdit(env)}
                         aria-label={`Điều chỉnh hạn mức ${env.categoryName}`}
-                        className="w-7 h-7 min-w-7 text-muted hover:text-foreground"
+                        className="h-7 w-7 min-w-7"
                       >
-                        <Pencil className="w-3.5 h-3.5" />
+                        <Pencil className="h-3.5 w-3.5" />
                       </Button>
                     </div>
                   </div>
 
-                  <div className="h-2 w-full bg-surface-secondary rounded-full overflow-hidden border border-border/50">
+                  <div className="h-2 w-full overflow-hidden rounded-full border border-ledger-border/50 bg-paper-muted">
                     <div
-                      className={`h-full transition-all duration-300 rounded-full ${
+                      className={`h-full rounded-full transition-all duration-300 ${
                         env.status === 'EXCEEDED'
-                          ? 'bg-danger'
+                          ? 'bg-accent-coral'
                           : env.status === 'WARNING'
-                            ? 'bg-warning'
-                            : 'bg-success'
+                            ? 'bg-accent-ochre'
+                            : 'bg-accent-teal'
                       }`}
                       style={{ width: `${clampedBar}%` }}
                     />
                   </div>
 
-                  <div className="flex items-center justify-between text-xs text-muted font-mono tabular-nums">
+                  <div className="flex items-center justify-between font-mono text-xs tabular-nums text-ink-secondary">
                     <span>Đã chi {env.usagePercentage}%</span>
                     <span
                       className={
                         env.remainingAmount >= 0
-                          ? 'text-foreground font-medium'
-                          : 'text-danger font-bold'
+                          ? 'font-medium text-ink-primary'
+                          : 'font-bold text-accent-coral'
                       }
                     >
-                      {env.remainingAmount >= 0
-                        ? `Còn được chi ${formatVND(env.remainingAmount)}`
-                        : `Vượt hạn mức ${formatVND(Math.abs(env.remainingAmount))}`}
+                      {env.remainingAmount >= 0 ? (
+                        <>
+                          Còn được chi{' '}
+                          <CurrencyText amount={env.remainingAmount} />
+                        </>
+                      ) : (
+                        <>
+                          Vượt hạn mức{' '}
+                          <CurrencyText
+                            amount={Math.abs(env.remainingAmount)}
+                          />
+                        </>
+                      )}
                     </span>
                   </div>
                 </div>

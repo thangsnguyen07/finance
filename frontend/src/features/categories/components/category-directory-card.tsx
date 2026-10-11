@@ -1,7 +1,7 @@
 'use client';
 
-import { Card, Chip } from '@heroui/react';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
+import { Card, Badge } from '@/components/ui';
 import type { CategoryResponse, CategoryType } from '../types/category.types';
 
 interface CategoryDirectoryCardProps {
@@ -18,39 +18,35 @@ export function CategoryDirectoryCard({
   const defaultColor = type === 'EXPENSE' ? '#991B1B' : '#166534';
 
   return (
-    <Card className="bg-surface border border-border rounded-xl p-5 shadow-xs">
-      <Card.Header className="p-0 pb-3 border-b border-border flex items-center justify-between">
+    <Card>
+      <Card.Header bordered>
         <div className="flex items-center gap-2">
           {type === 'EXPENSE' ? (
-            <ArrowDownRight className="w-4 h-4 text-danger" />
+            <ArrowDownRight className="h-4 w-4 text-accent-coral" />
           ) : (
-            <ArrowUpRight className="w-4 h-4 text-success" />
+            <ArrowUpRight className="h-4 w-4 text-accent-teal" />
           )}
-          <Card.Title className="font-serif font-bold text-base text-foreground">
+          <Card.Title>
             {title} ({categories.length})
           </Card.Title>
         </div>
       </Card.Header>
-      <Card.Content className="p-0 pt-2 divide-y divide-border/60">
+      <Card.Content className="divide-y divide-ledger-border/60">
         {categories.map((cat) => (
           <div
             key={cat.id}
-            className="py-2.5 flex items-center justify-between text-xs"
+            className="flex items-center justify-between py-2.5 text-xs"
           >
             <div className="flex items-center gap-2.5">
               <span
-                className="w-2.5 h-2.5 rounded-full shrink-0"
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
                 style={{ backgroundColor: cat.color || defaultColor }}
               />
-              <span className="font-medium text-foreground">{cat.name}</span>
+              <span className="font-medium text-ink-primary">{cat.name}</span>
             </div>
-            <Chip
-              size="sm"
-              variant="secondary"
-              className="text-[10px] font-mono"
-            >
+            <Badge size="sm" variant="secondary" mono>
               {cat.isSystemDefault ? 'Mặc định' : 'Tùy chỉnh'}
-            </Chip>
+            </Badge>
           </div>
         ))}
       </Card.Content>

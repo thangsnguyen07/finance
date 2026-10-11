@@ -2,11 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@heroui/react';
 import { Plus, Receipt, BarChart3 } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
-import { LedgerLoadingState } from '@/components/feedback/ledger-loading-state';
-import { LedgerEmptyState } from '@/components/feedback/ledger-empty-state';
+import { Button, Alert, PageHeader } from '@/components/ui';
+import { LedgerLoadingState, LedgerEmptyState } from '@/components/feedback';
 import { useUiStore } from '@/stores/use-ui-store';
 import { useAccounts } from '@/features/accounts';
 import {
@@ -65,19 +63,14 @@ export function TransactionsView() {
         <PageHeader.Actions>
           <Link
             href="/reports"
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium bg-surface border border-border hover:border-accent text-foreground rounded-lg shadow-2xs transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-ledger-border bg-paper-surface px-3 py-2 text-xs font-medium text-ink-primary shadow-2xs transition-colors hover:border-accent-coral"
           >
-            <BarChart3 className="w-3.5 h-3.5 text-accent" />
+            <BarChart3 className="h-3.5 w-3.5 text-accent-coral" />
             <span>Xem báo cáo</span>
           </Link>
 
-          <Button
-            variant="primary"
-            size="sm"
-            onPress={openQuickEntry}
-            className="px-4 py-2 text-xs font-bold bg-amber-900 hover:bg-amber-800 text-amber-100 rounded-lg shadow-xs flex items-center gap-1.5"
-          >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
+          <Button tone="primary" size="sm" onPress={openQuickEntry}>
+            <Plus className="h-4 w-4 stroke-[2.5]" />
             <span>Ghi giao dịch mới</span>
           </Button>
         </PageHeader.Actions>
@@ -99,21 +92,16 @@ export function TransactionsView() {
       {isLoading ? (
         <LedgerLoadingState message="Đang mở sổ nhật ký..." />
       ) : isError ? (
-        <div className="p-6 text-center text-xs text-danger bg-danger/10 border border-danger/20 rounded-xl">
+        <Alert variant="danger">
           Không thể tải dữ liệu giao dịch. Vui lòng kiểm tra kết nối máy chủ.
-        </div>
+        </Alert>
       ) : items.length === 0 ? (
         <LedgerEmptyState
-          icon={<Receipt className="w-10 h-10 stroke-[1.5]" />}
+          icon={<Receipt className="h-10 w-10 stroke-[1.5]" />}
           title="Chưa có bút toán nào trong sổ"
           description="Nhấn vào nút Ghi giao dịch mới hoặc dấu + ở thanh điều hướng để ghi lại khoản thu chi đầu tiên."
           action={
-            <Button
-              variant="primary"
-              size="sm"
-              onPress={openQuickEntry}
-              className="px-4 py-2 text-xs font-bold bg-amber-900 text-amber-100 rounded-lg"
-            >
+            <Button tone="primary" size="sm" onPress={openQuickEntry}>
               + Ghi bút toán đầu tiên
             </Button>
           }

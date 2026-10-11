@@ -1,32 +1,22 @@
 'use client';
 
-import { Card, Chip } from '@heroui/react';
 import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
-import { formatMonthDisplay, formatVND } from '@/lib/formatters';
+import { Card, Badge, CurrencyText } from '@/components/ui';
+import { formatMonthDisplay } from '@/lib/formatters';
 
 function SurplusSavingsBadge({ rate }: { rate: number }) {
   return (
-    <Chip
-      size="sm"
-      color="success"
-      variant="soft"
-      className="font-mono text-xs font-semibold"
-    >
+    <Badge size="sm" color="success" variant="soft" mono>
       Giữ lại được {rate}% thu nhập
-    </Chip>
+    </Badge>
   );
 }
 
 function DeficitSavingsBadge() {
   return (
-    <Chip
-      size="sm"
-      color="danger"
-      variant="soft"
-      className="font-mono text-xs font-semibold"
-    >
+    <Badge size="sm" color="danger" variant="soft" mono>
       Chi vượt thu trong kỳ
-    </Chip>
+    </Badge>
   );
 }
 
@@ -50,19 +40,24 @@ export function CashflowBalanceCard({
   expenseGroupCount,
 }: CashflowBalanceCardProps) {
   return (
-    <Card className="bg-surface border border-border rounded-xl p-5 sm:p-6 shadow-xs">
-      <Card.Header className="p-0 pb-4 border-b border-border/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <Card>
+      <Card.Header
+        bordered
+        className="flex-col items-start justify-between gap-3 sm:flex-row sm:items-center"
+      >
         <div>
-          <span className="text-xs text-muted block">
+          <span className="block text-xs text-ink-secondary">
             Thặng dư / Thâm hụt ròng • {formatMonthDisplay(selectedMonth)}
           </span>
-          <Card.Title
-            className={`text-2xl sm:text-3xl font-serif font-black mt-1 tabular-nums ${
-              monthNet >= 0 ? 'text-foreground' : 'text-danger'
-            }`}
-          >
-            {monthNet > 0 ? '+' : ''}
-            {formatVND(monthNet)}
+          <Card.Title className="mt-1 text-2xl font-black sm:text-3xl">
+            <CurrencyText
+              amount={Math.abs(monthNet)}
+              type={monthNet >= 0 ? 'INCOME' : 'EXPENSE'}
+              signed
+              className={
+                monthNet >= 0 ? 'text-ink-primary' : 'text-accent-coral'
+              }
+            />
           </Card.Title>
         </div>
 
@@ -75,39 +70,49 @@ export function CashflowBalanceCard({
         ) : null}
       </Card.Header>
 
-      <Card.Content className="p-0 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="flex items-center justify-between p-3.5 rounded-lg bg-surface-secondary/40 border border-border/60">
+      <Card.Content className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="flex items-center justify-between rounded-lg border border-ledger-border/60 bg-paper-muted/40 p-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-success/10 text-success flex items-center justify-center">
-              <ArrowUpRight className="w-4 h-4" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-teal/10 text-accent-teal">
+              <ArrowUpRight className="h-4 w-4" />
             </div>
             <div>
-              <span className="text-xs text-muted block">Tổng dòng thu</span>
-              <span className="text-[11px] text-muted">
+              <span className="block text-xs text-ink-secondary">
+                Tổng dòng thu
+              </span>
+              <span className="text-[11px] text-ink-secondary">
                 {incomeGroupCount} nhóm nguồn thu
               </span>
             </div>
           </div>
-          <span className="font-mono text-base font-bold text-success tabular-nums">
-            +{formatVND(monthIncome)}
-          </span>
+          <CurrencyText
+            amount={monthIncome}
+            type="INCOME"
+            signed
+            className="text-base font-bold"
+          />
         </div>
 
-        <div className="flex items-center justify-between p-3.5 rounded-lg bg-surface-secondary/40 border border-border/60">
+        <div className="flex items-center justify-between rounded-lg border border-ledger-border/60 bg-paper-muted/40 p-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-danger/10 text-danger flex items-center justify-center">
-              <ArrowDownRight className="w-4 h-4" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-coral/10 text-accent-coral">
+              <ArrowDownRight className="h-4 w-4" />
             </div>
             <div>
-              <span className="text-xs text-muted block">Tổng dòng chi</span>
-              <span className="text-[11px] text-muted">
+              <span className="block text-xs text-ink-secondary">
+                Tổng dòng chi
+              </span>
+              <span className="text-[11px] text-ink-secondary">
                 {expenseGroupCount} nhóm chi tiêu
               </span>
             </div>
           </div>
-          <span className="font-mono text-base font-bold text-danger tabular-nums">
-            -{formatVND(monthExpense)}
-          </span>
+          <CurrencyText
+            amount={monthExpense}
+            type="EXPENSE"
+            signed
+            className="text-base font-bold"
+          />
         </div>
       </Card.Content>
     </Card>

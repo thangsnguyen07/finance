@@ -1,7 +1,6 @@
 'use client';
 
-import { Card } from '@heroui/react';
-import { formatVND } from '@/lib/formatters';
+import { Card, CurrencyText } from '@/components/ui';
 
 interface TransactionSummaryCardsProps {
   totalIncome: number;
@@ -15,42 +14,48 @@ export function TransactionSummaryCards({
   const netCashflow = totalIncome - totalExpense;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <Card className="p-4 bg-surface border border-border rounded-xl shadow-xs">
-        <Card.Content className="p-0">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-muted block">
-            Tổng Thu Nhập (+)
-          </span>
-          <span className="text-xl font-serif font-bold text-success mt-1 block tabular-nums">
-            +{formatVND(totalIncome)}
-          </span>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <Card padding="md">
+        <Card.Content>
+          <Card.Eyebrow>Tổng Thu Nhập (+)</Card.Eyebrow>
+          <p className="mt-1">
+            <CurrencyText
+              amount={totalIncome}
+              type="INCOME"
+              signed
+              className="font-serif text-xl font-bold"
+            />
+          </p>
         </Card.Content>
       </Card>
 
-      <Card className="p-4 bg-surface border border-border rounded-xl shadow-xs">
-        <Card.Content className="p-0">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-muted block">
-            Tổng Chi Tiêu (-)
-          </span>
-          <span className="text-xl font-serif font-bold text-danger mt-1 block tabular-nums">
-            -{formatVND(totalExpense)}
-          </span>
+      <Card padding="md">
+        <Card.Content>
+          <Card.Eyebrow>Tổng Chi Tiêu (-)</Card.Eyebrow>
+          <p className="mt-1">
+            <CurrencyText
+              amount={totalExpense}
+              type="EXPENSE"
+              signed
+              className="font-serif text-xl font-bold"
+            />
+          </p>
         </Card.Content>
       </Card>
 
-      <Card className="p-4 bg-surface border border-border rounded-xl shadow-xs">
-        <Card.Content className="p-0">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-muted block">
-            Chênh Lệch Dòng Tiền
-          </span>
-          <span
-            className={`text-xl font-serif font-bold mt-1 block tabular-nums ${
-              netCashflow >= 0 ? 'text-foreground' : 'text-danger'
-            }`}
-          >
-            {netCashflow >= 0 ? '+' : ''}
-            {formatVND(netCashflow)}
-          </span>
+      <Card padding="md">
+        <Card.Content>
+          <Card.Eyebrow>Chênh Lệch Dòng Tiền</Card.Eyebrow>
+          <p className="mt-1">
+            <CurrencyText
+              amount={Math.abs(netCashflow)}
+              type={netCashflow >= 0 ? 'INCOME' : 'EXPENSE'}
+              signed
+              className={`font-serif text-xl font-bold ${
+                netCashflow >= 0 ? 'text-ink-primary' : 'text-accent-coral'
+              }`}
+            />
+          </p>
         </Card.Content>
       </Card>
     </div>

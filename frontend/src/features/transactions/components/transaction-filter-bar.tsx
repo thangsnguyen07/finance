@@ -1,7 +1,7 @@
 'use client';
 
-import { Card } from '@heroui/react';
 import { Filter } from 'lucide-react';
+import { Card, Field, SegmentedControl } from '@/components/ui';
 import type { AccountResponse } from '@/features/accounts';
 import type { TransactionType } from '../types/transaction.types';
 
@@ -13,14 +13,11 @@ interface TransactionFilterBarProps {
   accounts: AccountResponse[];
 }
 
-const FILTER_TABS: ReadonlyArray<{
-  key: TransactionType | 'ALL';
-  label: string;
-}> = [
-  { key: 'ALL', label: 'Tất cả' },
-  { key: 'EXPENSE', label: 'Chi tiêu' },
-  { key: 'INCOME', label: 'Thu nhập' },
-  { key: 'TRANSFER', label: 'Chuyển khoản' },
+const FILTER_OPTIONS = [
+  { value: 'ALL' as const, label: 'Tất cả' },
+  { value: 'EXPENSE' as const, label: 'Chi tiêu' },
+  { value: 'INCOME' as const, label: 'Thu nhập' },
+  { value: 'TRANSFER' as const, label: 'Chuyển khoản' },
 ];
 
 export function TransactionFilterBar({
@@ -31,30 +28,22 @@ export function TransactionFilterBar({
   accounts,
 }: TransactionFilterBarProps) {
   return (
-    <Card className="bg-surface border border-border rounded-xl p-3.5 shadow-xs">
-      <Card.Content className="p-0 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <Filter className="w-3.5 h-3.5 text-muted mr-1" />
-          {FILTER_TABS.map((tab) => (
-            <button
-              key={tab.key}
-              type="button"
-              onClick={() => onFilterTypeChange(tab.key)}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
-                filterType === tab.key
-                  ? 'bg-accent text-accent-foreground font-semibold'
-                  : 'bg-surface-secondary/60 text-muted hover:text-foreground'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+    <Card padding="sm">
+      <Card.Content className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <Filter className="mr-1 h-3.5 w-3.5 text-ink-secondary" />
+          <SegmentedControl
+            value={filterType}
+            onChange={onFilterTypeChange}
+            options={FILTER_OPTIONS}
+            size="sm"
+          />
         </div>
 
-        <select
+        <Field.Select
           value={filterAccountId}
           onChange={(e) => onFilterAccountChange(e.target.value)}
-          className="px-3 py-1.5 text-xs bg-surface-secondary/40 border border-border rounded-md text-foreground focus:outline-none focus:border-accent"
+          className="w-auto min-w-[180px] py-1.5"
         >
           <option value="">Tất cả các ví</option>
           {accounts.map((acc) => (
@@ -62,7 +51,7 @@ export function TransactionFilterBar({
               {acc.name}
             </option>
           ))}
-        </select>
+        </Field.Select>
       </Card.Content>
     </Card>
   );

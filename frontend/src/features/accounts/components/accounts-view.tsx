@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@heroui/react';
 import { Plus, Wallet } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
-import { LedgerLoadingState } from '@/components/feedback/ledger-loading-state';
-import { LedgerEmptyState } from '@/components/feedback/ledger-empty-state';
+import { Button, Alert, PageHeader } from '@/components/ui';
+import { LedgerLoadingState, LedgerEmptyState } from '@/components/feedback';
 import { useAccounts, useDeleteAccount } from '../hooks/use-accounts';
 import { NetWorthSummaryCard } from './net-worth-summary-card';
 import { AccountGroupSection } from './account-group-section';
@@ -54,12 +52,11 @@ export function AccountsView() {
         />
         <PageHeader.Actions>
           <Button
-            variant="primary"
+            tone="primary"
             size="sm"
             onPress={() => setIsCreateModalOpen(true)}
-            className="px-4 py-2 text-xs font-bold bg-amber-900 hover:bg-amber-800 text-amber-100 rounded-lg shadow-xs flex items-center gap-1.5"
           >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <Plus className="h-4 w-4 stroke-[2.5]" />
             <span>Mở tài khoản mới</span>
           </Button>
         </PageHeader.Actions>
@@ -76,22 +73,21 @@ export function AccountsView() {
       {isLoading ? (
         <LedgerLoadingState message="Đang tải sổ tài khoản..." />
       ) : error ? (
-        <div className="p-4 bg-danger/10 border border-danger/20 text-danger text-xs rounded-lg">
+        <Alert variant="danger">
           {error instanceof Error
             ? error.message
             : 'Lỗi tải danh sách tài khoản'}
-        </div>
+        </Alert>
       ) : allAccounts.length === 0 ? (
         <LedgerEmptyState
-          icon={<Wallet className="w-10 h-10 stroke-[1.5]" />}
+          icon={<Wallet className="h-10 w-10 stroke-[1.5]" />}
           title="Chưa có tài khoản nào"
           description="Tạo ví tiền mặt hoặc tài khoản ngân hàng đầu tiên để bắt đầu ghi chép thu chi."
           action={
             <Button
-              variant="primary"
+              tone="primary"
               size="sm"
               onPress={() => setIsCreateModalOpen(true)}
-              className="px-4 py-2 text-xs font-bold bg-amber-900 text-amber-100 rounded-lg"
             >
               + Mở tài khoản ngay
             </Button>

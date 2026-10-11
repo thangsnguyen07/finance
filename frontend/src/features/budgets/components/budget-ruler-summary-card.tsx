@@ -1,9 +1,8 @@
 'use client';
 
-import { Card } from '@heroui/react';
 import { Ruler } from 'lucide-react';
-import { K3WoodenRuler } from '@/components/ui/k3-wooden-ruler';
-import { formatMonthDisplay, formatVND } from '@/lib/formatters';
+import { Card, CurrencyText, K3WoodenRuler } from '@/components/ui';
+import { formatMonthDisplay } from '@/lib/formatters';
 import { getMonthDayProgress } from '@/lib/date-utils';
 
 interface BudgetRulerSummaryCardProps {
@@ -26,45 +25,46 @@ export function BudgetRulerSummaryCard({
   const dayProgress = getMonthDayProgress(month);
 
   return (
-    <Card className="bg-surface border border-border rounded-xl p-5 sm:p-6 shadow-xs">
-      <Card.Header className="p-0 pb-4 border-b border-border/70 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+    <Card>
+      <Card.Header
+        bordered
+        className="flex-col items-start justify-between gap-3 sm:flex-row sm:items-end"
+      >
         <div>
-          <div className="flex items-center gap-2 text-xs text-muted mb-1">
-            <Ruler className="w-3.5 h-3.5 text-amber-800 dark:text-amber-400" />
+          <div className="mb-1 flex items-center gap-2 text-xs text-ink-secondary">
+            <Ruler className="h-3.5 w-3.5 text-amber-800 dark:text-amber-400" />
             <span>Tổng kế hoạch chi tiêu • {formatMonthDisplay(month)}</span>
             {dayProgress.isCurrentMonth ? (
-              <span className="font-mono text-[11px] text-muted">
+              <span className="font-mono text-[11px] text-ink-secondary">
                 (Ngày {dayProgress.currentDay}/{dayProgress.daysInMonth})
               </span>
             ) : null}
           </div>
-          <div className="flex items-baseline gap-2.5 flex-wrap">
-            <Card.Title className="text-2xl sm:text-3xl font-serif font-black text-foreground tabular-nums">
-              {isLoading ? '...' : formatVND(totalSpent)}
+          <div className="flex flex-wrap items-baseline gap-2.5">
+            <Card.Title className="text-2xl font-black tabular-nums sm:text-3xl">
+              {isLoading ? '...' : <CurrencyText amount={totalSpent} />}
             </Card.Title>
-            <span className="text-xs sm:text-sm font-mono text-muted tabular-nums">
-              / hạn mức {formatVND(totalBudgeted)}
+            <span className="font-mono text-xs tabular-nums text-ink-secondary sm:text-sm">
+              / hạn mức <CurrencyText amount={totalBudgeted} />
             </span>
           </div>
         </div>
 
         <div className="sm:text-right">
-          <span className="text-[11px] text-muted block">
+          <span className="block text-[11px] text-ink-secondary">
             {remainingBudget >= 0
               ? 'Còn được phép chi'
               : 'Đã vượt tổng hạn mức'}
           </span>
-          <span
-            className={`font-mono text-base sm:text-lg font-bold tabular-nums ${
-              remainingBudget >= 0 ? 'text-success' : 'text-danger'
-            }`}
-          >
-            {formatVND(Math.abs(remainingBudget))}
-          </span>
+          <CurrencyText
+            amount={Math.abs(remainingBudget)}
+            type={remainingBudget >= 0 ? 'INCOME' : 'EXPENSE'}
+            className="text-base font-bold sm:text-lg"
+          />
         </div>
       </Card.Header>
 
-      <Card.Content className="p-0 pt-4 space-y-2.5">
+      <Card.Content className="space-y-2.5">
         <K3WoodenRuler
           usagePercentage={overallPercent}
           dayPercentage={
@@ -75,16 +75,16 @@ export function BudgetRulerSummaryCard({
           dayMarkerTooltip={`Nhịp thời gian tháng: Ngày ${dayProgress.currentDay}/${dayProgress.daysInMonth} (${dayProgress.dayPercentage}%)`}
         />
 
-        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted font-mono">
+        <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-ink-secondary">
           <span>
             Đã dùng:{' '}
-            <strong className="text-foreground">{overallPercent}%</strong> kế
+            <strong className="text-ink-primary">{overallPercent}%</strong> kế
             hoạch
           </span>
           {dayProgress.isCurrentMonth ? (
             <span>
               Nhịp thời gian tháng:{' '}
-              <strong className="text-accent">
+              <strong className="text-accent-coral">
                 {dayProgress.dayPercentage}%
               </strong>{' '}
               ({dayProgress.currentDay}/{dayProgress.daysInMonth} ngày)

@@ -3,9 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Receipt } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
-import { MonthNavigator } from '@/components/ui/month-navigator';
-import { LedgerLoadingState } from '@/components/feedback/ledger-loading-state';
+import { PageHeader, MonthNavigator } from '@/components/ui';
+import { LedgerLoadingState } from '@/components/feedback';
 import { formatMonthDisplay } from '@/lib/formatters';
 import { getCurrentMonthString, getSixMonthWindow } from '@/lib/date-utils';
 import { useTransactions } from '@/features/transactions';
@@ -42,9 +41,9 @@ export function ReportsView() {
         <PageHeader.Actions>
           <Link
             href="/transactions"
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium bg-surface border border-border hover:border-accent text-foreground rounded-lg shadow-2xs transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-ledger-border bg-paper-surface px-3 py-2 text-xs font-medium text-ink-primary shadow-2xs transition-colors hover:border-accent-coral"
           >
-            <Receipt className="w-3.5 h-3.5 text-accent" />
+            <Receipt className="h-3.5 w-3.5 text-accent-coral" />
             <span>Xem nhật ký</span>
           </Link>
           <MonthNavigator month={selectedMonth} onChange={setSelectedMonth} />
@@ -72,7 +71,7 @@ export function ReportsView() {
             onSelectMonth={setSelectedMonth}
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
             <CategoryProportionSheet.Root
               items={analytics.expenseBreakdown}
               totalAmount={analytics.monthExpense}
