@@ -5,6 +5,7 @@ import {
   deleteTransaction,
 } from '@/lib/api/transactions';
 import { ACCOUNTS_QUERY_KEY } from './use-accounts';
+import { BUDGETS_QUERY_KEY } from './use-budgets';
 import type {
   CreateTransactionDto,
   QueryTransactionsParams,
@@ -26,6 +27,7 @@ export function useCreateTransaction() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: TRANSACTIONS_QUERY_KEY });
       void queryClient.invalidateQueries({ queryKey: ACCOUNTS_QUERY_KEY });
+      void queryClient.invalidateQueries({ queryKey: BUDGETS_QUERY_KEY });
     },
   });
 }
@@ -37,6 +39,7 @@ export function useDeleteTransaction() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: TRANSACTIONS_QUERY_KEY });
       void queryClient.invalidateQueries({ queryKey: ACCOUNTS_QUERY_KEY });
+      void queryClient.invalidateQueries({ queryKey: BUDGETS_QUERY_KEY });
     },
   });
 }

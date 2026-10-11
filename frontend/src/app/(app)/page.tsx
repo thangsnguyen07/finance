@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAccounts } from '@/hooks/use-accounts';
 import { useTransactions } from '@/hooks/use-transactions';
+import { useBudgets } from '@/hooks/use-budgets';
 
 function formatVND(amount: number): string {
   return new Intl.NumberFormat('vi-VN', {
@@ -34,6 +35,7 @@ function formatShortDate(iso: string): string {
 export default function DashboardPage() {
   const { data: accounts, isLoading } = useAccounts();
   const { data: txData, isLoading: isTxLoading } = useTransactions({ limit: 5 });
+  const { data: budgetSummary } = useBudgets();
   const recentTransactions = txData?.items || [];
 
   const totalAssets = (accounts || [])
@@ -46,6 +48,21 @@ export default function DashboardPage() {
 
   const netWorth = totalAssets - totalDebt;
 
+  const now = new Date();
+  const currentDay = now.getDate();
+  const daysInMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() + 1,
+    0,
+  ).getDate();
+  const currentMonthNumber = now.getMonth() + 1;
+
+  const totalBudgeted = budgetSummary?.totalBudgeted ?? 0;
+  const totalSpent = budgetSummary?.totalSpentInBudgeted ?? 0;
+  const remainingBudget = budgetSummary?.remainingBudget ?? 0;
+  const usagePercent = budgetSummary?.overallUsagePercentage ?? 0;
+  const clampedUsageWidth = Math.min(100, Math.max(0, usagePercent));
+
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* 1. HERO: SỔ CÁI TÀI SẢN & THƯỚC ĐO NGÂN SÁCH GỖ K3 */}
@@ -54,9 +71,6 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-sans uppercase font-bold tracking-wider text-muted">
               Sổ Cái Tổng Hợp • Số Dư Tích Lũy
-            </span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100/90 text-emerald-800 border border-emerald-300">
-              +4.2% T10
             </span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-serif font-black text-foreground tracking-tight tabular-nums">
@@ -68,12 +82,23 @@ export default function DashboardPage() {
         <div className="pt-3 border-t border-border/70 space-y-2">
           <div className="flex justify-between items-center text-xs">
             <span className="font-bold text-foreground flex items-center gap-1.5">
-              <span>📏 Hạn mức chi tiêu tháng 10:</span>
-              <span className="text-[10px] text-muted font-normal">(Ngày 10/31)</span>
+              <span>📏 Hạn mức chi tiêu tháng {currentMonthNumber}:</span>
+              <span className="text-[10px] text-muted font-normal">
+                (Ngày {currentDay}/{daysInMonth})
+              </span>
             </span>
-            <span className="font-mono text-amber-950 dark:text-amber-300 font-bold">
-              10.250.000 ₫ (58%)
-            </span>
+            {totalBudgeted > 0 ? (
+              <span className="font-mono text-amber-950 dark:text-amber-300 font-bold tabular-nums">
+                {formatVND(totalBudgeted)} ({usagePercent}%)
+              </span>
+            ) : (
+              <Link
+                href="/budgets"
+                className="text-xs font-semibold text-accent hover:underline"
+              >
+                + Đặt hạn mức tháng →
+              </Link>
+            )}
           </div>
 
           {/* Wooden metric ruler bar */}
@@ -84,7 +109,9 @@ export default function DashboardPage() {
               <span className="h-1 w-px bg-stone-400 dark:bg-stone-500"></span>
               <span>25%</span>
               <span className="h-1.5 w-px bg-stone-400 dark:bg-stone-500"></span>
-              <span className="font-bold text-stone-900 dark:text-stone-100">50%</span>
+              <span className="font-bold text-stone-900 dark:text-stone-100">
+                50%
+              </span>
               <span className="h-1.5 w-px bg-stone-400 dark:bg-stone-500"></span>
               <span>75%</span>
               <span className="h-1 w-px bg-stone-400 dark:bg-stone-500"></span>
@@ -93,15 +120,27 @@ export default function DashboardPage() {
             {/* Amber Progress Fill */}
             <div className="mt-1.5 h-2 bg-surface rounded-2xs overflow-hidden relative border border-border/40">
               <div
-                className="h-full bg-gradient-to-r from-amber-700 to-amber-900 rounded-2xs transition-all duration-500"
-                style={{ width: '58%' }}
+                className={`h-full rounded-2xs transition-all duration-500 ${
+                  usagePercent >= 100
+                    ? 'bg-danger'
+                    : usagePercent >= 80
+                      ? 'bg-warning'
+                      : 'bg-gradient-to-r from-amber-700 to-amber-900'
+                }`}
+                style={{ width: `${clampedUsageWidth}%` }}
               />
             </div>
           </div>
 
-          <div className="flex justify-between text-[10px] text-muted font-mono">
-            <span>Đã chi: 10.250.000 ₫ (58%)</span>
-            <span className="font-bold text-foreground">Còn lại: 7.250.000 ₫</span>
+          <div className="flex justify-between text-[10px] text-muted font-mono tabular-nums">
+            <span>
+              Đã chi: {formatVND(totalSpent)} ({usagePercent}%)
+            </span>
+            <span className="font-bold text-foreground">
+              {remainingBudget >= 0
+                ? `Còn lại: ${formatVND(remainingBudget)}`
+                : `Vượt hạn mức: ${formatVND(Math.abs(remainingBudget))}`}
+            </span>
           </div>
         </div>
       </div>
