@@ -1,8 +1,8 @@
 'use client';
 
-import { BottomNav } from '@/components/layout/bottom-nav';
-import { NotebookHeader } from '@/components/layout/notebook-header';
-import { Sidebar } from '@/components/layout/sidebar';
+import { BottomNav } from '@/components/layout/BottomNav';
+import { NotebookHeader } from '@/components/layout/NotebookHeader';
+import { Sidebar } from '@/components/layout/Sidebar';
 import { QuickEntryModal } from '@/features/transactions';
 import { useUiStore } from '@/stores/use-ui-store';
 

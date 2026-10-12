@@ -7,7 +7,7 @@ import {
 
 import { BUDGET_STATUS, type BudgetStatus } from '../types/budget.types';
 
-import type { AmountPresetItem } from '@/components/ui/vnd-amount-input';
+import type { AmountPresetItem } from '@/components/ui';
 
 export const BUDGET_LIMITS = {
   MIN_BUDGET_AMOUNT: 1000,
