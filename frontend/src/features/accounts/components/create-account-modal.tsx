@@ -4,10 +4,11 @@ import { Modal } from '@/components/feedback';
 import { Button, Field, Alert, VndAmountInput } from '@/components/ui';
 
 import {
-  ACCOUNT_INITIAL_BALANCE_LABELS,
+  ACCOUNT_INITIAL_BALANCE_LABEL_OVERRIDES,
   ACCOUNT_TYPE_ICONS,
   ACCOUNT_TYPE_LABELS,
   ACCOUNT_TYPE_OPTIONS,
+  DEFAULT_INITIAL_BALANCE_LABEL,
 } from '../constants/account.constants';
 import { useCreateAccountForm } from '../hooks/use-accounts';
 import { ACCOUNT_TYPE } from '../types/account.types';
@@ -37,6 +38,10 @@ export function CreateAccountModal({
     handleClose,
     handleSubmit,
   } = useCreateAccountForm({ onClose });
+
+  const initialBalanceLabel =
+    ACCOUNT_INITIAL_BALANCE_LABEL_OVERRIDES[type] ??
+    DEFAULT_INITIAL_BALANCE_LABEL;
 
   return (
     <Modal.Root isOpen={isOpen} onClose={handleClose} maxWidthClass="max-w-md">
@@ -87,7 +92,7 @@ export function CreateAccountModal({
           </Field.Root>
 
           <VndAmountInput
-            label={ACCOUNT_INITIAL_BALANCE_LABELS[type]}
+            label={initialBalanceLabel}
             amount={initialBalance}
             onChange={setInitialBalance}
             showThousandMultiplier

@@ -6,10 +6,10 @@ import { Card, Button, Field, Alert, SegmentedControl } from '@/components/ui';
 
 import {
   CATEGORY_COLOR_SWATCHES,
-  CATEGORY_SEGMENT_ACTIVE_CLASSES,
   CATEGORY_TYPE_ICONS,
   CATEGORY_TYPE_LABELS,
   CATEGORY_TYPE_OPTIONS,
+  CATEGORY_TYPE_TONES,
 } from '../constants/category.constants';
 import { useCreateCategoryForm } from '../hooks/use-categories';
 
@@ -67,8 +67,7 @@ export function CreateCategoryForm() {
                         <span>{CATEGORY_TYPE_LABELS[typeOption]}</span>
                       </>
                     ),
-                    activeClassName:
-                      CATEGORY_SEGMENT_ACTIVE_CLASSES[typeOption],
+                    tone: CATEGORY_TYPE_TONES[typeOption],
                   };
                 })}
               />

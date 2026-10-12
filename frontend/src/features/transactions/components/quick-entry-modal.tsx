@@ -12,13 +12,14 @@ import {
 } from '@/components/ui';
 
 import {
-  TRANSACTION_ACCOUNT_FIELD_LABELS,
+  DEFAULT_ACCOUNT_FIELD_LABEL,
+  TRANSACTION_ACCOUNT_FIELD_LABEL_OVERRIDES,
   TRANSACTION_AMOUNT_PRESETS,
   TRANSACTION_CATEGORY_SECTION_LABELS,
-  TRANSACTION_SEGMENT_ACTIVE_CLASSES,
   TRANSACTION_TYPE_ICONS,
   TRANSACTION_TYPE_LABELS,
   TRANSACTION_TYPE_OPTIONS,
+  TRANSACTION_TYPE_TONES,
 } from '../constants/transaction.constants';
 import { useQuickEntryForm } from '../hooks/use-transactions';
 import {
@@ -55,6 +56,10 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
     handleSubmit,
   } = useQuickEntryForm({ onClose });
 
+  const accountFieldLabel =
+    TRANSACTION_ACCOUNT_FIELD_LABEL_OVERRIDES[txType] ??
+    DEFAULT_ACCOUNT_FIELD_LABEL;
+
   return (
     <Modal.Root isOpen={isOpen} onClose={handleClose}>
       <Modal.Header
@@ -81,7 +86,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                     <span>{TRANSACTION_TYPE_LABELS[typeOption]}</span>
                   </>
                 ),
-                activeClassName: TRANSACTION_SEGMENT_ACTIVE_CLASSES[typeOption],
+                tone: TRANSACTION_TYPE_TONES[typeOption],
               };
             })}
           />
@@ -98,7 +103,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field.Root>
               <Field.Label icon={<Wallet className="h-3.5 w-3.5" />} uppercase>
-                {TRANSACTION_ACCOUNT_FIELD_LABELS[txType]}
+                {accountFieldLabel}
               </Field.Label>
               <Field.Select
                 value={effectiveAccountId}

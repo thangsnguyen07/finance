@@ -2,6 +2,8 @@ import { ArrowDownRight, ArrowUpRight, type LucideIcon } from 'lucide-react';
 
 import { CATEGORY_TYPE, type CategoryType } from '../types/category.types';
 
+import type { SegmentedTone } from '@/components/ui';
+
 export const DEFAULT_CATEGORY_TYPE: CategoryType = CATEGORY_TYPE.EXPENSE;
 
 export const CATEGORY_TYPE_OPTIONS: ReadonlyArray<CategoryType> = [
@@ -19,9 +21,9 @@ export const CATEGORY_TYPE_ICONS: Record<CategoryType, LucideIcon> = {
   [CATEGORY_TYPE.INCOME]: ArrowUpRight,
 };
 
-export const CATEGORY_SEGMENT_ACTIVE_CLASSES: Record<CategoryType, string> = {
-  [CATEGORY_TYPE.EXPENSE]: 'bg-danger text-white shadow-2xs',
-  [CATEGORY_TYPE.INCOME]: 'bg-success text-white shadow-2xs',
+export const CATEGORY_TYPE_TONES: Record<CategoryType, SegmentedTone> = {
+  [CATEGORY_TYPE.EXPENSE]: 'danger',
+  [CATEGORY_TYPE.INCOME]: 'success',
 };
 
 export const DEFAULT_CATEGORY_COLORS: Record<CategoryType, string> = {

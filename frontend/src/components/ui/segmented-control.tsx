@@ -4,9 +4,18 @@ import { Surface as HeroSurface, cn } from '@heroui/react';
 
 import type { ReactNode } from 'react';
 
+export type SegmentedTone = 'accent' | 'danger' | 'success';
+
+const SEGMENT_TONE_CLASSES: Record<SegmentedTone, string> = {
+  accent: 'bg-accent text-accent-foreground shadow-xs',
+  danger: 'bg-danger text-white shadow-xs',
+  success: 'bg-success text-white shadow-xs',
+};
+
 export interface SegmentedOption<T extends string> {
   value: T;
   label: ReactNode;
+  tone?: SegmentedTone;
   activeClassName?: string;
 }
 
@@ -39,6 +48,9 @@ export function SegmentedControl<T extends string>({
     >
       {options.map((opt) => {
         const isActive = value === opt.value;
+        const activeToneClass =
+          opt.activeClassName ?? SEGMENT_TONE_CLASSES[opt.tone ?? 'accent'];
+
         return (
           <button
             key={opt.value}
@@ -47,10 +59,7 @@ export function SegmentedControl<T extends string>({
             className={cn(
               'flex cursor-pointer items-center justify-center gap-1.5 rounded-md text-xs font-semibold transition-all',
               size === 'sm' ? 'px-3 py-1.5' : 'px-3.5 py-2',
-              isActive
-                ? (opt.activeClassName ??
-                    'bg-accent text-accent-foreground shadow-xs')
-                : 'text-muted hover:text-foreground',
+              isActive ? activeToneClass : 'text-muted hover:text-foreground',
             )}
           >
             {opt.label}

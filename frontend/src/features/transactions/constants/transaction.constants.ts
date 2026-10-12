@@ -12,7 +12,11 @@ import {
   type TransactionType,
 } from '../types/transaction.types';
 
-import type { AmountPresetItem } from '@/components/ui/vnd-amount-input';
+import type {
+  AmountPresetItem,
+  IconBoxTone,
+  SegmentedTone,
+} from '@/components/ui';
 
 export const TRANSACTION_DEFAULTS = {
   LEDGER_LIMIT: 50,
@@ -44,28 +48,22 @@ export const TRANSACTION_TYPE_LABELS: Record<TransactionType, string> = {
 export const TRANSACTION_FILTER_LABELS: Record<TransactionFilterType, string> =
   {
     [TRANSACTION_FILTER_TYPE.ALL]: 'Tất cả',
-    [TRANSACTION_FILTER_TYPE.EXPENSE]:
-      TRANSACTION_TYPE_LABELS[TRANSACTION_TYPE.EXPENSE],
-    [TRANSACTION_FILTER_TYPE.INCOME]:
-      TRANSACTION_TYPE_LABELS[TRANSACTION_TYPE.INCOME],
-    [TRANSACTION_FILTER_TYPE.TRANSFER]:
-      TRANSACTION_TYPE_LABELS[TRANSACTION_TYPE.TRANSFER],
+    ...TRANSACTION_TYPE_LABELS,
   };
 
-export const TRANSACTION_ACCOUNT_FIELD_LABELS: Record<TransactionType, string> =
-  {
-    [TRANSACTION_TYPE.EXPENSE]: 'Ví / Tài khoản',
-    [TRANSACTION_TYPE.INCOME]: 'Ví / Tài khoản',
-    [TRANSACTION_TYPE.TRANSFER]: 'Từ ví nguồn',
-  };
+export const DEFAULT_ACCOUNT_FIELD_LABEL = 'Ví / Tài khoản';
 
-export const TRANSACTION_CATEGORY_SECTION_LABELS: Record<
-  TransactionType,
-  string
+export const TRANSACTION_ACCOUNT_FIELD_LABEL_OVERRIDES: Partial<
+  Record<TransactionType, string>
+> = {
+  [TRANSACTION_TYPE.TRANSFER]: 'Từ ví nguồn',
+};
+
+export const TRANSACTION_CATEGORY_SECTION_LABELS: Partial<
+  Record<TransactionType, string>
 > = {
   [TRANSACTION_TYPE.EXPENSE]: 'Danh mục (Chi tiêu)',
   [TRANSACTION_TYPE.INCOME]: 'Danh mục (Thu nhập)',
-  [TRANSACTION_TYPE.TRANSFER]: '',
 };
 
 export const TRANSACTION_TYPE_ICONS: Record<TransactionType, LucideIcon> = {
@@ -74,25 +72,13 @@ export const TRANSACTION_TYPE_ICONS: Record<TransactionType, LucideIcon> = {
   [TRANSACTION_TYPE.TRANSFER]: ArrowRightLeft,
 };
 
-export const TRANSACTION_SEGMENT_ACTIVE_CLASSES: Record<
+export const TRANSACTION_TYPE_TONES: Record<
   TransactionType,
-  string
+  SegmentedTone & IconBoxTone
 > = {
-  [TRANSACTION_TYPE.EXPENSE]: 'bg-danger text-white shadow-xs',
-  [TRANSACTION_TYPE.INCOME]: 'bg-success text-white shadow-xs',
-  [TRANSACTION_TYPE.TRANSFER]: 'bg-accent text-white shadow-xs',
-};
-
-export const TRANSACTION_BADGE_CLASSES: Record<TransactionType, string> = {
-  [TRANSACTION_TYPE.EXPENSE]: 'bg-danger/10 text-danger',
-  [TRANSACTION_TYPE.INCOME]: 'bg-success/10 text-success',
-  [TRANSACTION_TYPE.TRANSFER]: 'bg-accent/10 text-accent',
-};
-
-export const TRANSACTION_AMOUNT_CLASSES: Record<TransactionType, string> = {
-  [TRANSACTION_TYPE.EXPENSE]: '',
-  [TRANSACTION_TYPE.INCOME]: '',
-  [TRANSACTION_TYPE.TRANSFER]: 'text-foreground',
+  [TRANSACTION_TYPE.EXPENSE]: 'danger',
+  [TRANSACTION_TYPE.INCOME]: 'success',
+  [TRANSACTION_TYPE.TRANSFER]: 'accent',
 };
 
 export const TRANSACTION_MESSAGES = {

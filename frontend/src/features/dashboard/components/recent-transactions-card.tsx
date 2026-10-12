@@ -2,12 +2,11 @@
 
 import Link from 'next/link';
 
-import { Card, CurrencyText } from '@/components/ui';
+import { Card, CurrencyText, IconBox } from '@/components/ui';
 import {
-  TRANSACTION_AMOUNT_CLASSES,
-  TRANSACTION_BADGE_CLASSES,
   TRANSACTION_TYPE,
   TRANSACTION_TYPE_ICONS,
+  TRANSACTION_TYPE_TONES,
   getTransactionDisplayTitle,
   type TransactionResponse,
 } from '@/features/transactions';
@@ -49,8 +48,7 @@ export function RecentTransactionsCard({
         ) : (
           transactions.map((tx) => {
             const TxIcon = TRANSACTION_TYPE_ICONS[tx.type];
-            const badgeClass = TRANSACTION_BADGE_CLASSES[tx.type];
-            const amountClass = TRANSACTION_AMOUNT_CLASSES[tx.type];
+            const tone = TRANSACTION_TYPE_TONES[tx.type];
             const displayTitle = getTransactionDisplayTitle(tx);
 
             return (
@@ -59,11 +57,9 @@ export function RecentTransactionsCard({
                 className="flex items-center justify-between py-2.5 text-xs"
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <div
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${badgeClass}`}
-                  >
+                  <IconBox tone={tone} size="sm" shape="circle">
                     <TxIcon className="h-4 w-4" />
-                  </div>
+                  </IconBox>
                   <div className="min-w-0">
                     <span className="block truncate font-medium text-foreground">
                       {displayTitle}
@@ -81,7 +77,7 @@ export function RecentTransactionsCard({
                   amount={tx.amount}
                   type={tx.type}
                   signed
-                  className={`ml-2 shrink-0 font-bold ${amountClass}`}
+                  className="ml-2 shrink-0 font-bold"
                 />
               </div>
             );

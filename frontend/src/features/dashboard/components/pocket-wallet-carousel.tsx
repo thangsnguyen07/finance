@@ -3,10 +3,9 @@
 import { Paperclip, Plus } from 'lucide-react';
 import Link from 'next/link';
 
-import { Card, CurrencyText } from '@/components/ui';
+import { Badge, Card, CurrencyText } from '@/components/ui';
 import {
-  ACCOUNT_POCKET_ICON_CLASSES,
-  ACCOUNT_POCKET_LABEL_CLASSES,
+  ACCOUNT_TYPE,
   ACCOUNT_TYPE_ICONS,
   ACCOUNT_TYPE_LABELS,
   type AccountResponse,
@@ -60,9 +59,8 @@ export function PocketWalletCarousel({
           <>
             {accounts.map((acc, idx) => {
               const TypeIcon = ACCOUNT_TYPE_ICONS[acc.type];
-              const iconClass = ACCOUNT_POCKET_ICON_CLASSES[acc.type];
-              const labelClass = ACCOUNT_POCKET_LABEL_CLASSES[acc.type];
               const typeLabel = ACCOUNT_TYPE_LABELS[acc.type];
+              const isCreditCard = acc.type === ACCOUNT_TYPE.CREDIT_CARD;
 
               return (
                 <Card
@@ -77,10 +75,15 @@ export function PocketWalletCarousel({
                       <span className="font-mono text-[10px] tracking-wider uppercase">
                         Thẻ #{idx + 1}
                       </span>
-                      <span className="flex items-center gap-1 rounded bg-muted/10 px-1.5 py-0.5 text-[10px] font-medium text-muted">
-                        <TypeIcon className={`h-3 w-3 ${iconClass}`} />
-                        <span className={labelClass}>{typeLabel}</span>
-                      </span>
+                      <Badge
+                        size="sm"
+                        variant={isCreditCard ? 'soft' : 'secondary'}
+                        color={isCreditCard ? 'danger' : 'default'}
+                        className="h-5 px-1.5 text-[10px]"
+                      >
+                        <TypeIcon className="h-3 w-3" />
+                        <span>{typeLabel}</span>
+                      </Badge>
                     </div>
 
                     <h3 className="truncate text-xs font-medium text-foreground sm:text-sm">

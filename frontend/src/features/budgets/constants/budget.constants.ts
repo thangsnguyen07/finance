@@ -43,17 +43,11 @@ export const BUDGET_STATUS_ICONS: Record<BudgetStatus, LucideIcon> = {
   [BUDGET_STATUS.EXCEEDED]: Flame,
 };
 
-export const BUDGET_STATUS_BADGE_COLORS: Record<
+export const BUDGET_STATUS_TONES: Record<
   BudgetStatus,
   'success' | 'warning' | 'danger'
 > = {
   [BUDGET_STATUS.SAFE]: 'success',
   [BUDGET_STATUS.WARNING]: 'warning',
   [BUDGET_STATUS.EXCEEDED]: 'danger',
-};
-
-export const BUDGET_STATUS_BAR_CLASSES: Record<BudgetStatus, string> = {
-  [BUDGET_STATUS.SAFE]: 'bg-success',
-  [BUDGET_STATUS.WARNING]: 'bg-warning',
-  [BUDGET_STATUS.EXCEEDED]: 'bg-danger',
 };

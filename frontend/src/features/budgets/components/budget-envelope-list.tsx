@@ -5,13 +5,19 @@ import { Pencil } from 'lucide-react';
 import { Button, Card, Badge, CurrencyText } from '@/components/ui';
 
 import {
-  BUDGET_STATUS_BADGE_COLORS,
-  BUDGET_STATUS_BAR_CLASSES,
   BUDGET_STATUS_ICONS,
   BUDGET_STATUS_LABELS,
+  BUDGET_STATUS_TONES,
 } from '../constants/budget.constants';
 
 import type { BudgetEnvelopeResponse } from '../types/budget.types';
+
+const PROGRESS_TONE_CLASSES: Record<'success' | 'warning' | 'danger', string> =
+  {
+    success: 'bg-success',
+    warning: 'bg-warning',
+    danger: 'bg-danger',
+  };
 
 interface BudgetEnvelopeListProps {
   envelopes: BudgetEnvelopeResponse[];
@@ -54,8 +60,7 @@ export function BudgetEnvelopeList({
             {envelopes.map((env) => {
               const StatusIcon = BUDGET_STATUS_ICONS[env.status];
               const statusLabel = BUDGET_STATUS_LABELS[env.status];
-              const badgeColor = BUDGET_STATUS_BADGE_COLORS[env.status];
-              const barColorClass = BUDGET_STATUS_BAR_CLASSES[env.status];
+              const statusTone = BUDGET_STATUS_TONES[env.status];
               const clampedBar = Math.min(
                 100,
                 Math.max(0, env.usagePercentage),
@@ -71,7 +76,7 @@ export function BudgetEnvelopeList({
                         </h3>
                         <Badge
                           size="sm"
-                          color={badgeColor}
+                          color={statusTone}
                           variant="soft"
                           className="flex items-center gap-1"
                         >
@@ -108,7 +113,7 @@ export function BudgetEnvelopeList({
 
                   <div className="h-2 w-full overflow-hidden rounded-full border border-border/50 bg-surface-secondary">
                     <div
-                      className={`h-full rounded-full transition-all duration-300 ${barColorClass}`}
+                      className={`h-full rounded-full transition-all duration-300 ${PROGRESS_TONE_CLASSES[statusTone]}`}
                       style={{ width: `${clampedBar}%` }}
                     />
                   </div>

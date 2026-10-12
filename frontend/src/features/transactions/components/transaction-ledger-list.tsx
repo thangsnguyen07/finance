@@ -2,11 +2,11 @@
 
 import { Trash2 } from 'lucide-react';
 
-import { Button, Card, Badge, CurrencyText } from '@/components/ui';
+import { Button, Card, Badge, CurrencyText, IconBox } from '@/components/ui';
 
 import {
-  TRANSACTION_BADGE_CLASSES,
   TRANSACTION_TYPE_ICONS,
+  TRANSACTION_TYPE_TONES,
 } from '../constants/transaction.constants';
 import {
   TRANSACTION_TYPE,
@@ -37,7 +37,7 @@ export function TransactionLedgerList({
       <div className="divide-y divide-border/70">
         {items.map((tx) => {
           const TxIcon = TRANSACTION_TYPE_ICONS[tx.type];
-          const badgeClass = TRANSACTION_BADGE_CLASSES[tx.type];
+          const tone = TRANSACTION_TYPE_TONES[tx.type];
           const displayTitle = getTransactionDisplayTitle(tx);
 
           return (
@@ -46,11 +46,9 @@ export function TransactionLedgerList({
               className="group flex items-center justify-between gap-4 px-5 py-3.5 transition-colors hover:bg-surface-secondary/20"
             >
               <div className="flex min-w-0 items-center gap-3.5">
-                <div
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${badgeClass}`}
-                >
+                <IconBox tone={tone} size="md" shape="circle">
                   <TxIcon className="h-4 w-4" />
-                </div>
+                </IconBox>
 
                 <div className="min-w-0">
                   <p className="truncate text-xs font-semibold text-foreground sm:text-sm">
