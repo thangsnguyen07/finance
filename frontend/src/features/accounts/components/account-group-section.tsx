@@ -5,8 +5,13 @@ import { Archive } from 'lucide-react';
 import { Button, Card, Badge, CurrencyText } from '@/components/ui';
 
 import {
-  ACCOUNT_GROUP_VARIANT_CONFIG,
-  ACCOUNT_TYPE_CONFIG,
+  ACCOUNT_GROUP_AMOUNT_CLASSES,
+  ACCOUNT_GROUP_AMOUNT_TYPES,
+  ACCOUNT_GROUP_SHOW_CREDIT_LIMIT,
+  ACCOUNT_TYPE_BADGE_CLASSES,
+  ACCOUNT_TYPE_ICONS,
+  ACCOUNT_TYPE_LABELS,
+  type AccountGroupVariant,
 } from '../constants/account.constants';
 
 import type { AccountResponse } from '../types/account.types';
@@ -15,7 +20,7 @@ interface AccountGroupSectionProps {
   title: string;
   accounts: AccountResponse[];
   onArchive: (id: string, name: string) => void;
-  variant?: 'asset' | 'credit';
+  variant?: AccountGroupVariant;
 }
 
 export function AccountGroupSection({
@@ -26,7 +31,9 @@ export function AccountGroupSection({
 }: AccountGroupSectionProps) {
   if (accounts.length === 0) return null;
 
-  const variantConfig = ACCOUNT_GROUP_VARIANT_CONFIG[variant];
+  const amountType = ACCOUNT_GROUP_AMOUNT_TYPES[variant];
+  const amountClassName = ACCOUNT_GROUP_AMOUNT_CLASSES[variant];
+  const showCreditLimit = ACCOUNT_GROUP_SHOW_CREDIT_LIMIT[variant];
 
   return (
     <section className="space-y-3">
@@ -36,8 +43,9 @@ export function AccountGroupSection({
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         {accounts.map((account) => {
-          const config = ACCOUNT_TYPE_CONFIG[account.type];
-          const Icon = config.icon;
+          const Icon = ACCOUNT_TYPE_ICONS[account.type];
+          const badgeClass = ACCOUNT_TYPE_BADGE_CLASSES[account.type];
+          const typeLabel = ACCOUNT_TYPE_LABELS[account.type];
           const balance = account.currentBalance || 0;
           const creditLimit = account.creditLimit || 0;
           const remainingLimit = creditLimit - balance;
@@ -51,7 +59,7 @@ export function AccountGroupSection({
               <Card.Content className="flex items-center justify-between gap-3">
                 <div className="flex min-w-0 items-center gap-3">
                   <div
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border ${config.colorClass}`}
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border ${badgeClass}`}
                   >
                     <Icon className="h-5 w-5 stroke-[2]" />
                   </div>
@@ -61,7 +69,7 @@ export function AccountGroupSection({
                     </h4>
                     <div className="mt-0.5 flex flex-wrap items-center gap-2">
                       <span className="text-[11px] text-muted">
-                        {config.label}
+                        {typeLabel}
                       </span>
                       {account.statementDay ? (
                         <Badge
@@ -82,12 +90,12 @@ export function AccountGroupSection({
                     <p>
                       <CurrencyText
                         amount={balance}
-                        type={variantConfig.amountType}
-                        signed={variantConfig.showCreditLimit && balance > 0}
-                        className={variantConfig.amountClassName}
+                        type={amountType}
+                        signed={showCreditLimit && balance > 0}
+                        className={amountClassName}
                       />
                     </p>
-                    {variantConfig.showCreditLimit && creditLimit > 0 ? (
+                    {showCreditLimit && creditLimit > 0 ? (
                       <p className="mt-0.5 font-mono text-[10px] text-muted tabular-nums">
                         Còn hạn mức: <CurrencyText amount={remainingLimit} />
                       </p>

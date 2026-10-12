@@ -4,7 +4,10 @@ import { Filter } from 'lucide-react';
 
 import { Card, Field } from '@/components/ui';
 
-import { TRANSACTION_FILTER_TABS } from '../constants/transaction.constants';
+import {
+  TRANSACTION_FILTER_LABELS,
+  TRANSACTION_FILTER_OPTIONS,
+} from '../constants/transaction.constants';
 
 import type { TransactionFilterType } from '../types/transaction.types';
 import type { AccountResponse } from '@/features/accounts';
@@ -29,18 +32,18 @@ export function TransactionFilterBar({
       <Card.Content className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-1.5">
           <Filter className="mr-1 h-3.5 w-3.5 text-muted" />
-          {TRANSACTION_FILTER_TABS.map((tab) => (
+          {TRANSACTION_FILTER_OPTIONS.map((filterOption) => (
             <button
-              key={tab.key}
+              key={filterOption}
               type="button"
-              onClick={() => onFilterTypeChange(tab.key)}
+              onClick={() => onFilterTypeChange(filterOption)}
               className={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-                filterType === tab.key
+                filterType === filterOption
                   ? 'bg-accent font-semibold text-accent-foreground'
                   : 'bg-surface-secondary/60 text-muted hover:text-foreground'
               }`}
             >
-              {tab.label}
+              {TRANSACTION_FILTER_LABELS[filterOption]}
             </button>
           ))}
         </div>

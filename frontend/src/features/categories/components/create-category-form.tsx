@@ -6,8 +6,10 @@ import { Card, Button, Field, Alert, SegmentedControl } from '@/components/ui';
 
 import {
   CATEGORY_COLOR_SWATCHES,
+  CATEGORY_SEGMENT_ACTIVE_CLASSES,
+  CATEGORY_TYPE_ICONS,
+  CATEGORY_TYPE_LABELS,
   CATEGORY_TYPE_OPTIONS,
-  CATEGORY_TYPE_UI_CONFIG,
 } from '../constants/category.constants';
 import { useCreateCategoryForm } from '../hooks/use-categories';
 
@@ -56,17 +58,17 @@ export function CreateCategoryForm() {
                 fullWidth
                 size="sm"
                 options={CATEGORY_TYPE_OPTIONS.map((typeOption) => {
-                  const config = CATEGORY_TYPE_UI_CONFIG[typeOption];
-                  const Icon = config.icon;
+                  const Icon = CATEGORY_TYPE_ICONS[typeOption];
                   return {
                     value: typeOption,
                     label: (
                       <>
                         <Icon className="h-3.5 w-3.5" />
-                        <span>{config.label}</span>
+                        <span>{CATEGORY_TYPE_LABELS[typeOption]}</span>
                       </>
                     ),
-                    activeClassName: config.activeSegmentClass,
+                    activeClassName:
+                      CATEGORY_SEGMENT_ACTIVE_CLASSES[typeOption],
                   };
                 })}
               />

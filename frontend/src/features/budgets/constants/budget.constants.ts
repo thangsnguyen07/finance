@@ -1,4 +1,9 @@
-import { AlertTriangle, CheckCircle2, Flame } from 'lucide-react';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Flame,
+  type LucideIcon,
+} from 'lucide-react';
 
 import { BUDGET_STATUS, type BudgetStatus } from '../types/budget.types';
 
@@ -26,31 +31,29 @@ export const BUDGET_AMOUNT_PRESETS: ReadonlyArray<AmountPresetItem> = [
   { label: '10.000.000 ₫', value: 10000000, mode: 'replace' },
 ];
 
-export const BUDGET_STATUS_CONFIG: Record<
+export const BUDGET_STATUS_LABELS: Record<BudgetStatus, string> = {
+  [BUDGET_STATUS.SAFE]: 'Trong tầm kiểm soát',
+  [BUDGET_STATUS.WARNING]: 'Sắp chạm trần',
+  [BUDGET_STATUS.EXCEEDED]: 'Vượt kế hoạch',
+};
+
+export const BUDGET_STATUS_ICONS: Record<BudgetStatus, LucideIcon> = {
+  [BUDGET_STATUS.SAFE]: CheckCircle2,
+  [BUDGET_STATUS.WARNING]: AlertTriangle,
+  [BUDGET_STATUS.EXCEEDED]: Flame,
+};
+
+export const BUDGET_STATUS_BADGE_COLORS: Record<
   BudgetStatus,
-  {
-    label: string;
-    color: 'success' | 'warning' | 'danger';
-    barColorClass: string;
-    icon: typeof CheckCircle2;
-  }
+  'success' | 'warning' | 'danger'
 > = {
-  [BUDGET_STATUS.SAFE]: {
-    label: 'Trong tầm kiểm soát',
-    color: 'success',
-    barColorClass: 'bg-success',
-    icon: CheckCircle2,
-  },
-  [BUDGET_STATUS.WARNING]: {
-    label: 'Sắp chạm trần',
-    color: 'warning',
-    barColorClass: 'bg-warning',
-    icon: AlertTriangle,
-  },
-  [BUDGET_STATUS.EXCEEDED]: {
-    label: 'Vượt kế hoạch',
-    color: 'danger',
-    barColorClass: 'bg-danger',
-    icon: Flame,
-  },
+  [BUDGET_STATUS.SAFE]: 'success',
+  [BUDGET_STATUS.WARNING]: 'warning',
+  [BUDGET_STATUS.EXCEEDED]: 'danger',
+};
+
+export const BUDGET_STATUS_BAR_CLASSES: Record<BudgetStatus, string> = {
+  [BUDGET_STATUS.SAFE]: 'bg-success',
+  [BUDGET_STATUS.WARNING]: 'bg-warning',
+  [BUDGET_STATUS.EXCEEDED]: 'bg-danger',
 };

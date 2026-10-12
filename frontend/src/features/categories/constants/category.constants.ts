@@ -1,38 +1,33 @@
-import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, type LucideIcon } from 'lucide-react';
 
 import { CATEGORY_TYPE, type CategoryType } from '../types/category.types';
 
 export const DEFAULT_CATEGORY_TYPE: CategoryType = CATEGORY_TYPE.EXPENSE;
 
-export const DEFAULT_CATEGORY_COLORS: Record<CategoryType, string> = {
-  [CATEGORY_TYPE.EXPENSE]: '#991B1B',
-  [CATEGORY_TYPE.INCOME]: '#166534',
-} as const;
-
-export const CATEGORY_TYPE_UI_CONFIG: Record<
-  CategoryType,
-  {
-    label: string;
-    icon: typeof ArrowDownRight;
-    activeSegmentClass: string;
-  }
-> = {
-  [CATEGORY_TYPE.EXPENSE]: {
-    label: 'Chi tiêu',
-    icon: ArrowDownRight,
-    activeSegmentClass: 'bg-danger text-white shadow-2xs',
-  },
-  [CATEGORY_TYPE.INCOME]: {
-    label: 'Thu nhập',
-    icon: ArrowUpRight,
-    activeSegmentClass: 'bg-success text-white shadow-2xs',
-  },
-};
-
 export const CATEGORY_TYPE_OPTIONS: ReadonlyArray<CategoryType> = [
   CATEGORY_TYPE.EXPENSE,
   CATEGORY_TYPE.INCOME,
 ];
+
+export const CATEGORY_TYPE_LABELS: Record<CategoryType, string> = {
+  [CATEGORY_TYPE.EXPENSE]: 'Chi tiêu',
+  [CATEGORY_TYPE.INCOME]: 'Thu nhập',
+};
+
+export const CATEGORY_TYPE_ICONS: Record<CategoryType, LucideIcon> = {
+  [CATEGORY_TYPE.EXPENSE]: ArrowDownRight,
+  [CATEGORY_TYPE.INCOME]: ArrowUpRight,
+};
+
+export const CATEGORY_SEGMENT_ACTIVE_CLASSES: Record<CategoryType, string> = {
+  [CATEGORY_TYPE.EXPENSE]: 'bg-danger text-white shadow-2xs',
+  [CATEGORY_TYPE.INCOME]: 'bg-success text-white shadow-2xs',
+};
+
+export const DEFAULT_CATEGORY_COLORS: Record<CategoryType, string> = {
+  [CATEGORY_TYPE.EXPENSE]: '#991B1B',
+  [CATEGORY_TYPE.INCOME]: '#166534',
+} as const;
 
 export const CATEGORY_MESSAGES = {
   NAME_REQUIRED: 'Vui lòng nhập tên danh mục',

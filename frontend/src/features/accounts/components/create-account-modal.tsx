@@ -4,7 +4,9 @@ import { Modal } from '@/components/feedback';
 import { Button, Field, Alert, VndAmountInput } from '@/components/ui';
 
 import {
-  ACCOUNT_TYPE_CONFIG,
+  ACCOUNT_INITIAL_BALANCE_LABELS,
+  ACCOUNT_TYPE_ICONS,
+  ACCOUNT_TYPE_LABELS,
   ACCOUNT_TYPE_OPTIONS,
 } from '../constants/account.constants';
 import { useCreateAccountForm } from '../hooks/use-accounts';
@@ -36,8 +38,6 @@ export function CreateAccountModal({
     handleSubmit,
   } = useCreateAccountForm({ onClose });
 
-  const selectedTypeConfig = ACCOUNT_TYPE_CONFIG[type];
-
   return (
     <Modal.Root isOpen={isOpen} onClose={handleClose} maxWidthClass="max-w-md">
       <Modal.Header
@@ -53,14 +53,14 @@ export function CreateAccountModal({
           <Field.Root>
             <Field.Label>Loại tài khoản</Field.Label>
             <div className="grid grid-cols-3 gap-2">
-              {ACCOUNT_TYPE_OPTIONS.map((item) => {
-                const Icon = item.icon;
-                const isSelected = type === item.type;
+              {ACCOUNT_TYPE_OPTIONS.map((typeOption) => {
+                const Icon = ACCOUNT_TYPE_ICONS[typeOption];
+                const isSelected = type === typeOption;
                 return (
                   <button
-                    key={item.type}
+                    key={typeOption}
                     type="button"
-                    onClick={() => setType(item.type)}
+                    onClick={() => setType(typeOption)}
                     className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border p-2.5 text-xs transition-all ${
                       isSelected
                         ? 'border-accent bg-accent/10 font-semibold text-accent shadow-2xs'
@@ -68,7 +68,7 @@ export function CreateAccountModal({
                     }`}
                   >
                     <Icon className="mb-1 h-4 w-4" />
-                    <span>{item.label}</span>
+                    <span>{ACCOUNT_TYPE_LABELS[typeOption]}</span>
                   </button>
                 );
               })}
@@ -87,7 +87,7 @@ export function CreateAccountModal({
           </Field.Root>
 
           <VndAmountInput
-            label={selectedTypeConfig.initialBalanceLabel}
+            label={ACCOUNT_INITIAL_BALANCE_LABELS[type]}
             amount={initialBalance}
             onChange={setInitialBalance}
             showThousandMultiplier

@@ -4,8 +4,10 @@ import Link from 'next/link';
 
 import { Card, CurrencyText } from '@/components/ui';
 import {
+  TRANSACTION_AMOUNT_CLASSES,
+  TRANSACTION_BADGE_CLASSES,
   TRANSACTION_TYPE,
-  TRANSACTION_TYPE_UI_CONFIG,
+  TRANSACTION_TYPE_ICONS,
   getTransactionDisplayTitle,
   type TransactionResponse,
 } from '@/features/transactions';
@@ -46,8 +48,9 @@ export function RecentTransactionsCard({
           </div>
         ) : (
           transactions.map((tx) => {
-            const txConfig = TRANSACTION_TYPE_UI_CONFIG[tx.type];
-            const TxIcon = txConfig.icon;
+            const TxIcon = TRANSACTION_TYPE_ICONS[tx.type];
+            const badgeClass = TRANSACTION_BADGE_CLASSES[tx.type];
+            const amountClass = TRANSACTION_AMOUNT_CLASSES[tx.type];
             const displayTitle = getTransactionDisplayTitle(tx);
 
             return (
@@ -57,7 +60,7 @@ export function RecentTransactionsCard({
               >
                 <div className="flex min-w-0 items-center gap-3">
                   <div
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${txConfig.badgeClass}`}
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${badgeClass}`}
                   >
                     <TxIcon className="h-4 w-4" />
                   </div>
@@ -78,7 +81,7 @@ export function RecentTransactionsCard({
                   amount={tx.amount}
                   type={tx.type}
                   signed
-                  className={`ml-2 shrink-0 font-bold ${txConfig.amountClassName}`}
+                  className={`ml-2 shrink-0 font-bold ${amountClass}`}
                 />
               </div>
             );

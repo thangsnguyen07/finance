@@ -12,9 +12,13 @@ import {
 } from '@/components/ui';
 
 import {
+  TRANSACTION_ACCOUNT_FIELD_LABELS,
   TRANSACTION_AMOUNT_PRESETS,
+  TRANSACTION_CATEGORY_SECTION_LABELS,
+  TRANSACTION_SEGMENT_ACTIVE_CLASSES,
+  TRANSACTION_TYPE_ICONS,
+  TRANSACTION_TYPE_LABELS,
   TRANSACTION_TYPE_OPTIONS,
-  TRANSACTION_TYPE_UI_CONFIG,
 } from '../constants/transaction.constants';
 import { useQuickEntryForm } from '../hooks/use-transactions';
 import {
@@ -51,8 +55,6 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
     handleSubmit,
   } = useQuickEntryForm({ onClose });
 
-  const currentTypeConfig = TRANSACTION_TYPE_UI_CONFIG[txType];
-
   return (
     <Modal.Root isOpen={isOpen} onClose={handleClose}>
       <Modal.Header
@@ -70,17 +72,16 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
             onChange={setTxType}
             fullWidth
             options={TRANSACTION_TYPE_OPTIONS.map((typeOption) => {
-              const config = TRANSACTION_TYPE_UI_CONFIG[typeOption];
-              const Icon = config.icon;
+              const Icon = TRANSACTION_TYPE_ICONS[typeOption];
               return {
                 value: typeOption,
                 label: (
                   <>
                     <Icon className="h-3.5 w-3.5" />
-                    <span>{config.label}</span>
+                    <span>{TRANSACTION_TYPE_LABELS[typeOption]}</span>
                   </>
                 ),
-                activeClassName: config.activeSegmentClass,
+                activeClassName: TRANSACTION_SEGMENT_ACTIVE_CLASSES[typeOption],
               };
             })}
           />
@@ -97,7 +98,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field.Root>
               <Field.Label icon={<Wallet className="h-3.5 w-3.5" />} uppercase>
-                {currentTypeConfig.accountFieldLabel}
+                {TRANSACTION_ACCOUNT_FIELD_LABELS[txType]}
               </Field.Label>
               <Field.Select
                 value={effectiveAccountId}
@@ -135,7 +136,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                   uppercase
                   className="mb-1.5 shrink-0"
                 >
-                  {currentTypeConfig.categorySectionLabel}
+                  {TRANSACTION_CATEGORY_SECTION_LABELS[txType]}
                 </Field.Label>
                 <div className="grid flex-1 grid-cols-2 content-start gap-2 overflow-y-auto p-0.5">
                   {filteredCategories.map((cat) => {

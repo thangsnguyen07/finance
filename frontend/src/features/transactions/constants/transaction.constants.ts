@@ -1,4 +1,9 @@
-import { ArrowDownRight, ArrowUpRight, ArrowRightLeft } from 'lucide-react';
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  ArrowRightLeft,
+  type LucideIcon,
+} from 'lucide-react';
 
 import {
   TRANSACTION_FILTER_TYPE,
@@ -16,71 +21,79 @@ export const TRANSACTION_DEFAULTS = {
   DEFAULT_FILTER_TYPE: TRANSACTION_FILTER_TYPE.ALL,
 } as const;
 
-export const TRANSACTION_TYPE_UI_CONFIG: Record<
-  TransactionType,
-  {
-    label: string;
-    icon: typeof ArrowDownRight;
-    activeSegmentClass: string;
-    badgeClass: string;
-    accountFieldLabel: string;
-    categorySectionLabel: string;
-    amountClassName: string;
-  }
-> = {
-  [TRANSACTION_TYPE.EXPENSE]: {
-    label: 'Chi tiêu',
-    icon: ArrowDownRight,
-    activeSegmentClass: 'bg-danger text-white shadow-xs',
-    badgeClass: 'bg-danger/10 text-danger',
-    accountFieldLabel: 'Ví / Tài khoản',
-    categorySectionLabel: 'Danh mục (Chi tiêu)',
-    amountClassName: '',
-  },
-  [TRANSACTION_TYPE.INCOME]: {
-    label: 'Thu nhập',
-    icon: ArrowUpRight,
-    activeSegmentClass: 'bg-success text-white shadow-xs',
-    badgeClass: 'bg-success/10 text-success',
-    accountFieldLabel: 'Ví / Tài khoản',
-    categorySectionLabel: 'Danh mục (Thu nhập)',
-    amountClassName: '',
-  },
-  [TRANSACTION_TYPE.TRANSFER]: {
-    label: 'Chuyển khoản',
-    icon: ArrowRightLeft,
-    activeSegmentClass: 'bg-accent text-white shadow-xs',
-    badgeClass: 'bg-accent/10 text-accent',
-    accountFieldLabel: 'Từ ví nguồn',
-    categorySectionLabel: '',
-    amountClassName: 'text-foreground',
-  },
-};
-
 export const TRANSACTION_TYPE_OPTIONS: ReadonlyArray<TransactionType> = [
   TRANSACTION_TYPE.EXPENSE,
   TRANSACTION_TYPE.INCOME,
   TRANSACTION_TYPE.TRANSFER,
 ];
 
-export const TRANSACTION_FILTER_TABS: ReadonlyArray<{
-  key: TransactionFilterType;
-  label: string;
-}> = [
-  { key: TRANSACTION_FILTER_TYPE.ALL, label: 'Tất cả' },
+export const TRANSACTION_FILTER_OPTIONS: ReadonlyArray<TransactionFilterType> =
+  [
+    TRANSACTION_FILTER_TYPE.ALL,
+    TRANSACTION_FILTER_TYPE.EXPENSE,
+    TRANSACTION_FILTER_TYPE.INCOME,
+    TRANSACTION_FILTER_TYPE.TRANSFER,
+  ];
+
+export const TRANSACTION_TYPE_LABELS: Record<TransactionType, string> = {
+  [TRANSACTION_TYPE.EXPENSE]: 'Chi tiêu',
+  [TRANSACTION_TYPE.INCOME]: 'Thu nhập',
+  [TRANSACTION_TYPE.TRANSFER]: 'Chuyển khoản',
+};
+
+export const TRANSACTION_FILTER_LABELS: Record<TransactionFilterType, string> =
   {
-    key: TRANSACTION_FILTER_TYPE.EXPENSE,
-    label: TRANSACTION_TYPE_UI_CONFIG[TRANSACTION_TYPE.EXPENSE].label,
-  },
+    [TRANSACTION_FILTER_TYPE.ALL]: 'Tất cả',
+    [TRANSACTION_FILTER_TYPE.EXPENSE]:
+      TRANSACTION_TYPE_LABELS[TRANSACTION_TYPE.EXPENSE],
+    [TRANSACTION_FILTER_TYPE.INCOME]:
+      TRANSACTION_TYPE_LABELS[TRANSACTION_TYPE.INCOME],
+    [TRANSACTION_FILTER_TYPE.TRANSFER]:
+      TRANSACTION_TYPE_LABELS[TRANSACTION_TYPE.TRANSFER],
+  };
+
+export const TRANSACTION_ACCOUNT_FIELD_LABELS: Record<TransactionType, string> =
   {
-    key: TRANSACTION_FILTER_TYPE.INCOME,
-    label: TRANSACTION_TYPE_UI_CONFIG[TRANSACTION_TYPE.INCOME].label,
-  },
-  {
-    key: TRANSACTION_FILTER_TYPE.TRANSFER,
-    label: TRANSACTION_TYPE_UI_CONFIG[TRANSACTION_TYPE.TRANSFER].label,
-  },
-];
+    [TRANSACTION_TYPE.EXPENSE]: 'Ví / Tài khoản',
+    [TRANSACTION_TYPE.INCOME]: 'Ví / Tài khoản',
+    [TRANSACTION_TYPE.TRANSFER]: 'Từ ví nguồn',
+  };
+
+export const TRANSACTION_CATEGORY_SECTION_LABELS: Record<
+  TransactionType,
+  string
+> = {
+  [TRANSACTION_TYPE.EXPENSE]: 'Danh mục (Chi tiêu)',
+  [TRANSACTION_TYPE.INCOME]: 'Danh mục (Thu nhập)',
+  [TRANSACTION_TYPE.TRANSFER]: '',
+};
+
+export const TRANSACTION_TYPE_ICONS: Record<TransactionType, LucideIcon> = {
+  [TRANSACTION_TYPE.EXPENSE]: ArrowDownRight,
+  [TRANSACTION_TYPE.INCOME]: ArrowUpRight,
+  [TRANSACTION_TYPE.TRANSFER]: ArrowRightLeft,
+};
+
+export const TRANSACTION_SEGMENT_ACTIVE_CLASSES: Record<
+  TransactionType,
+  string
+> = {
+  [TRANSACTION_TYPE.EXPENSE]: 'bg-danger text-white shadow-xs',
+  [TRANSACTION_TYPE.INCOME]: 'bg-success text-white shadow-xs',
+  [TRANSACTION_TYPE.TRANSFER]: 'bg-accent text-white shadow-xs',
+};
+
+export const TRANSACTION_BADGE_CLASSES: Record<TransactionType, string> = {
+  [TRANSACTION_TYPE.EXPENSE]: 'bg-danger/10 text-danger',
+  [TRANSACTION_TYPE.INCOME]: 'bg-success/10 text-success',
+  [TRANSACTION_TYPE.TRANSFER]: 'bg-accent/10 text-accent',
+};
+
+export const TRANSACTION_AMOUNT_CLASSES: Record<TransactionType, string> = {
+  [TRANSACTION_TYPE.EXPENSE]: '',
+  [TRANSACTION_TYPE.INCOME]: '',
+  [TRANSACTION_TYPE.TRANSFER]: 'text-foreground',
+};
 
 export const TRANSACTION_MESSAGES = {
   AMOUNT_REQUIRED: 'Vui lòng nhập số tiền lớn hơn 0 ₫',

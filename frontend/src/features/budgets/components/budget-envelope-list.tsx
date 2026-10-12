@@ -4,7 +4,12 @@ import { Pencil } from 'lucide-react';
 
 import { Button, Card, Badge, CurrencyText } from '@/components/ui';
 
-import { BUDGET_STATUS_CONFIG } from '../constants/budget.constants';
+import {
+  BUDGET_STATUS_BADGE_COLORS,
+  BUDGET_STATUS_BAR_CLASSES,
+  BUDGET_STATUS_ICONS,
+  BUDGET_STATUS_LABELS,
+} from '../constants/budget.constants';
 
 import type { BudgetEnvelopeResponse } from '../types/budget.types';
 
@@ -47,8 +52,10 @@ export function BudgetEnvelopeList({
         ) : (
           <div className="divide-y divide-border/70">
             {envelopes.map((env) => {
-              const badge = BUDGET_STATUS_CONFIG[env.status];
-              const StatusIcon = badge.icon;
+              const StatusIcon = BUDGET_STATUS_ICONS[env.status];
+              const statusLabel = BUDGET_STATUS_LABELS[env.status];
+              const badgeColor = BUDGET_STATUS_BADGE_COLORS[env.status];
+              const barColorClass = BUDGET_STATUS_BAR_CLASSES[env.status];
               const clampedBar = Math.min(
                 100,
                 Math.max(0, env.usagePercentage),
@@ -64,12 +71,12 @@ export function BudgetEnvelopeList({
                         </h3>
                         <Badge
                           size="sm"
-                          color={badge.color}
+                          color={badgeColor}
                           variant="soft"
                           className="flex items-center gap-1"
                         >
                           <StatusIcon className="h-3 w-3" />
-                          <span>{badge.label}</span>
+                          <span>{statusLabel}</span>
                         </Badge>
                       </div>
                     </div>
@@ -101,7 +108,7 @@ export function BudgetEnvelopeList({
 
                   <div className="h-2 w-full overflow-hidden rounded-full border border-border/50 bg-surface-secondary">
                     <div
-                      className={`h-full rounded-full transition-all duration-300 ${badge.barColorClass}`}
+                      className={`h-full rounded-full transition-all duration-300 ${barColorClass}`}
                       style={{ width: `${clampedBar}%` }}
                     />
                   </div>

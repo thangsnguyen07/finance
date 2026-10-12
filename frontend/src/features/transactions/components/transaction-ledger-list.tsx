@@ -4,7 +4,10 @@ import { Trash2 } from 'lucide-react';
 
 import { Button, Card, Badge, CurrencyText } from '@/components/ui';
 
-import { TRANSACTION_TYPE_UI_CONFIG } from '../constants/transaction.constants';
+import {
+  TRANSACTION_BADGE_CLASSES,
+  TRANSACTION_TYPE_ICONS,
+} from '../constants/transaction.constants';
 import {
   TRANSACTION_TYPE,
   type TransactionResponse,
@@ -33,8 +36,8 @@ export function TransactionLedgerList({
 
       <div className="divide-y divide-border/70">
         {items.map((tx) => {
-          const txConfig = TRANSACTION_TYPE_UI_CONFIG[tx.type];
-          const TxIcon = txConfig.icon;
+          const TxIcon = TRANSACTION_TYPE_ICONS[tx.type];
+          const badgeClass = TRANSACTION_BADGE_CLASSES[tx.type];
           const displayTitle = getTransactionDisplayTitle(tx);
 
           return (
@@ -44,7 +47,7 @@ export function TransactionLedgerList({
             >
               <div className="flex min-w-0 items-center gap-3.5">
                 <div
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${txConfig.badgeClass}`}
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${badgeClass}`}
                 >
                   <TxIcon className="h-4 w-4" />
                 </div>
