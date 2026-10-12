@@ -3,7 +3,7 @@
 import { Button as HeroButton, cn } from '@heroui/react';
 import { Loader2 } from 'lucide-react';
 
-import type { ComponentProps } from 'react';
+import type { ComponentProps, PropsWithChildren } from 'react';
 
 type HeroButtonProps = ComponentProps<typeof HeroButton>;
 
@@ -27,10 +27,11 @@ const BUTTON_TO_HERO_VARIANT: Record<ButtonTone, HeroButtonProps['variant']> = {
   danger: 'danger-soft',
 };
 
-export interface ButtonProps extends Omit<HeroButtonProps, 'children'> {
+export interface ButtonProps extends PropsWithChildren<
+  Omit<HeroButtonProps, 'children'>
+> {
   tone?: ButtonTone;
   isLoading?: boolean;
-  children?: React.ReactNode;
 }
 
 export function Button({

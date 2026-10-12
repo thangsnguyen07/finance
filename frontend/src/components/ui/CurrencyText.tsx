@@ -4,11 +4,12 @@ import { cn } from '@heroui/react';
 
 import { formatVND } from '@/lib/formatters';
 
-interface CurrencyTextProps {
+import type { HTMLAttributes } from 'react';
+
+export interface CurrencyTextProps extends HTMLAttributes<HTMLSpanElement> {
   amount: string | number;
   type?: 'INCOME' | 'EXPENSE' | 'TRANSFER';
   signed?: boolean;
-  className?: string;
 }
 
 export function CurrencyText({
@@ -16,6 +17,7 @@ export function CurrencyText({
   type,
   signed = false,
   className,
+  ...props
 }: CurrencyTextProps) {
   const numericAmount =
     typeof amount === 'string' ? parseFloat(amount) || 0 : amount;
@@ -31,6 +33,7 @@ export function CurrencyText({
         type === 'TRANSFER' && 'text-accent',
         className,
       )}
+      {...props}
     >
       {prefix}
       {formatVND(numericAmount)}

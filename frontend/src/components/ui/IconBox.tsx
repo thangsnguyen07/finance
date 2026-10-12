@@ -2,7 +2,7 @@
 
 import { cn } from '@heroui/react';
 
-import type { ReactNode } from 'react';
+import type { HTMLAttributes } from 'react';
 
 export type IconBoxTone =
   | 'neutral'
@@ -43,12 +43,10 @@ const SHAPE_CLASSES: Record<IconBoxShape, string> = {
   rounded: 'rounded-lg border',
 };
 
-export interface IconBoxProps {
+export interface IconBoxProps extends HTMLAttributes<HTMLDivElement> {
   tone?: IconBoxTone;
   size?: IconBoxSize;
   shape?: IconBoxShape;
-  className?: string;
-  children: ReactNode;
 }
 
 export function IconBox({
@@ -57,6 +55,7 @@ export function IconBox({
   shape = 'circle',
   className,
   children,
+  ...props
 }: IconBoxProps) {
   return (
     <div
@@ -67,6 +66,7 @@ export function IconBox({
         TONE_CLASSES[tone],
         className,
       )}
+      {...props}
     >
       {children}
     </div>

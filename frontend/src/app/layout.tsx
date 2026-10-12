@@ -4,6 +4,7 @@ import { AppProviders } from '@/providers';
 
 import './globals.css';
 import type { Metadata } from 'next';
+import type { PropsWithChildren } from 'react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,11 +33,7 @@ export const metadata: Metadata = {
     'Nền tảng ghi sổ thu chi & quản lý ngân sách phong cách Paperlike',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html
       lang="vi"

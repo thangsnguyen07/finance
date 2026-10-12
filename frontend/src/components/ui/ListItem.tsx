@@ -12,9 +12,12 @@ import { Row } from './Layout';
 import { Text } from './Text';
 
 import type { LucideIcon } from 'lucide-react';
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface ListItemProps {
+export interface ListItemProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'title'
+> {
   icon?: LucideIcon;
   iconNode?: ReactNode;
   iconTone?: IconBoxTone;
@@ -28,7 +31,6 @@ export interface ListItemProps {
   action?: ReactNode;
   compact?: boolean;
   hoverable?: boolean;
-  className?: string;
 }
 
 export function ListItem({
@@ -46,6 +48,7 @@ export function ListItem({
   compact = false,
   hoverable = false,
   className,
+  ...props
 }: ListItemProps) {
   return (
     <Row
@@ -57,6 +60,7 @@ export function ListItem({
         hoverable && 'hover:bg-surface-secondary/20',
         className,
       )}
+      {...props}
     >
       <Row gap="md" className="min-w-0">
         {Icon ? (
