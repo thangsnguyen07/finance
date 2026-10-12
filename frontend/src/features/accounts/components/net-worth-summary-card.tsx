@@ -1,6 +1,7 @@
 'use client';
 
 import { Scale, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+
 import { Card, CurrencyText } from '@/components/ui';
 
 interface NetWorthSummaryCardProps {
@@ -22,15 +23,15 @@ export function NetWorthSummaryCard({
     <Card>
       <Card.Header
         bordered
-        className="justify-start gap-2 pb-3 mb-4 border-border/60"
+        className="mb-4 justify-start gap-2 border-border/60 pb-3"
       >
-        <Scale className="w-4 h-4 text-accent" />
+        <Scale className="h-4 w-4 text-accent" />
         <Card.Eyebrow className="text-xs font-semibold">
           Tài sản ròng (Net Worth)
         </Card.Eyebrow>
       </Card.Header>
 
-      <Card.Content className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <Card.Content className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div>
           <span className="text-xs text-muted">Tổng giá trị ròng</span>
           <p className="mt-1">
@@ -45,7 +46,7 @@ export function NetWorthSummaryCard({
 
         <div className="sm:border-l sm:border-border/60 sm:pl-4">
           <div className="flex items-center gap-1.5 text-xs text-success">
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <ArrowUpRight className="h-3.5 w-3.5" />
             <span>Tổng tài sản khả dụng</span>
           </div>
           <p className="mt-1">
@@ -61,7 +62,7 @@ export function NetWorthSummaryCard({
 
         <div className="sm:border-l sm:border-border/60 sm:pl-4">
           <div className="flex items-center gap-1.5 text-xs text-danger">
-            <ArrowDownRight className="w-3.5 h-3.5" />
+            <ArrowDownRight className="h-3.5 w-3.5" />
             <span>Tổng dư nợ thẻ</span>
           </div>
           <p className="mt-1">

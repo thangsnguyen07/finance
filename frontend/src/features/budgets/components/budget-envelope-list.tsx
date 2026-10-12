@@ -1,8 +1,11 @@
 'use client';
 
 import { Pencil } from 'lucide-react';
+
 import { Button, Card, Badge, CurrencyText } from '@/components/ui';
+
 import { BUDGET_STATUS_CONFIG } from '../constants/budget.constants';
+
 import type { BudgetEnvelopeResponse } from '../types/budget.types';
 
 interface BudgetEnvelopeListProps {
@@ -29,11 +32,11 @@ export function BudgetEnvelopeList({
 
       <Card.Content>
         {envelopes.length === 0 ? (
-          <div className="py-10 text-center space-y-3">
+          <div className="space-y-3 py-10 text-center">
             <p className="font-serif text-base font-bold text-foreground">
               Tháng này chưa có phong bì ngân sách nào
             </p>
-            <p className="text-xs text-muted max-w-md mx-auto">
+            <p className="mx-auto max-w-md text-xs text-muted">
               Đặt hạn mức cho các danh mục chi tiêu lớn như Ăn uống, Tiền nhà
               hoặc Di chuyển để thước đo K3 theo dõi tự động mỗi khi bạn ghi sổ.
             </p>
@@ -52,11 +55,11 @@ export function BudgetEnvelopeList({
               );
 
               return (
-                <div key={env.id} className="py-4 flex flex-col gap-2.5 group">
+                <div key={env.id} className="group flex flex-col gap-2.5 py-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-semibold text-sm text-foreground">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-sm font-semibold text-foreground">
                           {env.categoryName}
                         </h3>
                         <Badge
@@ -65,13 +68,13 @@ export function BudgetEnvelopeList({
                           variant="soft"
                           className="flex items-center gap-1"
                         >
-                          <StatusIcon className="w-3 h-3" />
+                          <StatusIcon className="h-3 w-3" />
                           <span>{badge.label}</span>
                         </Badge>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex shrink-0 items-center gap-2">
                       <div className="text-right font-mono tabular-nums">
                         <CurrencyText
                           amount={env.spentAmount}
@@ -89,16 +92,16 @@ export function BudgetEnvelopeList({
                         tone="ghost"
                         onPress={() => onOpenEdit(env)}
                         aria-label={`Điều chỉnh hạn mức ${env.categoryName}`}
-                        className="w-7 h-7 min-w-7 text-muted hover:text-foreground"
+                        className="h-7 w-7 min-w-7 text-muted hover:text-foreground"
                       >
-                        <Pencil className="w-3.5 h-3.5" />
+                        <Pencil className="h-3.5 w-3.5" />
                       </Button>
                     </div>
                   </div>
 
-                  <div className="h-2 w-full bg-surface-secondary rounded-full overflow-hidden border border-border/50">
+                  <div className="h-2 w-full overflow-hidden rounded-full border border-border/50 bg-surface-secondary">
                     <div
-                      className={`h-full transition-all duration-300 rounded-full ${
+                      className={`h-full rounded-full transition-all duration-300 ${
                         env.status === 'EXCEEDED'
                           ? 'bg-danger'
                           : env.status === 'WARNING'
@@ -109,13 +112,13 @@ export function BudgetEnvelopeList({
                     />
                   </div>
 
-                  <div className="flex items-center justify-between text-xs text-muted font-mono tabular-nums">
+                  <div className="flex items-center justify-between font-mono text-xs text-muted tabular-nums">
                     <span>Đã chi {env.usagePercentage}%</span>
                     <span
                       className={
                         env.remainingAmount >= 0
-                          ? 'text-foreground font-medium'
-                          : 'text-danger font-bold'
+                          ? 'font-medium text-foreground'
+                          : 'font-bold text-danger'
                       }
                     >
                       {env.remainingAmount >= 0 ? (

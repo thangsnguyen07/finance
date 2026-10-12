@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   Receipt,
@@ -12,6 +10,9 @@ import {
   Settings,
   BookOpen,
 } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
 import { Button } from '@/components/ui';
 import { useUiStore } from '@/stores/use-ui-store';
 
@@ -59,16 +60,16 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 h-screen sticky top-0 bg-surface border-r border-border p-5 select-none shrink-0">
-      <div className="flex items-center gap-3 mb-8 px-2">
-        <div className="w-9 h-9 rounded-md bg-accent text-accent-foreground flex items-center justify-center shadow-sm">
-          <BookOpen className="w-5 h-5 stroke-[2]" />
+    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-surface p-5 select-none lg:flex">
+      <div className="mb-8 flex items-center gap-3 px-2">
+        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-accent text-accent-foreground shadow-sm">
+          <BookOpen className="h-5 w-5 stroke-[2]" />
         </div>
         <div>
-          <h1 className="font-serif font-bold text-lg text-foreground tracking-tight leading-tight">
+          <h1 className="font-serif text-lg leading-tight font-bold tracking-tight text-foreground">
             Sổ Thu Chi
           </h1>
-          <p className="text-[11px] text-muted font-sans uppercase tracking-wider">
+          <p className="font-sans text-[11px] tracking-wider text-muted uppercase">
             Paperlike Ledger
           </p>
         </div>
@@ -77,9 +78,9 @@ export function Sidebar() {
       <Button
         tone="brand"
         onPress={openQuickEntry}
-        className="w-full py-2.5 px-4 mb-6 rounded-md font-medium text-sm shadow-sm"
+        className="mb-6 w-full rounded-md px-4 py-2.5 text-sm font-medium shadow-sm"
       >
-        <Plus className="w-4 h-4 stroke-[2.5]" />
+        <Plus className="h-4 w-4 stroke-[2.5]" />
         <span>Ghi chép mới</span>
       </Button>
 
@@ -90,14 +91,14 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
+              className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
                 item.isActive
-                  ? 'bg-surface-secondary text-accent font-semibold border-l-2 border-accent'
-                  : 'text-muted hover:text-foreground hover:bg-surface-secondary/60'
+                  ? 'border-l-2 border-accent bg-surface-secondary font-semibold text-accent'
+                  : 'text-muted hover:bg-surface-secondary/60 hover:text-foreground'
               }`}
             >
               <Icon
-                className={`w-4 h-4 ${
+                className={`h-4 w-4 ${
                   item.isActive ? 'stroke-[2.2]' : 'stroke-[1.8]'
                 }`}
               />
@@ -107,13 +108,13 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="pt-4 border-t border-border mt-auto">
-        <div className="flex items-center gap-3 px-2 py-1.5 rounded-md text-xs text-muted">
-          <div className="w-7 h-7 rounded-full bg-surface-tertiary flex items-center justify-center font-bold text-foreground">
+      <div className="mt-auto border-t border-border pt-4">
+        <div className="flex items-center gap-3 rounded-md px-2 py-1.5 text-xs text-muted">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-surface-tertiary font-bold text-foreground">
             TN
           </div>
           <div className="truncate">
-            <p className="font-medium text-foreground truncate">Thang Nguyen</p>
+            <p className="truncate font-medium text-foreground">Thang Nguyen</p>
             <p className="text-[10px] text-muted">Bản ghi sổ 2026</p>
           </div>
         </div>

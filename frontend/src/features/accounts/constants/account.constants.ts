@@ -5,6 +5,7 @@ import {
   Smartphone,
   TrendingUp,
 } from 'lucide-react';
+
 import type { AccountType } from '../types/account.types';
 
 export const ACCOUNT_TYPE_CONFIG: Record<

@@ -1,10 +1,11 @@
 import { formatShortMonthLabel } from '@/lib/formatters';
-import type { TransactionResponse } from '@/features/transactions';
+
 import type {
   CategoryBreakdownItem,
   MonthlyCashflowPoint,
   ReportsAnalyticsData,
 } from '../types/report.types';
+import type { TransactionResponse } from '@/features/transactions';
 
 const EXPENSE_PALETTE = [
   '#991B1B',
@@ -16,13 +17,7 @@ const EXPENSE_PALETTE = [
   '#6E665E',
 ];
 
-const INCOME_PALETTE = [
-  '#166534',
-  '#15803D',
-  '#047857',
-  '#0F766E',
-  '#1E3A8A',
-];
+const INCOME_PALETTE = ['#166534', '#15803D', '#047857', '#0F766E', '#1E3A8A'];
 
 export function computeAnalyticsSinglePass(
   transactions: TransactionResponse[],
@@ -120,7 +115,9 @@ export function computeAnalyticsSinglePass(
       categoryId,
       categoryName: item.name,
       color:
-        item.color || EXPENSE_PALETTE[idx % EXPENSE_PALETTE.length] || '#991B1B',
+        item.color ||
+        EXPENSE_PALETTE[idx % EXPENSE_PALETTE.length] ||
+        '#991B1B',
       amount: item.amount,
       count: item.count,
       percentage:

@@ -1,9 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import { ArrowDownRight, ArrowUpRight, ArrowLeftRight } from 'lucide-react';
+import Link from 'next/link';
+
 import { Card, CurrencyText } from '@/components/ui';
 import { formatShortDate } from '@/lib/formatters';
+
 import type { TransactionResponse } from '@/features/transactions';
 
 interface RecentTransactionsCardProps {
@@ -18,12 +20,12 @@ export function RecentTransactionsCard({
   return (
     <Card className="lg:col-span-2">
       <Card.Header bordered className="mb-1 pb-3">
-        <Card.Eyebrow className="text-xs font-sans flex items-center gap-1.5">
+        <Card.Eyebrow className="flex items-center gap-1.5 font-sans text-xs">
           <span>📖 Nhật Ký Ghi Sổ Gần Nhất</span>
         </Card.Eyebrow>
         <Link
           href="/transactions"
-          className="text-xs text-accent hover:underline font-medium"
+          className="text-xs font-medium text-accent hover:underline"
         >
           Xem toàn bộ sổ →
         </Link>
@@ -46,11 +48,11 @@ export function RecentTransactionsCard({
             return (
               <div
                 key={tx.id}
-                className="py-2.5 flex items-center justify-between text-xs"
+                className="flex items-center justify-between py-2.5 text-xs"
               >
-                <div className="flex items-center gap-3 min-w-0">
+                <div className="flex min-w-0 items-center gap-3">
                   <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
                       isExpense
                         ? 'bg-danger/10 text-danger'
                         : isIncome
@@ -59,22 +61,22 @@ export function RecentTransactionsCard({
                     }`}
                   >
                     {isExpense ? (
-                      <ArrowDownRight className="w-4 h-4" />
+                      <ArrowDownRight className="h-4 w-4" />
                     ) : isIncome ? (
-                      <ArrowUpRight className="w-4 h-4" />
+                      <ArrowUpRight className="h-4 w-4" />
                     ) : (
-                      <ArrowLeftRight className="w-4 h-4" />
+                      <ArrowLeftRight className="h-4 w-4" />
                     )}
                   </div>
                   <div className="min-w-0">
-                    <span className="font-medium text-foreground block truncate">
+                    <span className="block truncate font-medium text-foreground">
                       {tx.description ||
                         tx.category?.name ||
                         (tx.type === 'TRANSFER'
                           ? 'Chuyển khoản nội bộ'
                           : 'Giao dịch')}
                     </span>
-                    <span className="text-[10px] text-muted font-sans">
+                    <span className="font-sans text-[10px] text-muted">
                       {formatShortDate(tx.transactionDate)} •{' '}
                       {tx.account?.name || 'Ví'}
                       {tx.type === 'TRANSFER' && tx.targetAccount
@@ -87,7 +89,7 @@ export function RecentTransactionsCard({
                   amount={tx.amount}
                   type={tx.type}
                   signed
-                  className={`font-bold shrink-0 ml-2 ${
+                  className={`ml-2 shrink-0 font-bold ${
                     tx.type === 'TRANSFER' ? 'text-foreground' : ''
                   }`}
                 />

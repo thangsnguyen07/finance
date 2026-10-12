@@ -1,7 +1,9 @@
 'use client';
 
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
+
 import { Card, Badge } from '@/components/ui';
+
 import type { CategoryResponse, CategoryType } from '../types/category.types';
 
 interface CategoryDirectoryCardProps {
@@ -22,24 +24,24 @@ export function CategoryDirectoryCard({
       <Card.Header bordered className="mb-0 pb-3">
         <div className="flex items-center gap-2">
           {type === 'EXPENSE' ? (
-            <ArrowDownRight className="w-4 h-4 text-danger" />
+            <ArrowDownRight className="h-4 w-4 text-danger" />
           ) : (
-            <ArrowUpRight className="w-4 h-4 text-success" />
+            <ArrowUpRight className="h-4 w-4 text-success" />
           )}
           <Card.Title>
             {title} ({categories.length})
           </Card.Title>
         </div>
       </Card.Header>
-      <Card.Content className="pt-2 divide-y divide-border/60">
+      <Card.Content className="divide-y divide-border/60 pt-2">
         {categories.map((cat) => (
           <div
             key={cat.id}
-            className="py-2.5 flex items-center justify-between text-xs"
+            className="flex items-center justify-between py-2.5 text-xs"
           >
             <div className="flex items-center gap-2.5">
               <span
-                className="w-2.5 h-2.5 rounded-full shrink-0"
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
                 style={{ backgroundColor: cat.color || defaultColor }}
               />
               <span className="font-medium text-foreground">{cat.name}</span>

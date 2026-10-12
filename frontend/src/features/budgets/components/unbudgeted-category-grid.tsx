@@ -1,6 +1,7 @@
 'use client';
 
 import { Card, CurrencyText } from '@/components/ui';
+
 import type { UnbudgetedCategoryResponse } from '../types/budget.types';
 
 interface UnbudgetedCategoryGridProps {
@@ -28,7 +29,7 @@ export function UnbudgetedCategoryGrid({
       </Card.Header>
 
       <Card.Content className="pt-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((cat) => {
             const suggestedAmount =
               cat.spentAmount > 0
@@ -42,13 +43,13 @@ export function UnbudgetedCategoryGrid({
                 onClick={() =>
                   onSelectCategory(cat.categoryId, suggestedAmount)
                 }
-                className="flex items-center justify-between p-3 bg-surface border border-border hover:border-accent rounded-lg text-left transition-colors cursor-pointer group"
+                className="group flex cursor-pointer items-center justify-between rounded-lg border border-border bg-surface p-3 text-left transition-colors hover:border-accent"
               >
                 <div className="min-w-0 pr-2">
-                  <span className="text-xs font-semibold text-foreground block truncate group-hover:text-accent">
+                  <span className="block truncate text-xs font-semibold text-foreground group-hover:text-accent">
                     {cat.categoryName}
                   </span>
-                  <span className="text-[11px] font-mono text-muted tabular-nums">
+                  <span className="font-mono text-[11px] text-muted tabular-nums">
                     {cat.spentAmount > 0 ? (
                       <>
                         Tháng này đã chi:{' '}
@@ -59,7 +60,7 @@ export function UnbudgetedCategoryGrid({
                     )}
                   </span>
                 </div>
-                <span className="text-xs font-semibold text-accent shrink-0">
+                <span className="shrink-0 text-xs font-semibold text-accent">
                   + Đặt hạn mức
                 </span>
               </button>

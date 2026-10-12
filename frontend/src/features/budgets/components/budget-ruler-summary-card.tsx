@@ -1,9 +1,10 @@
 'use client';
 
 import { Ruler } from 'lucide-react';
+
 import { Card, CurrencyText, K3WoodenRuler } from '@/components/ui';
-import { formatMonthDisplay } from '@/lib/formatters';
 import { getMonthDayProgress } from '@/lib/date-utils';
+import { formatMonthDisplay } from '@/lib/formatters';
 
 interface BudgetRulerSummaryCardProps {
   month: string;
@@ -28,11 +29,11 @@ export function BudgetRulerSummaryCard({
     <Card>
       <Card.Header
         bordered
-        className="flex-col sm:flex-row items-start sm:items-end justify-between gap-3"
+        className="flex-col items-start justify-between gap-3 sm:flex-row sm:items-end"
       >
         <div>
-          <div className="flex items-center gap-2 text-xs text-muted mb-1">
-            <Ruler className="w-3.5 h-3.5 text-amber-800 dark:text-amber-400" />
+          <div className="mb-1 flex items-center gap-2 text-xs text-muted">
+            <Ruler className="h-3.5 w-3.5 text-amber-800 dark:text-amber-400" />
             <span>Tổng kế hoạch chi tiêu • {formatMonthDisplay(month)}</span>
             {dayProgress.isCurrentMonth ? (
               <span className="font-mono text-[11px] text-muted">
@@ -40,18 +41,18 @@ export function BudgetRulerSummaryCard({
               </span>
             ) : null}
           </div>
-          <div className="flex items-baseline gap-2.5 flex-wrap">
-            <Card.Title className="text-2xl sm:text-3xl font-serif font-black text-foreground tabular-nums">
+          <div className="flex flex-wrap items-baseline gap-2.5">
+            <Card.Title className="font-serif text-2xl font-black text-foreground tabular-nums sm:text-3xl">
               {isLoading ? '...' : <CurrencyText amount={totalSpent} />}
             </Card.Title>
-            <span className="text-xs sm:text-sm font-mono text-muted tabular-nums">
+            <span className="font-mono text-xs text-muted tabular-nums sm:text-sm">
               / hạn mức <CurrencyText amount={totalBudgeted} />
             </span>
           </div>
         </div>
 
         <div className="sm:text-right">
-          <span className="text-[11px] text-muted block">
+          <span className="block text-[11px] text-muted">
             {remainingBudget >= 0
               ? 'Còn được phép chi'
               : 'Đã vượt tổng hạn mức'}
@@ -59,7 +60,7 @@ export function BudgetRulerSummaryCard({
           <CurrencyText
             amount={Math.abs(remainingBudget)}
             type={remainingBudget >= 0 ? 'INCOME' : 'EXPENSE'}
-            className="text-base sm:text-lg font-bold"
+            className="text-base font-bold sm:text-lg"
           />
         </div>
       </Card.Header>
@@ -75,7 +76,7 @@ export function BudgetRulerSummaryCard({
           dayMarkerTooltip={`Nhịp thời gian tháng: Ngày ${dayProgress.currentDay}/${dayProgress.daysInMonth} (${dayProgress.dayPercentage}%)`}
         />
 
-        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted font-mono">
+        <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-muted">
           <span>
             Đã dùng:{' '}
             <strong className="text-foreground">{overallPercent}%</strong> kế

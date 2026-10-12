@@ -5,11 +5,12 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Budget } from './entities/budget.entity.js';
+
+import { CategoriesService } from '../categories/categories.service.js';
 import { Category } from '../categories/entities/category.entity.js';
 import { Transaction } from '../transactions/entities/transaction.entity.js';
-import { CategoriesService } from '../categories/categories.service.js';
 import { UpsertBudgetDto } from './dto/upsert-budget.dto.js';
+import { Budget } from './entities/budget.entity.js';
 
 export type BudgetStatus = 'SAFE' | 'WARNING' | 'EXCEEDED';
 
@@ -47,7 +48,10 @@ export interface MonthlyBudgetSummary {
   unbudgetedCategories: UnbudgetedCategoryItem[];
 }
 
-function getMonthDateRange(month: string): { startDate: string; endDate: string } {
+function getMonthDateRange(month: string): {
+  startDate: string;
+  endDate: string;
+} {
   const parts = month.split('-');
   const year = Number(parts[0]);
   const monthIndex = Number(parts[1]);
@@ -196,10 +200,7 @@ export class BudgetsService {
   }
 
   async upsert(userId: string, dto: UpsertBudgetDto): Promise<Budget> {
-    const categories = await this.categoriesService.findAll(
-      userId,
-      'EXPENSE',
-    );
+    const categories = await this.categoriesService.findAll(userId, 'EXPENSE');
     const category = categories.find((c) => c.id === dto.categoryId);
 
     if (!category) {

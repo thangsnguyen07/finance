@@ -1,8 +1,9 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { Surface as HeroSurface, cn } from '@heroui/react';
 import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
+
+import type { ReactNode } from 'react';
 
 export type AlertVariant = 'danger' | 'success' | 'warning';
 

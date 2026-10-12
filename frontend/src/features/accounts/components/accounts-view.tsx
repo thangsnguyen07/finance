@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import { Plus, Wallet } from 'lucide-react';
-import { Button, Alert, PageHeader } from '@/components/ui';
+import { useState } from 'react';
+
 import { LedgerLoadingState, LedgerEmptyState } from '@/components/feedback';
+import { Button, Alert, PageHeader } from '@/components/ui';
+
 import { useAccounts, useDeleteAccount } from '../hooks/use-accounts';
-import { NetWorthSummaryCard } from './net-worth-summary-card';
 import { AccountGroupSection } from './account-group-section';
 import { CreateAccountModal } from './create-account-modal';
+import { NetWorthSummaryCard } from './net-worth-summary-card';
 
 export function AccountsView() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -36,9 +38,7 @@ export function AccountsView() {
   const investments = allAccounts.filter((acc) => acc.type === 'INVESTMENT');
 
   const handleArchive = async (id: string, name: string) => {
-    if (
-      window.confirm(`Bạn có chắc chắn muốn lưu trữ ví "${name}" không?`)
-    ) {
+    if (window.confirm(`Bạn có chắc chắn muốn lưu trữ ví "${name}" không?`)) {
       await deleteMutation.mutateAsync(id);
     }
   };

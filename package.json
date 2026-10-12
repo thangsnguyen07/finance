@@ -8,7 +8,12 @@
     "dev:frontend": "pnpm --filter frontend dev",
     "build": "pnpm --filter frontend build && pnpm --filter backend build",
     "lint": "pnpm --filter frontend lint && pnpm --filter backend lint",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "test": "pnpm --filter backend test"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.72.0"
   },
   "packageManager": "pnpm@10.6.4"
 }

@@ -1,16 +1,13 @@
 'use client';
 
-import { useState } from 'react';
 import { Plus, Tag, ArrowDownRight, ArrowUpRight } from 'lucide-react';
-import {
-  Card,
-  Button,
-  Field,
-  Alert,
-  SegmentedControl,
-} from '@/components/ui';
+import { useState } from 'react';
+
+import { Card, Button, Field, Alert, SegmentedControl } from '@/components/ui';
+
 import { CATEGORY_COLOR_SWATCHES } from '../constants/category.constants';
 import { useCreateCategory } from '../hooks/use-categories';
+
 import type { CategoryType } from '../types/category.types';
 
 export function CreateCategoryForm() {
@@ -60,7 +57,7 @@ export function CreateCategoryForm() {
       <Card.Header bordered>
         <div>
           <Card.Title className="flex items-center gap-2">
-            <Tag className="w-4 h-4 text-accent" />
+            <Tag className="h-4 w-4 text-accent" />
             <span>Tạo danh mục tùy chỉnh mới</span>
           </Card.Title>
           <Card.Description>
@@ -75,7 +72,7 @@ export function CreateCategoryForm() {
           {error ? <Alert variant="danger">{error}</Alert> : null}
           {successMsg ? <Alert variant="success">{successMsg}</Alert> : null}
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <Field.Root>
               <Field.Label>Nhóm danh mục</Field.Label>
               <SegmentedControl<CategoryType>
@@ -88,7 +85,7 @@ export function CreateCategoryForm() {
                     value: 'EXPENSE',
                     label: (
                       <>
-                        <ArrowDownRight className="w-3.5 h-3.5" />
+                        <ArrowDownRight className="h-3.5 w-3.5" />
                         <span>Chi tiêu</span>
                       </>
                     ),
@@ -98,7 +95,7 @@ export function CreateCategoryForm() {
                     value: 'INCOME',
                     label: (
                       <>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
+                        <ArrowUpRight className="h-3.5 w-3.5" />
                         <span>Thu nhập</span>
                       </>
                     ),
@@ -120,9 +117,9 @@ export function CreateCategoryForm() {
             </Field.Root>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs text-muted mr-1">Màu mực đánh dấu:</span>
+          <div className="flex flex-col justify-between gap-4 pt-2 sm:flex-row sm:items-center">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-xs text-muted">Màu mực đánh dấu:</span>
               {CATEGORY_COLOR_SWATCHES.map((swatch) => {
                 const isSelected = selectedColor === swatch.value;
                 return (
@@ -130,14 +127,14 @@ export function CreateCategoryForm() {
                     key={swatch.value}
                     type="button"
                     onClick={() => setSelectedColor(swatch.value)}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs border transition-all cursor-pointer ${
+                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition-all ${
                       isSelected
                         ? 'border-foreground bg-surface-secondary font-bold text-foreground'
                         : 'border-border bg-surface text-muted hover:text-foreground'
                     }`}
                   >
                     <span
-                      className="w-2.5 h-2.5 rounded-full"
+                      className="h-2.5 w-2.5 rounded-full"
                       style={{ backgroundColor: swatch.value }}
                     />
                     <span>{swatch.label}</span>
@@ -154,7 +151,7 @@ export function CreateCategoryForm() {
               className="self-end sm:self-auto"
             >
               {!createCategoryMutation.isPending ? (
-                <Plus className="w-4 h-4" />
+                <Plus className="h-4 w-4" />
               ) : null}
               <span>Thêm danh mục</span>
             </Button>

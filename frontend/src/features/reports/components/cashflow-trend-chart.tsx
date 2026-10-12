@@ -1,8 +1,10 @@
 'use client';
 
 import { BarChart3 } from 'lucide-react';
+
 import { Card } from '@/components/ui';
 import { formatVND } from '@/lib/formatters';
+
 import type { MonthlyCashflowPoint } from '../types/report.types';
 
 interface CashflowTrendChartProps {
@@ -22,10 +24,10 @@ export function CashflowTrendChart({
     <Card>
       <Card.Header
         bordered
-        className="flex-col sm:flex-row sm:items-center justify-between gap-2"
+        className="flex-col justify-between gap-2 sm:flex-row sm:items-center"
       >
         <div className="flex items-center gap-2">
-          <BarChart3 className="w-4 h-4 text-accent" />
+          <BarChart3 className="h-4 w-4 text-accent" />
           <div>
             <Card.Title>Biểu đồ đối chiếu Thu – Chi 6 tháng</Card.Title>
             <Card.Description>
@@ -35,20 +37,20 @@ export function CashflowTrendChart({
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-xs font-mono">
+        <div className="flex items-center gap-4 font-mono text-xs">
           <span className="flex items-center gap-1.5 text-foreground">
-            <span className="w-2.5 h-2.5 rounded-2xs bg-success inline-block" />
+            <span className="rounded-2xs inline-block h-2.5 w-2.5 bg-success" />
             Thu nhập
           </span>
           <span className="flex items-center gap-1.5 text-foreground">
-            <span className="w-2.5 h-2.5 rounded-2xs bg-danger inline-block" />
+            <span className="rounded-2xs inline-block h-2.5 w-2.5 bg-danger" />
             Chi tiêu
           </span>
         </div>
       </Card.Header>
 
       <Card.Content className="pt-2">
-        <div className="relative h-48 grid grid-cols-6 gap-2 sm:gap-4 items-end pt-4 px-2 border-b border-border bg-[linear-gradient(to_bottom,transparent_24%,var(--border)_25%,transparent_26%,transparent_49%,var(--border)_50%,transparent_51%,transparent_74%,var(--border)_75%,transparent_76%)]">
+        <div className="relative grid h-48 grid-cols-6 items-end gap-2 border-b border-border bg-[linear-gradient(to_bottom,transparent_24%,var(--border)_25%,transparent_26%,transparent_49%,var(--border)_50%,transparent_51%,transparent_74%,var(--border)_75%,transparent_76%)] px-2 pt-4 sm:gap-4">
           {points.map((point) => {
             const isCurrentSelected = point.month === selectedMonth;
             const incomeHeight = Math.round(
@@ -63,13 +65,13 @@ export function CashflowTrendChart({
                 key={point.month}
                 type="button"
                 onClick={() => onSelectMonth(point.month)}
-                className={`h-full flex flex-col justify-end items-center group cursor-pointer rounded-t-md px-1 pt-2 transition-colors ${
+                className={`group flex h-full cursor-pointer flex-col items-center justify-end rounded-t-md px-1 pt-2 transition-colors ${
                   isCurrentSelected
                     ? 'bg-accent/5 ring-1 ring-accent/30'
                     : 'hover:bg-surface-secondary/50'
                 }`}
               >
-                <div className="w-full max-w-[44px] h-full flex items-end justify-center gap-1 sm:gap-1.5">
+                <div className="flex h-full w-full max-w-[44px] items-end justify-center gap-1 sm:gap-1.5">
                   <div
                     style={{
                       height: `${
@@ -77,7 +79,7 @@ export function CashflowTrendChart({
                       }%`,
                     }}
                     title={`Thu ${point.label}: ${formatVND(point.income)}`}
-                    className="w-1/2 bg-success rounded-t-2xs transition-all duration-300"
+                    className="rounded-t-2xs w-1/2 bg-success transition-all duration-300"
                   />
                   <div
                     style={{
@@ -86,7 +88,7 @@ export function CashflowTrendChart({
                       }%`,
                     }}
                     title={`Chi ${point.label}: ${formatVND(point.expense)}`}
-                    className="w-1/2 bg-danger rounded-t-2xs transition-all duration-300"
+                    className="rounded-t-2xs w-1/2 bg-danger transition-all duration-300"
                   />
                 </div>
               </button>
@@ -94,7 +96,7 @@ export function CashflowTrendChart({
           })}
         </div>
 
-        <div className="grid grid-cols-6 gap-2 sm:gap-4 pt-2.5 px-2 text-center">
+        <div className="grid grid-cols-6 gap-2 px-2 pt-2.5 text-center sm:gap-4">
           {points.map((point) => {
             const isCurrentSelected = point.month === selectedMonth;
             return (
@@ -102,7 +104,7 @@ export function CashflowTrendChart({
                 key={point.month}
                 type="button"
                 onClick={() => onSelectMonth(point.month)}
-                className={`text-[11px] font-mono cursor-pointer transition-colors ${
+                className={`cursor-pointer font-mono text-[11px] transition-colors ${
                   isCurrentSelected
                     ? 'font-bold text-accent underline underline-offset-4'
                     : 'text-muted hover:text-foreground'

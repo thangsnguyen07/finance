@@ -1,15 +1,18 @@
 'use client';
 
-import { useState } from 'react';
 import { Plus } from 'lucide-react';
-import { Button, Alert, PageHeader, MonthNavigator } from '@/components/ui';
+import { useState } from 'react';
+
 import { LedgerLoadingState } from '@/components/feedback';
+import { Button, Alert, PageHeader, MonthNavigator } from '@/components/ui';
 import { getCurrentMonthString } from '@/lib/date-utils';
+
 import { useBudgets } from '../hooks/use-budgets';
-import { BudgetRulerSummaryCard } from './budget-ruler-summary-card';
 import { BudgetEnvelopeList } from './budget-envelope-list';
+import { BudgetRulerSummaryCard } from './budget-ruler-summary-card';
 import { UnbudgetedCategoryGrid } from './unbudgeted-category-grid';
 import { UpsertBudgetModal } from './upsert-budget-modal';
+
 import type { BudgetEnvelopeResponse } from '../types/budget.types';
 
 export function BudgetsView() {
@@ -52,11 +55,7 @@ export function BudgetsView() {
         />
         <PageHeader.Actions>
           <MonthNavigator month={selectedMonth} onChange={setSelectedMonth} />
-          <Button
-            tone="primary"
-            size="sm"
-            onPress={() => openCreateModal()}
-          >
+          <Button tone="primary" size="sm" onPress={() => openCreateModal()}>
             <Plus className="h-4 w-4 stroke-[2.5]" />
             <span>Đặt hạn mức</span>
           </Button>

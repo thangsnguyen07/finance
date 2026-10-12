@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+
 import { Modal } from '@/components/feedback';
 import { Button, Field, Alert, VndAmountInput } from '@/components/ui';
+
 import { ACCOUNT_TYPE_OPTIONS } from '../constants/account.constants';
 import { useCreateAccount } from '../hooks/use-accounts';
+
 import type { AccountType } from '../types/account.types';
 
 interface CreateAccountModalProps {
@@ -69,11 +72,7 @@ export function CreateAccountModal({
   };
 
   return (
-    <Modal.Root
-      isOpen={isOpen}
-      onClose={handleClose}
-      maxWidthClass="max-w-md"
-    >
+    <Modal.Root isOpen={isOpen} onClose={handleClose} maxWidthClass="max-w-md">
       <Modal.Header
         title="Mở tài khoản mới"
         subtitle="Thiết lập ví tiền mặt, ngân hàng hoặc thẻ tín dụng"
@@ -95,13 +94,13 @@ export function CreateAccountModal({
                     key={item.type}
                     type="button"
                     onClick={() => setType(item.type)}
-                    className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs transition-all cursor-pointer ${
+                    className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border p-2.5 text-xs transition-all ${
                       isSelected
-                        ? 'border-accent bg-accent/10 text-accent font-semibold shadow-2xs'
+                        ? 'border-accent bg-accent/10 font-semibold text-accent shadow-2xs'
                         : 'border-border bg-surface text-muted hover:text-foreground'
                     }`}
                   >
-                    <Icon className="w-4 h-4 mb-1" />
+                    <Icon className="mb-1 h-4 w-4" />
                     <span>{item.label}</span>
                   </button>
                 );

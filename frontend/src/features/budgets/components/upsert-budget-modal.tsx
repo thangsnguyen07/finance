@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import { Tag, Calendar, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+
 import { Modal } from '@/components/feedback';
 import { Button, Field, Alert, VndAmountInput } from '@/components/ui';
 import { useCategories } from '@/features/categories';
+
 import { BUDGET_AMOUNT_PRESETS } from '../constants/budget.constants';
 import { useUpsertBudget, useDeleteBudget } from '../hooks/use-budgets';
 
@@ -38,12 +40,8 @@ export function UpsertBudgetModal({
   );
 
   const effectiveCategoryId =
-    selectedCategoryId ||
-    initialCategoryId ||
-    expenseCategories[0]?.id ||
-    '';
-  const effectiveAmount =
-    rawAmount !== null ? rawAmount : (initialAmount ?? 0);
+    selectedCategoryId || initialCategoryId || expenseCategories[0]?.id || '';
+  const effectiveAmount = rawAmount !== null ? rawAmount : (initialAmount ?? 0);
 
   const handleClose = () => {
     setSelectedCategoryId('');
@@ -109,7 +107,7 @@ export function UpsertBudgetModal({
         }
         subtitle={
           <span className="flex items-center gap-1.5">
-            <Calendar className="w-3 h-3" />
+            <Calendar className="h-3 w-3" />
             <span>Kỳ ngân sách: Tháng {month}</span>
           </span>
         }
@@ -121,10 +119,10 @@ export function UpsertBudgetModal({
           {error ? <Alert variant="danger">{error}</Alert> : null}
 
           <Field.Root>
-            <Field.Label icon={<Tag className="w-3.5 h-3.5" />}>
+            <Field.Label icon={<Tag className="h-3.5 w-3.5" />}>
               Chọn phong bì danh mục
             </Field.Label>
-            <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-0.5">
+            <div className="grid max-h-40 grid-cols-2 gap-2 overflow-y-auto p-0.5">
               {expenseCategories.map((cat) => {
                 const isSelected = effectiveCategoryId === cat.id;
                 return (
@@ -132,10 +130,10 @@ export function UpsertBudgetModal({
                     key={cat.id}
                     type="button"
                     onClick={() => setSelectedCategoryId(cat.id)}
-                    className={`h-9 px-3 rounded-lg border text-left text-xs transition-all truncate cursor-pointer ${
+                    className={`h-9 cursor-pointer truncate rounded-lg border px-3 text-left text-xs transition-all ${
                       isSelected
-                        ? 'border-accent bg-accent/10 text-accent font-bold shadow-2xs'
-                        : 'border-border bg-surface hover:border-border/80 text-foreground'
+                        ? 'border-accent bg-accent/10 font-bold text-accent shadow-2xs'
+                        : 'border-border bg-surface text-foreground hover:border-border/80'
                     }`}
                   >
                     {cat.name}
@@ -164,7 +162,7 @@ export function UpsertBudgetModal({
                   isDisabled={isBusy}
                   onPress={() => void handleDelete()}
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="h-3.5 w-3.5" />
                   <span>Gỡ hạn mức</span>
                 </Button>
               ) : null}

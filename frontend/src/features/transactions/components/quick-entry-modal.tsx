@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -10,6 +9,8 @@ import {
   FileText,
   Tag,
 } from 'lucide-react';
+import { useState } from 'react';
+
 import { Modal } from '@/components/feedback';
 import {
   Button,
@@ -18,11 +19,13 @@ import {
   SegmentedControl,
   VndAmountInput,
 } from '@/components/ui';
-import { getTodayDateString } from '@/lib/date-utils';
 import { useAccounts } from '@/features/accounts';
 import { useCategories } from '@/features/categories';
+import { getTodayDateString } from '@/lib/date-utils';
+
 import { TRANSACTION_AMOUNT_PRESETS } from '../constants/transaction.constants';
 import { useCreateTransaction } from '../hooks/use-transactions';
+
 import type { TransactionType } from '../types/transaction.types';
 
 interface QuickEntryModalProps {
@@ -152,7 +155,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                 value: 'EXPENSE',
                 label: (
                   <>
-                    <ArrowDownRight className="w-3.5 h-3.5" />
+                    <ArrowDownRight className="h-3.5 w-3.5" />
                     <span>Chi tiêu</span>
                   </>
                 ),
@@ -162,7 +165,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                 value: 'INCOME',
                 label: (
                   <>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    <ArrowUpRight className="h-3.5 w-3.5" />
                     <span>Thu nhập</span>
                   </>
                 ),
@@ -172,7 +175,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                 value: 'TRANSFER',
                 label: (
                   <>
-                    <ArrowRightLeft className="w-3.5 h-3.5" />
+                    <ArrowRightLeft className="h-3.5 w-3.5" />
                     <span>Chuyển khoản</span>
                   </>
                 ),
@@ -192,12 +195,9 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
           />
 
           {/* 3. Account Selector & Date (Consistent across all tabs) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field.Root>
-              <Field.Label
-                icon={<Wallet className="w-3.5 h-3.5" />}
-                uppercase
-              >
+              <Field.Label icon={<Wallet className="h-3.5 w-3.5" />} uppercase>
                 {txType === 'TRANSFER' ? 'Từ ví nguồn' : 'Ví / Tài khoản'}
               </Field.Label>
               <Field.Select
@@ -214,7 +214,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
 
             <Field.Root>
               <Field.Label
-                icon={<Calendar className="w-3.5 h-3.5" />}
+                icon={<Calendar className="h-3.5 w-3.5" />}
                 uppercase
               >
                 Ngày ghi sổ
@@ -229,17 +229,17 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
           </div>
 
           {/* 4. Fixed-Height Dynamic Slot: Category Grid or Target Account */}
-          <div className="h-[152px] flex flex-col">
+          <div className="flex h-[152px] flex-col">
             {txType !== 'TRANSFER' ? (
               <>
                 <Field.Label
-                  icon={<Tag className="w-3.5 h-3.5" />}
+                  icon={<Tag className="h-3.5 w-3.5" />}
                   uppercase
                   className="mb-1.5 shrink-0"
                 >
                   Danh mục ({txType === 'EXPENSE' ? 'Chi tiêu' : 'Thu nhập'})
                 </Field.Label>
-                <div className="grid grid-cols-2 gap-2 flex-1 content-start overflow-y-auto p-0.5">
+                <div className="grid flex-1 grid-cols-2 content-start gap-2 overflow-y-auto p-0.5">
                   {filteredCategories.map((cat) => {
                     const isSelected = effectiveCategoryId === cat.id;
                     return (
@@ -247,10 +247,10 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                         key={cat.id}
                         type="button"
                         onClick={() => setCategoryId(cat.id)}
-                        className={`h-9 px-3 rounded-lg border text-left text-xs transition-all truncate cursor-pointer ${
+                        className={`h-9 cursor-pointer truncate rounded-lg border px-3 text-left text-xs transition-all ${
                           isSelected
-                            ? 'border-accent bg-accent/10 text-accent font-bold shadow-2xs'
-                            : 'border-border bg-surface hover:border-border/80 text-foreground'
+                            ? 'border-accent bg-accent/10 font-bold text-accent shadow-2xs'
+                            : 'border-border bg-surface text-foreground hover:border-border/80'
                         }`}
                       >
                         {cat.name}
@@ -262,13 +262,13 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
             ) : (
               <>
                 <Field.Label
-                  icon={<ArrowRightLeft className="w-3.5 h-3.5" />}
+                  icon={<ArrowRightLeft className="h-3.5 w-3.5" />}
                   uppercase
                   className="mb-1.5 shrink-0"
                 >
                   Sang ví đích nhận tiền
                 </Field.Label>
-                <div className="flex-1 flex flex-col justify-between bg-surface-secondary/30 border border-border rounded-xl p-3">
+                <div className="flex flex-1 flex-col justify-between rounded-xl border border-border bg-surface-secondary/30 p-3">
                   <Field.Select
                     value={effectiveTargetAccountId}
                     onChange={(e) => setTargetAccountId(e.target.value)}
@@ -280,7 +280,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                       </option>
                     ))}
                   </Field.Select>
-                  <p className="text-[11px] text-muted leading-relaxed px-0.5">
+                  <p className="px-0.5 text-[11px] leading-relaxed text-muted">
                     💡 Chuyển khoản nội bộ sẽ tự động trừ số dư ví nguồn và cộng
                     vào ví đích (hoặc giảm dư nợ nếu ví đích là Thẻ tín dụng).
                   </p>
@@ -291,10 +291,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
 
           {/* 5. Note / Description */}
           <Field.Root>
-            <Field.Label
-              icon={<FileText className="w-3.5 h-3.5" />}
-              uppercase
-            >
+            <Field.Label icon={<FileText className="h-3.5 w-3.5" />} uppercase>
               Diễn giải / Ghi chú bút mực
             </Field.Label>
             <Field.Input

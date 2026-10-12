@@ -1,6 +1,7 @@
 import { AlertTriangle, CheckCircle2, Flame } from 'lucide-react';
-import type { AmountPresetItem } from '@/components/ui/vnd-amount-input';
+
 import type { BudgetStatus } from '../types/budget.types';
+import type { AmountPresetItem } from '@/components/ui/vnd-amount-input';
 
 export const BUDGET_AMOUNT_PRESETS: ReadonlyArray<AmountPresetItem> = [
   { label: '1.000.000 ₫', value: 1000000, mode: 'replace' },

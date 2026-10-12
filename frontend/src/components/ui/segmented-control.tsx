@@ -1,7 +1,8 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { Surface as HeroSurface, cn } from '@heroui/react';
+
+import type { ReactNode } from 'react';
 
 export interface SegmentedOption<T extends string> {
   value: T;
@@ -44,11 +45,11 @@ export function SegmentedControl<T extends string>({
             type="button"
             onClick={() => onChange(opt.value)}
             className={cn(
-              'flex items-center justify-center gap-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer',
+              'flex cursor-pointer items-center justify-center gap-1.5 rounded-md text-xs font-semibold transition-all',
               size === 'sm' ? 'px-3 py-1.5' : 'px-3.5 py-2',
               isActive
-                ? opt.activeClassName ??
-                    'bg-accent text-accent-foreground shadow-xs'
+                ? (opt.activeClassName ??
+                    'bg-accent text-accent-foreground shadow-xs')
                 : 'text-muted hover:text-foreground',
             )}
           >

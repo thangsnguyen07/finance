@@ -5,9 +5,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Account } from './entities/account.entity.js';
+
 import { CreateAccountDto } from './dto/create-account.dto.js';
 import { UpdateAccountDto } from './dto/update-account.dto.js';
+import { Account } from './entities/account.entity.js';
 
 @Injectable()
 export class AccountsService {
@@ -20,10 +21,7 @@ export class AccountsService {
    * Returns all accounts belonging to the authenticated user.
    * Auto-provisions a blank 0 ₫ Cash wallet on first user access.
    */
-  async findAll(
-    userId: string,
-    includeArchived = false,
-  ): Promise<Account[]> {
+  async findAll(userId: string, includeArchived = false): Promise<Account[]> {
     let accounts = await this.accountRepository.find({
       where: {
         userId,

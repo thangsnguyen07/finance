@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsIn,
   IsNotEmpty,
@@ -5,7 +6,7 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
 import type { CategoryType } from '../entities/category.entity.js';
 
 export class CreateCategoryDto {

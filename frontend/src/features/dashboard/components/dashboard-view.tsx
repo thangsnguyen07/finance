@@ -1,12 +1,13 @@
 'use client';
 
 import { useAccounts } from '@/features/accounts';
-import { useTransactions } from '@/features/transactions';
 import { useBudgets } from '@/features/budgets';
+import { useTransactions } from '@/features/transactions';
+
 import { HeroLedgerCard } from './hero-ledger-card';
 import { PocketWalletCarousel } from './pocket-wallet-carousel';
-import { RecentTransactionsCard } from './recent-transactions-card';
 import { PostItReminderCard } from './post-it-reminder-card';
+import { RecentTransactionsCard } from './recent-transactions-card';
 
 export function DashboardView() {
   const { data: accounts, isLoading } = useAccounts();
@@ -40,7 +41,7 @@ export function DashboardView() {
 
       <PocketWalletCarousel accounts={allAccounts} isLoading={isLoading} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         <RecentTransactionsCard
           transactions={txData?.items || []}
           isLoading={isTxLoading}

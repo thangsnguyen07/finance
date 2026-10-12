@@ -8,7 +8,7 @@ export function LedgerLoadingState({
   message?: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 text-muted gap-2">
+    <div className="flex flex-col items-center justify-center gap-2 py-12 text-muted">
       <HeroSpinner size="md" color="accent" />
       <p className="text-xs">{message}</p>
     </div>

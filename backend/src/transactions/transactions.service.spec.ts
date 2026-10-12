@@ -1,16 +1,18 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   BadRequestException,
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+import { Account } from '../accounts/entities/account.entity.js';
+import { Category } from '../categories/entities/category.entity.js';
+import { Transaction } from './entities/transaction.entity.js';
 import {
   TransactionsService,
   calculateBalanceDelta,
 } from './transactions.service.js';
-import { Transaction } from './entities/transaction.entity.js';
-import { Account } from '../accounts/entities/account.entity.js';
-import { Category } from '../categories/entities/category.entity.js';
+
 import type { DataSource, EntityManager, Repository } from 'typeorm';
 
 describe('TransactionsService', () => {
@@ -28,13 +30,17 @@ describe('TransactionsService', () => {
       save: vi.fn((_entityClass, entity) =>
         Promise.resolve({ id: 'tx-uuid-1', ...(entity as object) }),
       ) as unknown as EntityManager['save'],
-      remove: vi.fn(() => Promise.resolve({})) as unknown as EntityManager['remove'],
+      remove: vi.fn(() =>
+        Promise.resolve({}),
+      ) as unknown as EntityManager['remove'],
     };
 
     mockDataSource = {
-      transaction: vi.fn(async (cb: (manager: EntityManager) => Promise<unknown>) => {
-        return await cb(mockManager as EntityManager);
-      }) as unknown as DataSource['transaction'],
+      transaction: vi.fn(
+        async (cb: (manager: EntityManager) => Promise<unknown>) => {
+          return await cb(mockManager as EntityManager);
+        },
+      ) as unknown as DataSource['transaction'],
     };
 
     service = new TransactionsService(
@@ -53,7 +59,9 @@ describe('TransactionsService', () => {
       expect(calculateBalanceDelta('CREDIT_CARD', 'EXPENSE', 200000)).toBe(
         200000,
       );
-      expect(calculateBalanceDelta('CREDIT_CARD', 'INCOME', 50000)).toBe(-50000);
+      expect(calculateBalanceDelta('CREDIT_CARD', 'INCOME', 50000)).toBe(
+        -50000,
+      );
       expect(
         calculateBalanceDelta('CREDIT_CARD', 'TRANSFER', 1000000, true),
       ).toBe(-1000000);

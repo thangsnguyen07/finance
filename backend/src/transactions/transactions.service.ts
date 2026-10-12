@@ -6,10 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
-import {
-  Transaction,
-  type TransactionType,
-} from './entities/transaction.entity.js';
+
 import {
   Account,
   type AccountType,
@@ -17,6 +14,10 @@ import {
 import { Category } from '../categories/entities/category.entity.js';
 import { CreateTransactionDto } from './dto/create-transaction.dto.js';
 import { QueryTransactionsDto } from './dto/query-transactions.dto.js';
+import {
+  Transaction,
+  type TransactionType,
+} from './entities/transaction.entity.js';
 
 export interface PaginatedTransactionsResult {
   items: Transaction[];
@@ -203,8 +204,9 @@ export class TransactionsService {
         clientTxId: dto.clientTxId,
         userId,
         accountId: dto.accountId,
-        targetAccountId: dto.type === 'TRANSFER' ? dto.targetAccountId ?? null : null,
-        categoryId: dto.type !== 'TRANSFER' ? dto.categoryId ?? null : null,
+        targetAccountId:
+          dto.type === 'TRANSFER' ? (dto.targetAccountId ?? null) : null,
+        categoryId: dto.type !== 'TRANSFER' ? (dto.categoryId ?? null) : null,
         amount: dto.amount,
         type: dto.type,
         status: 'CLEARED',

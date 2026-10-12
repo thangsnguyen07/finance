@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   Receipt,
@@ -9,6 +7,9 @@ import {
   PieChart,
   Landmark,
 } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
 import { useUiStore } from '@/stores/use-ui-store';
 
 export function BottomNav() {
@@ -51,8 +52,8 @@ export function BottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md border-t border-border lg:hidden pb-[env(safe-area-inset-bottom)]">
-      <div className="flex items-center justify-around h-16 max-w-lg mx-auto px-2">
+    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden">
+      <div className="mx-auto flex h-16 max-w-lg items-center justify-around px-2">
         {navItems.map((item) => {
           const Icon = item.icon;
 
@@ -62,13 +63,13 @@ export function BottomNav() {
                 key={item.label}
                 type="button"
                 onClick={item.onClick}
-                className="flex flex-col items-center justify-center -mt-5 group focus:outline-none cursor-pointer"
+                className="group -mt-5 flex cursor-pointer flex-col items-center justify-center focus:outline-none"
                 aria-label="Thêm giao dịch mới"
               >
-                <div className="w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center shadow-md active:scale-95 transition-transform duration-150 border-2 border-surface">
-                  <Icon className="w-6 h-6 stroke-[2.5]" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-surface bg-accent text-accent-foreground shadow-md transition-transform duration-150 active:scale-95">
+                  <Icon className="h-6 w-6 stroke-[2.5]" />
                 </div>
-                <span className="text-[11px] font-medium text-foreground/80 mt-1">
+                <span className="mt-1 text-[11px] font-medium text-foreground/80">
                   {item.label}
                 </span>
               </button>
@@ -79,18 +80,18 @@ export function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
+              className={`flex flex-1 flex-col items-center justify-center py-1 transition-colors ${
                 item.isActive
-                  ? 'text-accent font-semibold'
+                  ? 'font-semibold text-accent'
                   : 'text-muted hover:text-foreground'
               }`}
             >
               <Icon
-                className={`w-5 h-5 ${
+                className={`h-5 w-5 ${
                   item.isActive ? 'stroke-[2.5]' : 'stroke-[1.75]'
                 }`}
               />
-              <span className="text-[11px] mt-1 tracking-tight">
+              <span className="mt-1 text-[11px] tracking-tight">
                 {item.label}
               </span>
             </Link>

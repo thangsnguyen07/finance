@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+
 import { Card, CurrencyText, K3WoodenRuler } from '@/components/ui';
 
 interface HeroLedgerCardProps {
@@ -30,26 +31,26 @@ export function HeroLedgerCard({
   const currentMonthNumber = now.getMonth() + 1;
 
   return (
-    <Card className="relative overflow-hidden space-y-4">
+    <Card className="relative space-y-4 overflow-hidden">
       <Card.Header className="flex-col items-start">
-        <Card.Eyebrow className="text-[10px] font-sans mb-1">
+        <Card.Eyebrow className="mb-1 font-sans text-[10px]">
           Sổ Cái Tổng Hợp • Số Dư Tích Lũy
         </Card.Eyebrow>
-        <Card.Title className="text-3xl sm:text-4xl font-serif font-black text-foreground tracking-tight tabular-nums">
+        <Card.Title className="font-serif text-3xl font-black tracking-tight text-foreground tabular-nums sm:text-4xl">
           {isLoading ? '...' : <CurrencyText amount={netWorth} />}
         </Card.Title>
       </Card.Header>
 
-      <Card.Content className="pt-3 border-t border-border/70 space-y-2">
-        <div className="flex justify-between items-center text-xs">
-          <span className="font-bold text-foreground flex items-center gap-1.5">
+      <Card.Content className="space-y-2 border-t border-border/70 pt-3">
+        <div className="flex items-center justify-between text-xs">
+          <span className="flex items-center gap-1.5 font-bold text-foreground">
             <span>📏 Hạn mức chi tiêu tháng {currentMonthNumber}:</span>
-            <span className="text-[10px] text-muted font-normal">
+            <span className="text-[10px] font-normal text-muted">
               (Ngày {currentDay}/{daysInMonth})
             </span>
           </span>
           {totalBudgeted > 0 ? (
-            <span className="font-mono text-amber-950 dark:text-amber-300 font-bold tabular-nums">
+            <span className="font-mono font-bold text-amber-950 tabular-nums dark:text-amber-300">
               <CurrencyText amount={totalBudgeted} /> ({usagePercent}%)
             </span>
           ) : (
@@ -64,7 +65,7 @@ export function HeroLedgerCard({
 
         <K3WoodenRuler usagePercentage={usagePercent} />
 
-        <div className="flex justify-between text-[10px] text-muted font-mono tabular-nums">
+        <div className="flex justify-between font-mono text-[10px] text-muted tabular-nums">
           <span>
             Đã chi: <CurrencyText amount={totalSpent} /> ({usagePercent}%)
           </span>

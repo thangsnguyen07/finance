@@ -1,10 +1,4 @@
-import {
-  IsUUID,
-  IsString,
-  Matches,
-  IsInt,
-  Min,
-} from 'class-validator';
+import { IsUUID, IsString, Matches, IsInt, Min } from 'class-validator';
 
 export class UpsertBudgetDto {
   @IsUUID()

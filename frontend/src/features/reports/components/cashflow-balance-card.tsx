@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
+
 import { Card, Badge, CurrencyText } from '@/components/ui';
 import { formatMonthDisplay } from '@/lib/formatters';
 
@@ -55,20 +56,18 @@ export function CashflowBalanceCard({
     <Card>
       <Card.Header
         bordered
-        className="flex-col sm:flex-row sm:items-center justify-between gap-3"
+        className="flex-col justify-between gap-3 sm:flex-row sm:items-center"
       >
         <div>
-          <span className="text-xs text-muted block">
+          <span className="block text-xs text-muted">
             Thặng dư / Thâm hụt ròng • {formatMonthDisplay(selectedMonth)}
           </span>
-          <Card.Title className="text-2xl sm:text-3xl font-serif font-black mt-1">
+          <Card.Title className="mt-1 font-serif text-2xl font-black sm:text-3xl">
             <CurrencyText
               amount={Math.abs(monthNet)}
               type={monthNet >= 0 ? 'INCOME' : 'EXPENSE'}
               signed={monthNet !== 0}
-              className={
-                monthNet >= 0 ? 'text-foreground' : 'text-danger'
-              }
+              className={monthNet >= 0 ? 'text-foreground' : 'text-danger'}
             />
           </Card.Title>
         </div>
@@ -82,14 +81,14 @@ export function CashflowBalanceCard({
         ) : null}
       </Card.Header>
 
-      <Card.Content className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="flex items-center justify-between p-3.5 rounded-lg bg-surface-secondary/40 border border-border/60">
+      <Card.Content className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="flex items-center justify-between rounded-lg border border-border/60 bg-surface-secondary/40 p-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-success/10 text-success flex items-center justify-center">
-              <ArrowUpRight className="w-4 h-4" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-success/10 text-success">
+              <ArrowUpRight className="h-4 w-4" />
             </div>
             <div>
-              <span className="text-xs text-muted block">Tổng dòng thu</span>
+              <span className="block text-xs text-muted">Tổng dòng thu</span>
               <span className="text-[11px] text-muted">
                 {incomeGroupCount} nhóm nguồn thu
               </span>
@@ -103,13 +102,13 @@ export function CashflowBalanceCard({
           />
         </div>
 
-        <div className="flex items-center justify-between p-3.5 rounded-lg bg-surface-secondary/40 border border-border/60">
+        <div className="flex items-center justify-between rounded-lg border border-border/60 bg-surface-secondary/40 p-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-danger/10 text-danger flex items-center justify-center">
-              <ArrowDownRight className="w-4 h-4" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-danger/10 text-danger">
+              <ArrowDownRight className="h-4 w-4" />
             </div>
             <div>
-              <span className="text-xs text-muted block">Tổng dòng chi</span>
+              <span className="block text-xs text-muted">Tổng dòng chi</span>
               <span className="text-[11px] text-muted">
                 {expenseGroupCount} nhóm chi tiêu
               </span>

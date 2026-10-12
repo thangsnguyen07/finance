@@ -1,7 +1,8 @@
 'use client';
 
-import type { ComponentProps } from 'react';
 import { Card as HeroCard, cn } from '@heroui/react';
+
+import type { ComponentProps } from 'react';
 
 type HeroCardRootProps = ComponentProps<typeof HeroCard>;
 type HeroCardHeaderProps = ComponentProps<typeof HeroCard.Header>;
@@ -81,8 +82,8 @@ function CardHeader({
   return (
     <HeroCard.Header
       className={cn(
-        'p-0 flex items-center justify-between gap-3',
-        bordered && 'pb-3.5 mb-3.5 border-b border-border/80',
+        'flex items-center justify-between gap-3 p-0',
+        bordered && 'mb-3.5 border-b border-border/80 pb-3.5',
         className,
       )}
       {...props}
@@ -96,7 +97,7 @@ function CardTitle({ className, children, ...props }: HeroCardTitleProps) {
   return (
     <HeroCard.Title
       className={cn(
-        'font-serif font-bold text-base text-foreground tracking-tight',
+        'font-serif text-base font-bold tracking-tight text-foreground',
         className,
       )}
       {...props}
@@ -116,7 +117,7 @@ function CardEyebrow({
   return (
     <span
       className={cn(
-        'text-[11px] font-bold uppercase tracking-wider text-muted block',
+        'block text-[11px] font-bold tracking-wider text-muted uppercase',
         className,
       )}
     >
@@ -132,7 +133,7 @@ function CardDescription({
 }: HeroCardDescriptionProps) {
   return (
     <HeroCard.Description
-      className={cn('text-xs text-muted mt-0.5', className)}
+      className={cn('mt-0.5 text-xs text-muted', className)}
       {...props}
     >
       {children}
@@ -152,7 +153,7 @@ function CardFooter({ className, children, ...props }: HeroCardFooterProps) {
   return (
     <HeroCard.Footer
       className={cn(
-        'p-0 pt-3 mt-4 border-t border-border/70 flex items-center justify-between gap-3',
+        'mt-4 flex items-center justify-between gap-3 border-t border-border/70 p-0 pt-3',
         className,
       )}
       {...props}

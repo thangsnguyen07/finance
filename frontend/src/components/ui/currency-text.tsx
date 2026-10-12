@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@heroui/react';
+
 import { formatVND } from '@/lib/formatters';
 
 interface CurrencyTextProps {
@@ -19,16 +20,12 @@ export function CurrencyText({
   const numericAmount =
     typeof amount === 'string' ? parseFloat(amount) || 0 : amount;
   const prefix =
-    signed && type === 'INCOME'
-      ? '+'
-      : signed && type === 'EXPENSE'
-        ? '-'
-        : '';
+    signed && type === 'INCOME' ? '+' : signed && type === 'EXPENSE' ? '-' : '';
 
   return (
     <span
       className={cn(
-        'font-mono tabular-nums tracking-tight',
+        'font-mono tracking-tight tabular-nums',
         type === 'INCOME' && 'text-success',
         type === 'EXPENSE' && 'text-danger',
         type === 'TRANSFER' && 'text-accent',

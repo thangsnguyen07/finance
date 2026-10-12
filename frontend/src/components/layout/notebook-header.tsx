@@ -1,9 +1,9 @@
 'use client';
 
+import { NotebookTabs, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
-import { NotebookTabs, Settings } from 'lucide-react';
 
 const WEEKDAYS = [
   'Chủ Nhật',
@@ -36,24 +36,24 @@ export function NotebookHeader() {
   const isSettingsActive = pathname.startsWith('/settings');
 
   return (
-    <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-xs border-b border-border/80">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-2">
-        <Link href="/" className="flex items-center gap-2.5 min-w-0 group">
-          <div className="w-8 h-8 rounded-lg bg-amber-900 text-amber-100 flex items-center justify-center font-bold shadow-2xs shrink-0 group-hover:opacity-90 transition-opacity">
-            <NotebookTabs className="w-4 h-4 stroke-[2.2]" />
+    <header className="sticky top-0 z-30 border-b border-border/80 bg-background/95 backdrop-blur-xs">
+      <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2.5 sm:px-6 lg:px-8">
+        <Link href="/" className="group flex min-w-0 items-center gap-2.5">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-900 font-bold text-amber-100 shadow-2xs transition-opacity group-hover:opacity-90">
+            <NotebookTabs className="h-4 w-4 stroke-[2.2]" />
           </div>
           <div className="min-w-0">
-            <span className="text-[10px] text-muted font-sans uppercase tracking-wider block font-semibold leading-tight">
+            <span className="block font-sans text-[10px] leading-tight font-semibold tracking-wider text-muted uppercase">
               SỔ TAY TÀI CHÍNH CÁ NHÂN
             </span>
-            <h2 className="text-xs sm:text-sm font-bold font-serif text-foreground leading-tight truncate">
+            <h2 className="truncate font-serif text-xs leading-tight font-bold text-foreground sm:text-sm">
               {formattedDate || 'Đang tải ngày...'}
             </h2>
           </div>
         </Link>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="px-2 py-0.5 rounded text-[9px] font-bold font-mono tracking-wider border-2 border-dashed border-danger/80 text-danger rotate-[2deg] shadow-2xs select-none hover:rotate-0 transition-transform">
+        <div className="flex shrink-0 items-center gap-2">
+          <div className="rotate-[2deg] rounded border-2 border-dashed border-danger/80 px-2 py-0.5 font-mono text-[9px] font-bold tracking-wider text-danger shadow-2xs transition-transform select-none hover:rotate-0">
             ✓ SỔ ĐÃ KIỂM KÊ
           </div>
 
@@ -61,13 +61,13 @@ export function NotebookHeader() {
             href="/settings"
             title="Cài đặt sổ & Danh mục"
             aria-label="Cài đặt sổ & Danh mục"
-            className={`lg:hidden p-1.5 rounded-md border transition-colors ${
+            className={`rounded-md border p-1.5 transition-colors lg:hidden ${
               isSettingsActive
-                ? 'bg-accent text-accent-foreground border-accent'
-                : 'bg-surface text-muted hover:text-foreground border-border'
+                ? 'border-accent bg-accent text-accent-foreground'
+                : 'border-border bg-surface text-muted hover:text-foreground'
             }`}
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="h-4 w-4" />
           </Link>
         </div>
       </div>

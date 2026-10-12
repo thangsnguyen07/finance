@@ -1,9 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { getCategories, createCategory } from '../services/categories.api';
-import type {
-  CategoryType,
-  CreateCategoryDto,
-} from '../types/category.types';
+
+import type { CategoryType, CreateCategoryDto } from '../types/category.types';
 
 export const CATEGORIES_QUERY_KEY = ['categories'];
 

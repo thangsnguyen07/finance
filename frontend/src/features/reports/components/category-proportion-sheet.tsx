@@ -1,7 +1,9 @@
 'use client';
 
 import { createContext, use } from 'react';
+
 import { Card, CurrencyText } from '@/components/ui';
+
 import type { CategoryBreakdownItem } from '../types/report.types';
 
 interface CategoryProportionContextValue {
@@ -50,7 +52,7 @@ function CategoryProportionHeader({
 }) {
   const { totalAmount } = useCategoryProportionContext();
   return (
-    <Card.Header bordered className="items-baseline mb-0 pb-3">
+    <Card.Header bordered className="mb-0 items-baseline pb-3">
       <div>
         <Card.Title>{title}</Card.Title>
         <Card.Description>{subtitle}</Card.Description>
@@ -68,7 +70,7 @@ function CategoryProportionSegmentedBar() {
   if (items.length === 0 || totalAmount <= 0) return null;
 
   return (
-    <div className="mt-4 h-3 w-full rounded-xs overflow-hidden flex bg-surface-secondary border border-border/60 p-0.5 gap-0.5">
+    <div className="mt-4 flex h-3 w-full gap-0.5 overflow-hidden rounded-xs border border-border/60 bg-surface-secondary p-0.5">
       {items.map((item) => (
         <div
           key={item.categoryId}
@@ -77,7 +79,7 @@ function CategoryProportionSegmentedBar() {
             backgroundColor: item.color,
           }}
           title={`${item.categoryName}: ${item.percentage}%`}
-          className="h-full first:rounded-l-2xs last:rounded-r-2xs transition-all duration-300"
+          className="first:rounded-l-2xs last:rounded-r-2xs h-full transition-all duration-300"
         />
       ))}
     </div>
@@ -96,19 +98,19 @@ function CategoryProportionList() {
   }
 
   return (
-    <Card.Content className="pt-3 divide-y divide-border/60">
+    <Card.Content className="divide-y divide-border/60 pt-3">
       {items.map((item) => (
         <div
           key={item.categoryId}
-          className="py-2.5 flex items-center justify-between text-xs gap-3"
+          className="flex items-center justify-between gap-3 py-2.5 text-xs"
         >
-          <div className="flex items-center gap-2.5 min-w-0">
+          <div className="flex min-w-0 items-center gap-2.5">
             <span
-              className="w-2.5 h-2.5 rounded-2xs shrink-0"
+              className="rounded-2xs h-2.5 w-2.5 shrink-0"
               style={{ backgroundColor: item.color }}
             />
             <div className="min-w-0">
-              <span className="font-medium text-foreground truncate block">
+              <span className="block truncate font-medium text-foreground">
                 {item.categoryName}
               </span>
               <span className="text-[11px] text-muted">
@@ -117,10 +119,10 @@ function CategoryProportionList() {
             </div>
           </div>
 
-          <div className="text-right font-mono tabular-nums shrink-0">
+          <div className="shrink-0 text-right font-mono tabular-nums">
             <CurrencyText
               amount={item.amount}
-              className="font-bold text-foreground block"
+              className="block font-bold text-foreground"
             />
             <span className="text-[11px] text-muted">{item.percentage}%</span>
           </div>

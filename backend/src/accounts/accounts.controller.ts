@@ -11,12 +11,18 @@ import {
   HttpStatus,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { Account } from './entities/account.entity.js';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+
+import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { AccountsService } from './accounts.service.js';
 import { CreateAccountDto } from './dto/create-account.dto.js';
 import { UpdateAccountDto } from './dto/update-account.dto.js';
-import { CurrentUser } from '../common/decorators/current-user.decorator.js';
+import { Account } from './entities/account.entity.js';
 
 @ApiTags('accounts')
 @ApiBearerAuth()
@@ -40,7 +46,10 @@ export class AccountsController {
   @Post()
   @ApiOperation({ summary: 'Create a new account/wallet' })
   @ApiResponse({ status: 201, description: 'Account created successfully' })
-  @ApiResponse({ status: 409, description: 'Account with same name already exists' })
+  @ApiResponse({
+    status: 409,
+    description: 'Account with same name already exists',
+  })
   async create(
     @CurrentUser() userId: string,
     @Body() createAccountDto: CreateAccountDto,

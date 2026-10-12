@@ -1,7 +1,8 @@
 'use client';
 
-import type { ComponentProps } from 'react';
 import { Chip as HeroChip, cn } from '@heroui/react';
+
+import type { ComponentProps } from 'react';
 
 export interface BadgeProps extends ComponentProps<typeof HeroChip> {
   mono?: boolean;
@@ -20,7 +21,7 @@ export function Badge({
       size={size}
       variant={variant}
       className={cn(
-        'text-[11px] font-medium inline-flex items-center gap-1',
+        'inline-flex items-center gap-1 text-[11px] font-medium',
         mono && 'font-mono text-[10px]',
         className,
       )}

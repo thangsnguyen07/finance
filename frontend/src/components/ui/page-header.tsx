@@ -2,7 +2,7 @@
 
 function PageHeaderRoot({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border">
+    <div className="flex flex-col justify-between gap-4 border-b border-border pb-4 sm:flex-row sm:items-center">
       {children}
     </div>
   );
@@ -17,11 +17,11 @@ function PageHeaderContent({
 }) {
   return (
     <div>
-      <h1 className="font-serif font-bold text-2xl sm:text-3xl text-foreground tracking-tight">
+      <h1 className="font-serif text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
         {title}
       </h1>
       {description ? (
-        <p className="text-xs text-muted mt-1">{description}</p>
+        <p className="mt-1 text-xs text-muted">{description}</p>
       ) : null}
     </div>
   );
@@ -29,7 +29,7 @@ function PageHeaderContent({
 
 function PageHeaderActions({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-2.5 self-start sm:self-auto shrink-0">
+    <div className="flex shrink-0 items-center gap-2.5 self-start sm:self-auto">
       {children}
     </div>
   );

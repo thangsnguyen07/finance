@@ -6,7 +6,9 @@ import {
   ArrowRightLeft,
   Trash2,
 } from 'lucide-react';
+
 import { Button, Card, Badge, CurrencyText } from '@/components/ui';
+
 import type { TransactionResponse } from '../types/transaction.types';
 
 interface TransactionLedgerListProps {
@@ -24,7 +26,7 @@ export function TransactionLedgerList({
 }: TransactionLedgerListProps) {
   return (
     <Card variant="flush">
-      <div className="px-5 py-3 bg-surface-secondary/40 border-b border-border flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-muted">
+      <div className="flex items-center justify-between border-b border-border bg-surface-secondary/40 px-5 py-3 text-[11px] font-bold tracking-wider text-muted uppercase">
         <span>Nội dung & Danh mục</span>
         <span>Số tiền (VND)</span>
       </div>
@@ -43,11 +45,11 @@ export function TransactionLedgerList({
           return (
             <div
               key={tx.id}
-              className="px-5 py-3.5 flex items-center justify-between gap-4 hover:bg-surface-secondary/20 transition-colors group"
+              className="group flex items-center justify-between gap-4 px-5 py-3.5 transition-colors hover:bg-surface-secondary/20"
             >
-              <div className="flex items-center gap-3.5 min-w-0">
+              <div className="flex min-w-0 items-center gap-3.5">
                 <div
-                  className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
                     isExpense
                       ? 'bg-danger/10 text-danger'
                       : isIncome
@@ -56,19 +58,19 @@ export function TransactionLedgerList({
                   }`}
                 >
                   {isExpense ? (
-                    <ArrowDownRight className="w-4 h-4" />
+                    <ArrowDownRight className="h-4 w-4" />
                   ) : isIncome ? (
-                    <ArrowUpRight className="w-4 h-4" />
+                    <ArrowUpRight className="h-4 w-4" />
                   ) : (
-                    <ArrowRightLeft className="w-4 h-4" />
+                    <ArrowRightLeft className="h-4 w-4" />
                   )}
                 </div>
 
                 <div className="min-w-0">
-                  <p className="text-xs sm:text-sm font-semibold text-foreground truncate">
+                  <p className="truncate text-xs font-semibold text-foreground sm:text-sm">
                     {displayTitle}
                   </p>
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted mt-0.5">
+                  <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted">
                     <span className="font-mono">{tx.transactionDate}</span>
                     <span>•</span>
                     <span>{tx.account?.name || 'Ví đã lưu'}</span>
@@ -86,7 +88,7 @@ export function TransactionLedgerList({
                         <Badge
                           size="sm"
                           variant="secondary"
-                          className="text-[10px] h-4 px-1.5"
+                          className="h-4 px-1.5 text-[10px]"
                         >
                           {tx.category.name}
                         </Badge>
@@ -96,12 +98,12 @@ export function TransactionLedgerList({
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 shrink-0">
+              <div className="flex shrink-0 items-center gap-3">
                 <CurrencyText
                   amount={tx.amount}
                   type={tx.type}
                   signed
-                  className="font-bold text-xs sm:text-sm"
+                  className="text-xs font-bold sm:text-sm"
                 />
 
                 <Button
@@ -111,9 +113,9 @@ export function TransactionLedgerList({
                   isDisabled={isDeleting}
                   onPress={() => onDelete(tx.id, displayTitle)}
                   aria-label="Xóa & hoàn lại số dư"
-                  className="w-7 h-7 min-w-7 text-muted hover:text-danger opacity-60 group-hover:opacity-100"
+                  className="h-7 w-7 min-w-7 text-muted opacity-60 group-hover:opacity-100 hover:text-danger"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="h-3.5 w-3.5" />
                 </Button>
               </div>
             </div>
@@ -121,7 +123,7 @@ export function TransactionLedgerList({
         })}
       </div>
 
-      <div className="px-5 py-3 bg-surface-secondary/30 border-t border-border text-[11px] text-muted flex justify-between font-mono">
+      <div className="flex justify-between border-t border-border bg-surface-secondary/30 px-5 py-3 font-mono text-[11px] text-muted">
         <span>Hiển thị {items.length} bút toán gần nhất</span>
         <span>Tổng cộng: {totalCount} bút toán</span>
       </div>
