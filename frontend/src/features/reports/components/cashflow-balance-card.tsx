@@ -6,7 +6,13 @@ import { formatMonthDisplay } from '@/lib/formatters';
 
 function SurplusSavingsBadge({ rate }: { rate: number }) {
   return (
-    <Badge size="sm" color="success" variant="soft" mono>
+    <Badge
+      size="sm"
+      color="success"
+      variant="soft"
+      mono
+      className="text-xs font-semibold"
+    >
       Giữ lại được {rate}% thu nhập
     </Badge>
   );
@@ -14,7 +20,13 @@ function SurplusSavingsBadge({ rate }: { rate: number }) {
 
 function DeficitSavingsBadge() {
   return (
-    <Badge size="sm" color="danger" variant="soft" mono>
+    <Badge
+      size="sm"
+      color="danger"
+      variant="soft"
+      mono
+      className="text-xs font-semibold"
+    >
       Chi vượt thu trong kỳ
     </Badge>
   );
@@ -43,19 +55,19 @@ export function CashflowBalanceCard({
     <Card>
       <Card.Header
         bordered
-        className="flex-col items-start justify-between gap-3 sm:flex-row sm:items-center"
+        className="flex-col sm:flex-row sm:items-center justify-between gap-3"
       >
         <div>
-          <span className="block text-xs text-ink-secondary">
+          <span className="text-xs text-muted block">
             Thặng dư / Thâm hụt ròng • {formatMonthDisplay(selectedMonth)}
           </span>
-          <Card.Title className="mt-1 text-2xl font-black sm:text-3xl">
+          <Card.Title className="text-2xl sm:text-3xl font-serif font-black mt-1">
             <CurrencyText
               amount={Math.abs(monthNet)}
               type={monthNet >= 0 ? 'INCOME' : 'EXPENSE'}
-              signed
+              signed={monthNet !== 0}
               className={
-                monthNet >= 0 ? 'text-ink-primary' : 'text-accent-coral'
+                monthNet >= 0 ? 'text-foreground' : 'text-danger'
               }
             />
           </Card.Title>
@@ -70,17 +82,15 @@ export function CashflowBalanceCard({
         ) : null}
       </Card.Header>
 
-      <Card.Content className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="flex items-center justify-between rounded-lg border border-ledger-border/60 bg-paper-muted/40 p-3.5">
+      <Card.Content className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex items-center justify-between p-3.5 rounded-lg bg-surface-secondary/40 border border-border/60">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-teal/10 text-accent-teal">
-              <ArrowUpRight className="h-4 w-4" />
+            <div className="w-8 h-8 rounded-full bg-success/10 text-success flex items-center justify-center">
+              <ArrowUpRight className="w-4 h-4" />
             </div>
             <div>
-              <span className="block text-xs text-ink-secondary">
-                Tổng dòng thu
-              </span>
-              <span className="text-[11px] text-ink-secondary">
+              <span className="text-xs text-muted block">Tổng dòng thu</span>
+              <span className="text-[11px] text-muted">
                 {incomeGroupCount} nhóm nguồn thu
               </span>
             </div>
@@ -93,16 +103,14 @@ export function CashflowBalanceCard({
           />
         </div>
 
-        <div className="flex items-center justify-between rounded-lg border border-ledger-border/60 bg-paper-muted/40 p-3.5">
+        <div className="flex items-center justify-between p-3.5 rounded-lg bg-surface-secondary/40 border border-border/60">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-coral/10 text-accent-coral">
-              <ArrowDownRight className="h-4 w-4" />
+            <div className="w-8 h-8 rounded-full bg-danger/10 text-danger flex items-center justify-center">
+              <ArrowDownRight className="w-4 h-4" />
             </div>
             <div>
-              <span className="block text-xs text-ink-secondary">
-                Tổng dòng chi
-              </span>
-              <span className="text-[11px] text-ink-secondary">
+              <span className="text-xs text-muted block">Tổng dòng chi</span>
+              <span className="text-[11px] text-muted">
                 {expenseGroupCount} nhóm chi tiêu
               </span>
             </div>

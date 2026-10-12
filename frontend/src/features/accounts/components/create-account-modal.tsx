@@ -95,13 +95,13 @@ export function CreateAccountModal({
                     key={item.type}
                     type="button"
                     onClick={() => setType(item.type)}
-                    className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border p-2.5 text-xs transition-all ${
+                    className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-accent-coral bg-accent-coral/10 font-semibold text-accent-coral shadow-2xs'
-                        : 'border-ledger-border bg-paper-surface text-ink-secondary hover:text-ink-primary'
+                        ? 'border-accent bg-accent/10 text-accent font-semibold shadow-2xs'
+                        : 'border-border bg-surface text-muted hover:text-foreground'
                     }`}
                   >
-                    <Icon className="mb-1 h-4 w-4" />
+                    <Icon className="w-4 h-4 mb-1" />
                     <span>{item.label}</span>
                   </button>
                 );
@@ -172,8 +172,9 @@ export function CreateAccountModal({
                 tone="primary"
                 size="sm"
                 isLoading={createMutation.isPending}
+                className="px-5 py-2"
               >
-                Tạo tài khoản
+                <span>Tạo tài khoản</span>
               </Button>
             </div>
           </Modal.Footer>

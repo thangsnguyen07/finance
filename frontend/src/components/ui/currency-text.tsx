@@ -29,9 +29,9 @@ export function CurrencyText({
     <span
       className={cn(
         'font-mono tabular-nums tracking-tight',
-        type === 'INCOME' && 'text-accent-teal',
-        type === 'EXPENSE' && 'text-accent-coral',
-        type === 'TRANSFER' && 'text-ink-primary',
+        type === 'INCOME' && 'text-success',
+        type === 'EXPENSE' && 'text-danger',
+        type === 'TRANSFER' && 'text-accent',
         className,
       )}
     >

@@ -23,13 +23,13 @@ export function TransactionLedgerList({
   onDelete,
 }: TransactionLedgerListProps) {
   return (
-    <Card padding="none" className="overflow-hidden">
-      <div className="flex items-center justify-between border-b border-ledger-border bg-paper-muted/40 px-5 py-3 text-[11px] font-bold tracking-wider text-ink-secondary uppercase">
+    <Card variant="flush">
+      <div className="px-5 py-3 bg-surface-secondary/40 border-b border-border flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-muted">
         <span>Nội dung & Danh mục</span>
         <span>Số tiền (VND)</span>
       </div>
 
-      <div className="divide-y divide-ledger-border/70">
+      <div className="divide-y divide-border/70">
         {items.map((tx) => {
           const isExpense = tx.type === 'EXPENSE';
           const isIncome = tx.type === 'INCOME';
@@ -43,39 +43,39 @@ export function TransactionLedgerList({
           return (
             <div
               key={tx.id}
-              className="group flex items-center justify-between gap-4 px-5 py-3.5 transition-colors hover:bg-paper-muted/30"
+              className="px-5 py-3.5 flex items-center justify-between gap-4 hover:bg-surface-secondary/20 transition-colors group"
             >
-              <div className="flex min-w-0 items-center gap-3.5">
+              <div className="flex items-center gap-3.5 min-w-0">
                 <div
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+                  className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
                     isExpense
-                      ? 'bg-accent-coral/10 text-accent-coral'
+                      ? 'bg-danger/10 text-danger'
                       : isIncome
-                        ? 'bg-accent-teal/10 text-accent-teal'
-                        : 'bg-accent-ochre/15 text-ink-primary'
+                        ? 'bg-success/10 text-success'
+                        : 'bg-accent/10 text-accent'
                   }`}
                 >
                   {isExpense ? (
-                    <ArrowDownRight className="h-4 w-4" />
+                    <ArrowDownRight className="w-4 h-4" />
                   ) : isIncome ? (
-                    <ArrowUpRight className="h-4 w-4" />
+                    <ArrowUpRight className="w-4 h-4" />
                   ) : (
-                    <ArrowRightLeft className="h-4 w-4" />
+                    <ArrowRightLeft className="w-4 h-4" />
                   )}
                 </div>
 
                 <div className="min-w-0">
-                  <p className="truncate text-xs font-semibold text-ink-primary sm:text-sm">
+                  <p className="text-xs sm:text-sm font-semibold text-foreground truncate">
                     {displayTitle}
                   </p>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-ink-secondary">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted mt-0.5">
                     <span className="font-mono">{tx.transactionDate}</span>
                     <span>•</span>
                     <span>{tx.account?.name || 'Ví đã lưu'}</span>
                     {tx.type === 'TRANSFER' && tx.targetAccount ? (
                       <>
                         <span>→</span>
-                        <span className="font-medium text-ink-primary">
+                        <span className="font-medium text-foreground">
                           {tx.targetAccount.name}
                         </span>
                       </>
@@ -83,7 +83,11 @@ export function TransactionLedgerList({
                     {tx.category ? (
                       <>
                         <span>•</span>
-                        <Badge size="sm" variant="secondary">
+                        <Badge
+                          size="sm"
+                          variant="secondary"
+                          className="text-[10px] h-4 px-1.5"
+                        >
                           {tx.category.name}
                         </Badge>
                       </>
@@ -92,12 +96,12 @@ export function TransactionLedgerList({
                 </div>
               </div>
 
-              <div className="flex shrink-0 items-center gap-3">
+              <div className="flex items-center gap-3 shrink-0">
                 <CurrencyText
                   amount={tx.amount}
                   type={tx.type}
                   signed
-                  className="text-xs font-bold sm:text-sm"
+                  className="font-bold text-xs sm:text-sm"
                 />
 
                 <Button
@@ -107,9 +111,9 @@ export function TransactionLedgerList({
                   isDisabled={isDeleting}
                   onPress={() => onDelete(tx.id, displayTitle)}
                   aria-label="Xóa & hoàn lại số dư"
-                  className="h-7 w-7 min-w-7 opacity-60 group-hover:opacity-100 hover:text-accent-coral"
+                  className="w-7 h-7 min-w-7 text-muted hover:text-danger opacity-60 group-hover:opacity-100"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
+                  <Trash2 className="w-3.5 h-3.5" />
                 </Button>
               </div>
             </div>
@@ -117,7 +121,7 @@ export function TransactionLedgerList({
         })}
       </div>
 
-      <div className="flex justify-between border-t border-ledger-border bg-paper-muted/30 px-5 py-3 font-mono text-[11px] text-ink-secondary">
+      <div className="px-5 py-3 bg-surface-secondary/30 border-t border-border text-[11px] text-muted flex justify-between font-mono">
         <span>Hiển thị {items.length} bút toán gần nhất</span>
         <span>Tổng cộng: {totalCount} bút toán</span>
       </div>

@@ -23,12 +23,12 @@ function ModalRoot({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex animate-in fade-in items-end justify-center bg-ink-primary/30 p-0 backdrop-blur-xs duration-150 sm:items-center sm:p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-foreground/30 backdrop-blur-xs animate-in fade-in duration-150"
     >
       <HeroSurface
         onClick={(e) => e.stopPropagation()}
         className={cn(
-          'flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border-t border-ledger-border bg-paper-surface text-ink-primary shadow-2xl animate-in slide-in-from-bottom-4 duration-150 sm:rounded-xl sm:border sm:zoom-in-95',
+          'w-full bg-surface text-foreground border-t sm:border border-border rounded-t-2xl sm:rounded-xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-150',
           maxWidthClass,
         )}
         role="dialog"
@@ -50,13 +50,13 @@ function ModalHeader({
   onClose: () => void;
 }) {
   return (
-    <div className="flex shrink-0 items-center justify-between border-b border-ledger-border bg-paper-muted/50 px-5 py-3.5">
+    <div className="flex items-center justify-between px-5 py-3.5 border-b border-border bg-surface-secondary/50 shrink-0">
       <div>
-        <h2 className="font-serif text-base font-bold text-ink-primary sm:text-lg">
+        <h2 className="font-serif font-bold text-base sm:text-lg text-foreground">
           {title}
         </h2>
         {subtitle ? (
-          <div className="mt-0.5 text-[11px] text-ink-secondary">{subtitle}</div>
+          <div className="text-[11px] text-muted mt-0.5">{subtitle}</div>
         ) : null}
       </div>
       <Button
@@ -65,21 +65,21 @@ function ModalHeader({
         tone="ghost"
         aria-label="Đóng cửa sổ"
         onPress={onClose}
-        className="h-8 w-8 min-w-8 rounded-md"
+        className="w-8 h-8 min-w-8 rounded-md text-muted hover:text-foreground"
       >
-        <X className="h-4 w-4" />
+        <X className="w-4 h-4" />
       </Button>
     </div>
   );
 }
 
 function ModalBody({ children }: { children: ReactNode }) {
-  return <div className="space-y-4 overflow-y-auto p-5">{children}</div>;
+  return <div className="p-5 space-y-4 overflow-y-auto">{children}</div>;
 }
 
 function ModalFooter({ children }: { children: ReactNode }) {
   return (
-    <div className="flex items-center justify-between gap-3 border-t border-ledger-border pt-3">
+    <div className="flex items-center justify-between gap-3 pt-3 border-t border-border">
       {children}
     </div>
   );

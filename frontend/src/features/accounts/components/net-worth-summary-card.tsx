@@ -20,43 +20,48 @@ export function NetWorthSummaryCard({
 }: NetWorthSummaryCardProps) {
   return (
     <Card>
-      <Card.Header bordered className="flex-row items-center justify-start gap-2">
-        <Scale className="h-4 w-4 text-accent-coral" />
-        <Card.Eyebrow>Tài sản ròng (Net Worth)</Card.Eyebrow>
+      <Card.Header
+        bordered
+        className="justify-start gap-2 pb-3 mb-4 border-border/60"
+      >
+        <Scale className="w-4 h-4 text-accent" />
+        <Card.Eyebrow className="text-xs font-semibold">
+          Tài sản ròng (Net Worth)
+        </Card.Eyebrow>
       </Card.Header>
 
-      <Card.Content className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <Card.Content className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
-          <span className="text-xs text-ink-secondary">Tổng giá trị ròng</span>
+          <span className="text-xs text-muted">Tổng giá trị ròng</span>
           <p className="mt-1">
             <CurrencyText
               amount={netWorth}
               className={`font-serif text-2xl font-bold ${
-                netWorth >= 0 ? 'text-ink-primary' : 'text-accent-coral'
+                netWorth >= 0 ? 'text-foreground' : 'text-danger'
               }`}
             />
           </p>
         </div>
 
-        <div className="sm:border-l sm:border-ledger-border/60 sm:pl-4">
-          <div className="flex items-center gap-1.5 text-xs text-accent-teal">
-            <ArrowUpRight className="h-3.5 w-3.5" />
+        <div className="sm:border-l sm:border-border/60 sm:pl-4">
+          <div className="flex items-center gap-1.5 text-xs text-success">
+            <ArrowUpRight className="w-3.5 h-3.5" />
             <span>Tổng tài sản khả dụng</span>
           </div>
           <p className="mt-1">
             <CurrencyText
               amount={totalAssets}
-              className="text-lg font-semibold text-ink-primary"
+              className="text-lg font-semibold text-foreground"
             />
           </p>
-          <span className="text-[11px] text-ink-secondary">
+          <span className="text-[11px] text-muted">
             {assetCount} nguồn tiền
           </span>
         </div>
 
-        <div className="sm:border-l sm:border-ledger-border/60 sm:pl-4">
-          <div className="flex items-center gap-1.5 text-xs text-accent-coral">
-            <ArrowDownRight className="h-3.5 w-3.5" />
+        <div className="sm:border-l sm:border-border/60 sm:pl-4">
+          <div className="flex items-center gap-1.5 text-xs text-danger">
+            <ArrowDownRight className="w-3.5 h-3.5" />
             <span>Tổng dư nợ thẻ</span>
           </div>
           <p className="mt-1">
@@ -66,7 +71,7 @@ export function NetWorthSummaryCard({
               className="text-lg font-semibold"
             />
           </p>
-          <span className="text-[11px] text-ink-secondary">
+          <span className="text-[11px] text-muted">
             {creditCardCount} thẻ tín dụng
           </span>
         </div>

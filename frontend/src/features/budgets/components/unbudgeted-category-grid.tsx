@@ -15,8 +15,8 @@ export function UnbudgetedCategoryGrid({
   if (categories.length === 0) return null;
 
   return (
-    <Card variant="muted">
-      <Card.Header>
+    <Card variant="subtle">
+      <Card.Header className="pb-3">
         <div>
           <Card.Title className="text-sm">
             Danh mục chưa đặt hạn mức ({categories.length})
@@ -27,8 +27,8 @@ export function UnbudgetedCategoryGrid({
         </div>
       </Card.Header>
 
-      <Card.Content>
-        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+      <Card.Content className="pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
           {categories.map((cat) => {
             const suggestedAmount =
               cat.spentAmount > 0
@@ -42,13 +42,13 @@ export function UnbudgetedCategoryGrid({
                 onClick={() =>
                   onSelectCategory(cat.categoryId, suggestedAmount)
                 }
-                className="group flex cursor-pointer items-center justify-between rounded-lg border border-ledger-border bg-paper-surface p-3 text-left transition-colors hover:border-accent-coral"
+                className="flex items-center justify-between p-3 bg-surface border border-border hover:border-accent rounded-lg text-left transition-colors cursor-pointer group"
               >
                 <div className="min-w-0 pr-2">
-                  <span className="block truncate text-xs font-semibold text-ink-primary group-hover:text-accent-coral">
+                  <span className="text-xs font-semibold text-foreground block truncate group-hover:text-accent">
                     {cat.categoryName}
                   </span>
-                  <span className="font-mono text-[11px] tabular-nums text-ink-secondary">
+                  <span className="text-[11px] font-mono text-muted tabular-nums">
                     {cat.spentAmount > 0 ? (
                       <>
                         Tháng này đã chi:{' '}
@@ -59,7 +59,7 @@ export function UnbudgetedCategoryGrid({
                     )}
                   </span>
                 </div>
-                <span className="shrink-0 text-xs font-semibold text-accent-coral">
+                <span className="text-xs font-semibold text-accent shrink-0">
                   + Đặt hạn mức
                 </span>
               </button>

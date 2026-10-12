@@ -17,13 +17,13 @@ export function LedgerEmptyState({
   action,
 }: LedgerEmptyStateProps) {
   return (
-    <Card variant="dashed" padding="lg" className="text-center">
-      <Card.Content className="flex flex-col items-center py-4">
-        {icon ? <div className="mb-3 text-ink-secondary">{icon}</div> : null}
-        <h3 className="font-serif text-base font-bold text-ink-primary">
+    <Card variant="dashed" className="text-center py-12 px-4">
+      <Card.Content className="flex flex-col items-center">
+        {icon ? <div className="mb-3 text-muted">{icon}</div> : null}
+        <h3 className="font-serif font-bold text-base text-foreground">
           {title}
         </h3>
-        <p className="mx-auto mt-1 mb-4 max-w-md text-xs text-ink-secondary">
+        <p className="text-xs text-muted max-w-md mx-auto mt-1 mb-4">
           {description}
         </p>
         {action}

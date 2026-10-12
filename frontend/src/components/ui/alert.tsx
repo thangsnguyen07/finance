@@ -7,9 +7,9 @@ import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
 export type AlertVariant = 'danger' | 'success' | 'warning';
 
 const ALERT_STYLES: Record<AlertVariant, string> = {
-  danger: 'border-accent-coral bg-accent-coral/10 text-accent-coral',
-  success: 'border-accent-teal bg-accent-teal/10 text-accent-teal',
-  warning: 'border-accent-ochre bg-accent-ochre/10 text-ink-primary',
+  danger: 'border-danger/20 bg-danger/10 text-danger',
+  success: 'border-success/20 bg-success/10 text-success',
+  warning: 'border-warning/20 bg-warning/10 text-warning',
 };
 
 const ALERT_ICONS: Record<AlertVariant, typeof AlertCircle> = {
@@ -30,7 +30,7 @@ export function Alert({ variant = 'danger', children, className }: AlertProps) {
   return (
     <HeroSurface
       className={cn(
-        'flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium',
+        'flex items-center gap-2 rounded-md border p-3 text-xs',
         ALERT_STYLES[variant],
         className,
       )}

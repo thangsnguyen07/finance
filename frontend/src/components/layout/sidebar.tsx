@@ -59,16 +59,16 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 select-none flex-col border-r border-ledger-border bg-paper-surface p-5 lg:flex">
-      <div className="mb-8 flex items-center gap-3 px-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-accent-coral text-paper-surface shadow-sm">
-          <BookOpen className="h-5 w-5 stroke-[2]" />
+    <aside className="hidden lg:flex flex-col w-64 h-screen sticky top-0 bg-surface border-r border-border p-5 select-none shrink-0">
+      <div className="flex items-center gap-3 mb-8 px-2">
+        <div className="w-9 h-9 rounded-md bg-accent text-accent-foreground flex items-center justify-center shadow-sm">
+          <BookOpen className="w-5 h-5 stroke-[2]" />
         </div>
         <div>
-          <h1 className="font-serif text-lg leading-tight font-bold tracking-tight text-ink-primary">
+          <h1 className="font-serif font-bold text-lg text-foreground tracking-tight leading-tight">
             Sổ Thu Chi
           </h1>
-          <p className="font-sans text-[11px] tracking-wider text-ink-secondary uppercase">
+          <p className="text-[11px] text-muted font-sans uppercase tracking-wider">
             Paperlike Ledger
           </p>
         </div>
@@ -77,9 +77,9 @@ export function Sidebar() {
       <Button
         tone="brand"
         onPress={openQuickEntry}
-        className="mb-6 w-full py-2.5 text-sm"
+        className="w-full py-2.5 px-4 mb-6 rounded-md font-medium text-sm shadow-sm"
       >
-        <Plus className="h-4 w-4 stroke-[2.5]" />
+        <Plus className="w-4 h-4 stroke-[2.5]" />
         <span>Ghi chép mới</span>
       </Button>
 
@@ -90,14 +90,14 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+              className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                 item.isActive
-                  ? 'border-l-2 border-accent-coral bg-paper-muted font-semibold text-accent-coral'
-                  : 'text-ink-secondary hover:bg-paper-muted/60 hover:text-ink-primary'
+                  ? 'bg-surface-secondary text-accent font-semibold border-l-2 border-accent'
+                  : 'text-muted hover:text-foreground hover:bg-surface-secondary/60'
               }`}
             >
               <Icon
-                className={`h-4 w-4 ${
+                className={`w-4 h-4 ${
                   item.isActive ? 'stroke-[2.2]' : 'stroke-[1.8]'
                 }`}
               />
@@ -107,14 +107,14 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto border-t border-ledger-border pt-4">
-        <div className="flex items-center gap-3 rounded-md px-2 py-1.5 text-xs text-ink-secondary">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-paper-muted font-bold text-ink-primary">
+      <div className="pt-4 border-t border-border mt-auto">
+        <div className="flex items-center gap-3 px-2 py-1.5 rounded-md text-xs text-muted">
+          <div className="w-7 h-7 rounded-full bg-surface-tertiary flex items-center justify-center font-bold text-foreground">
             TN
           </div>
           <div className="truncate">
-            <p className="truncate font-medium text-ink-primary">Thang Nguyen</p>
-            <p className="text-[10px] text-ink-secondary">Bản ghi sổ 2026</p>
+            <p className="font-medium text-foreground truncate">Thang Nguyen</p>
+            <p className="text-[10px] text-muted">Bản ghi sổ 2026</p>
           </div>
         </div>
       </div>

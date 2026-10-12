@@ -42,16 +42,16 @@ export function VndAmountInput({
   };
 
   return (
-    <HeroSurface className="space-y-2.5 rounded-xl border border-ledger-border bg-paper-muted/40 p-3.5">
+    <HeroSurface className="bg-surface-secondary/30 border border-border rounded-xl p-3.5 space-y-2.5">
       <div className="flex items-center justify-between">
-        <label className="text-xs font-semibold text-ink-primary">{label}</label>
+        <label className="text-xs font-semibold text-foreground">{label}</label>
         {amount > 0 ? (
           <Button
             type="button"
             size="sm"
             tone="ghost"
             onPress={() => onChange(0)}
-            className="h-6 px-2 text-[11px] font-medium text-accent-coral"
+            className="h-6 px-2 text-[11px] text-danger font-medium"
           >
             Đặt lại 0
           </Button>
@@ -68,10 +68,10 @@ export function VndAmountInput({
             onChange(digits ? parseInt(digits, 10) : 0);
           }}
           placeholder="0"
-          className="w-full bg-transparent pr-8 font-mono text-2xl font-bold tabular-nums text-ink-primary placeholder:text-ink-muted/40 focus:outline-none sm:text-3xl"
+          className="w-full text-2xl sm:text-3xl font-mono font-bold bg-transparent text-foreground placeholder:text-muted/40 focus:outline-none pr-8 tabular-nums"
           autoFocus={autoFocus}
         />
-        <span className="select-none font-serif text-lg font-bold text-ink-muted">
+        <span className="text-lg font-serif font-bold text-muted select-none">
           ₫
         </span>
       </div>
@@ -83,7 +83,7 @@ export function VndAmountInput({
               key={preset.label}
               type="button"
               onClick={() => handlePresetPress(preset)}
-              className="cursor-pointer transition-transform active:scale-95"
+              className="cursor-pointer active:scale-95 transition-transform"
             >
               <Badge
                 size="sm"
@@ -93,7 +93,7 @@ export function VndAmountInput({
                     : 'secondary'
                 }
                 mono
-                className="cursor-pointer"
+                className="text-[11px] font-semibold cursor-pointer"
               >
                 {preset.label}
               </Badge>
@@ -104,14 +104,14 @@ export function VndAmountInput({
             <button
               type="button"
               onClick={handleMultiplyThousand}
-              className="cursor-pointer transition-transform active:scale-95"
+              className="cursor-pointer active:scale-95 transition-transform"
             >
               <Badge
                 size="sm"
                 color="warning"
                 variant="soft"
                 mono
-                className="cursor-pointer font-bold"
+                className="text-[11px] font-bold cursor-pointer"
               >
                 .000
               </Badge>

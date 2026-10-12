@@ -63,14 +63,14 @@ export function TransactionsView() {
         <PageHeader.Actions>
           <Link
             href="/reports"
-            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-ledger-border bg-paper-surface px-3 py-2 text-xs font-medium text-ink-primary shadow-2xs transition-colors hover:border-accent-coral"
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium bg-surface border border-border hover:border-accent text-foreground rounded-lg shadow-2xs transition-colors"
           >
-            <BarChart3 className="h-3.5 w-3.5 text-accent-coral" />
+            <BarChart3 className="w-3.5 h-3.5 text-accent" />
             <span>Xem báo cáo</span>
           </Link>
 
           <Button tone="primary" size="sm" onPress={openQuickEntry}>
-            <Plus className="h-4 w-4 stroke-[2.5]" />
+            <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Ghi giao dịch mới</span>
           </Button>
         </PageHeader.Actions>
@@ -97,7 +97,7 @@ export function TransactionsView() {
         </Alert>
       ) : items.length === 0 ? (
         <LedgerEmptyState
-          icon={<Receipt className="h-10 w-10 stroke-[1.5]" />}
+          icon={<Receipt className="w-10 h-10 stroke-[1.5]" />}
           title="Chưa có bút toán nào trong sổ"
           description="Nhấn vào nút Ghi giao dịch mới hoặc dấu + ở thanh điều hướng để ghi lại khoản thu chi đầu tiên."
           action={

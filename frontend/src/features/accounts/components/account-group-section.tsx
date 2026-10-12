@@ -24,11 +24,11 @@ export function AccountGroupSection({
 
   return (
     <section className="space-y-3">
-      <h3 className="text-xs font-semibold tracking-wider text-ink-secondary uppercase">
+      <h3 className="text-xs font-semibold text-muted uppercase tracking-wider">
         {title} ({accounts.length})
       </h3>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {accounts.map((account) => {
           const config = ACCOUNT_TYPE_CONFIG[account.type];
           const Icon = config.icon;
@@ -39,26 +39,31 @@ export function AccountGroupSection({
           return (
             <Card
               key={account.id}
-              padding="md"
-              className="transition-all hover:border-ink-muted"
+              variant="compact"
+              className="hover:border-border/80 transition-all"
             >
               <Card.Content className="flex items-center justify-between gap-3">
-                <div className="flex min-w-0 items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0">
                   <div
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border ${config.colorClass}`}
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center border shrink-0 ${config.colorClass}`}
                   >
-                    <Icon className="h-5 w-5 stroke-[2]" />
+                    <Icon className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0">
-                    <h4 className="truncate text-sm font-semibold text-ink-primary">
+                    <h4 className="font-semibold text-sm text-foreground truncate">
                       {account.name}
                     </h4>
-                    <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                      <span className="text-[11px] text-ink-secondary">
+                    <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                      <span className="text-[11px] text-muted">
                         {config.label}
                       </span>
                       {account.statementDay ? (
-                        <Badge size="sm" variant="secondary" mono>
+                        <Badge
+                          size="sm"
+                          variant="secondary"
+                          mono
+                          className="h-4 px-1.5"
+                        >
                           Sao kê: ngày {account.statementDay}
                         </Badge>
                       ) : null}
@@ -66,18 +71,20 @@ export function AccountGroupSection({
                   </div>
                 </div>
 
-                <div className="flex shrink-0 items-center gap-2 text-right">
+                <div className="flex items-center gap-2 text-right shrink-0">
                   <div>
                     <p>
                       <CurrencyText
-                        amount={isCredit && balance > 0 ? -balance : balance}
-                        className={`text-sm font-bold ${
-                          isCredit ? 'text-accent-coral' : 'text-ink-primary'
+                        amount={balance}
+                        type={isCredit ? 'EXPENSE' : undefined}
+                        signed={isCredit && balance > 0}
+                        className={`font-bold text-sm ${
+                          isCredit ? 'text-danger' : 'text-foreground'
                         }`}
                       />
                     </p>
                     {isCredit && creditLimit > 0 ? (
-                      <p className="mt-0.5 text-[10px] text-ink-secondary">
+                      <p className="text-[10px] text-muted font-mono mt-0.5 tabular-nums">
                         Còn hạn mức:{' '}
                         <CurrencyText amount={remainingLimit} />
                       </p>
@@ -90,9 +97,9 @@ export function AccountGroupSection({
                     tone="ghost"
                     aria-label={`Lưu trữ ví ${account.name}`}
                     onPress={() => onArchive(account.id, account.name)}
-                    className="h-8 w-8 min-w-8 hover:text-accent-coral"
+                    className="w-8 h-8 min-w-8 text-muted hover:text-danger"
                   >
-                    <Archive className="h-4 w-4" />
+                    <Archive className="w-4 h-4" />
                   </Button>
                 </div>
               </Card.Content>

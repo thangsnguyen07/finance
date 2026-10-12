@@ -22,10 +22,10 @@ export function CashflowTrendChart({
     <Card>
       <Card.Header
         bordered
-        className="flex-col items-start justify-between gap-2 sm:flex-row sm:items-center"
+        className="flex-col sm:flex-row sm:items-center justify-between gap-2"
       >
         <div className="flex items-center gap-2">
-          <BarChart3 className="h-4 w-4 text-accent-coral" />
+          <BarChart3 className="w-4 h-4 text-accent" />
           <div>
             <Card.Title>Biểu đồ đối chiếu Thu – Chi 6 tháng</Card.Title>
             <Card.Description>
@@ -35,20 +35,20 @@ export function CashflowTrendChart({
           </div>
         </div>
 
-        <div className="flex items-center gap-4 font-mono text-xs">
-          <span className="flex items-center gap-1.5 text-ink-primary">
-            <span className="inline-block h-2.5 w-2.5 rounded-2xs bg-accent-teal" />
+        <div className="flex items-center gap-4 text-xs font-mono">
+          <span className="flex items-center gap-1.5 text-foreground">
+            <span className="w-2.5 h-2.5 rounded-2xs bg-success inline-block" />
             Thu nhập
           </span>
-          <span className="flex items-center gap-1.5 text-ink-primary">
-            <span className="inline-block h-2.5 w-2.5 rounded-2xs bg-accent-coral" />
+          <span className="flex items-center gap-1.5 text-foreground">
+            <span className="w-2.5 h-2.5 rounded-2xs bg-danger inline-block" />
             Chi tiêu
           </span>
         </div>
       </Card.Header>
 
       <Card.Content className="pt-2">
-        <div className="relative grid h-48 grid-cols-6 items-end gap-2 border-b border-ledger-border bg-[linear-gradient(to_bottom,transparent_24%,var(--border)_25%,transparent_26%,transparent_49%,var(--border)_50%,transparent_51%,transparent_74%,var(--border)_75%,transparent_76%)] px-2 pt-4 sm:gap-4">
+        <div className="relative h-48 grid grid-cols-6 gap-2 sm:gap-4 items-end pt-4 px-2 border-b border-border bg-[linear-gradient(to_bottom,transparent_24%,var(--border)_25%,transparent_26%,transparent_49%,var(--border)_50%,transparent_51%,transparent_74%,var(--border)_75%,transparent_76%)]">
           {points.map((point) => {
             const isCurrentSelected = point.month === selectedMonth;
             const incomeHeight = Math.round(
@@ -63,13 +63,13 @@ export function CashflowTrendChart({
                 key={point.month}
                 type="button"
                 onClick={() => onSelectMonth(point.month)}
-                className={`group flex h-full cursor-pointer flex-col items-center justify-end rounded-t-md px-1 pt-2 transition-colors ${
+                className={`h-full flex flex-col justify-end items-center group cursor-pointer rounded-t-md px-1 pt-2 transition-colors ${
                   isCurrentSelected
-                    ? 'bg-accent-coral/5 ring-1 ring-accent-coral/30'
-                    : 'hover:bg-paper-muted/50'
+                    ? 'bg-accent/5 ring-1 ring-accent/30'
+                    : 'hover:bg-surface-secondary/50'
                 }`}
               >
-                <div className="flex h-full w-full max-w-[44px] items-end justify-center gap-1 sm:gap-1.5">
+                <div className="w-full max-w-[44px] h-full flex items-end justify-center gap-1 sm:gap-1.5">
                   <div
                     style={{
                       height: `${
@@ -77,7 +77,7 @@ export function CashflowTrendChart({
                       }%`,
                     }}
                     title={`Thu ${point.label}: ${formatVND(point.income)}`}
-                    className="w-1/2 rounded-t-2xs bg-accent-teal transition-all duration-300"
+                    className="w-1/2 bg-success rounded-t-2xs transition-all duration-300"
                   />
                   <div
                     style={{
@@ -86,7 +86,7 @@ export function CashflowTrendChart({
                       }%`,
                     }}
                     title={`Chi ${point.label}: ${formatVND(point.expense)}`}
-                    className="w-1/2 rounded-t-2xs bg-accent-coral transition-all duration-300"
+                    className="w-1/2 bg-danger rounded-t-2xs transition-all duration-300"
                   />
                 </div>
               </button>
@@ -94,7 +94,7 @@ export function CashflowTrendChart({
           })}
         </div>
 
-        <div className="grid grid-cols-6 gap-2 px-2 pt-2.5 text-center sm:gap-4">
+        <div className="grid grid-cols-6 gap-2 sm:gap-4 pt-2.5 px-2 text-center">
           {points.map((point) => {
             const isCurrentSelected = point.month === selectedMonth;
             return (
@@ -102,10 +102,10 @@ export function CashflowTrendChart({
                 key={point.month}
                 type="button"
                 onClick={() => onSelectMonth(point.month)}
-                className={`cursor-pointer font-mono text-[11px] transition-colors ${
+                className={`text-[11px] font-mono cursor-pointer transition-colors ${
                   isCurrentSelected
-                    ? 'font-bold text-accent-coral underline underline-offset-4'
-                    : 'text-ink-secondary hover:text-ink-primary'
+                    ? 'font-bold text-accent underline underline-offset-4'
+                    : 'text-muted hover:text-foreground'
                 }`}
               >
                 {point.label}

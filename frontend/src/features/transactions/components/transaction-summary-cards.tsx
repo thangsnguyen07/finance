@@ -14,8 +14,8 @@ export function TransactionSummaryCards({
   const netCashflow = totalIncome - totalExpense;
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <Card padding="md">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <Card variant="compact">
         <Card.Content>
           <Card.Eyebrow>Tổng Thu Nhập (+)</Card.Eyebrow>
           <p className="mt-1">
@@ -23,13 +23,13 @@ export function TransactionSummaryCards({
               amount={totalIncome}
               type="INCOME"
               signed
-              className="font-serif text-xl font-bold"
+              className="text-xl font-serif font-bold"
             />
           </p>
         </Card.Content>
       </Card>
 
-      <Card padding="md">
+      <Card variant="compact">
         <Card.Content>
           <Card.Eyebrow>Tổng Chi Tiêu (-)</Card.Eyebrow>
           <p className="mt-1">
@@ -37,13 +37,13 @@ export function TransactionSummaryCards({
               amount={totalExpense}
               type="EXPENSE"
               signed
-              className="font-serif text-xl font-bold"
+              className="text-xl font-serif font-bold"
             />
           </p>
         </Card.Content>
       </Card>
 
-      <Card padding="md">
+      <Card variant="compact">
         <Card.Content>
           <Card.Eyebrow>Chênh Lệch Dòng Tiền</Card.Eyebrow>
           <p className="mt-1">
@@ -51,8 +51,8 @@ export function TransactionSummaryCards({
               amount={Math.abs(netCashflow)}
               type={netCashflow >= 0 ? 'INCOME' : 'EXPENSE'}
               signed
-              className={`font-serif text-xl font-bold ${
-                netCashflow >= 0 ? 'text-ink-primary' : 'text-accent-coral'
+              className={`text-xl font-serif font-bold ${
+                netCashflow >= 0 ? 'text-foreground' : 'text-danger'
               }`}
             />
           </p>

@@ -109,7 +109,7 @@ export function UpsertBudgetModal({
         }
         subtitle={
           <span className="flex items-center gap-1.5">
-            <Calendar className="h-3 w-3" />
+            <Calendar className="w-3 h-3" />
             <span>Kỳ ngân sách: Tháng {month}</span>
           </span>
         }
@@ -121,10 +121,10 @@ export function UpsertBudgetModal({
           {error ? <Alert variant="danger">{error}</Alert> : null}
 
           <Field.Root>
-            <Field.Label icon={<Tag className="h-3.5 w-3.5" />}>
+            <Field.Label icon={<Tag className="w-3.5 h-3.5" />}>
               Chọn phong bì danh mục
             </Field.Label>
-            <div className="grid max-h-40 grid-cols-2 gap-2 overflow-y-auto p-0.5">
+            <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-0.5">
               {expenseCategories.map((cat) => {
                 const isSelected = effectiveCategoryId === cat.id;
                 return (
@@ -132,10 +132,10 @@ export function UpsertBudgetModal({
                     key={cat.id}
                     type="button"
                     onClick={() => setSelectedCategoryId(cat.id)}
-                    className={`h-9 cursor-pointer truncate rounded-lg border px-3 text-left text-xs transition-all ${
+                    className={`h-9 px-3 rounded-lg border text-left text-xs transition-all truncate cursor-pointer ${
                       isSelected
-                        ? 'border-accent-coral bg-accent-coral/10 font-bold text-accent-coral shadow-2xs'
-                        : 'border-ledger-border bg-paper-surface text-ink-primary hover:border-ink-muted'
+                        ? 'border-accent bg-accent/10 text-accent font-bold shadow-2xs'
+                        : 'border-border bg-surface hover:border-border/80 text-foreground'
                     }`}
                   >
                     {cat.name}
@@ -164,7 +164,7 @@ export function UpsertBudgetModal({
                   isDisabled={isBusy}
                   onPress={() => void handleDelete()}
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
+                  <Trash2 className="w-3.5 h-3.5" />
                   <span>Gỡ hạn mức</span>
                 </Button>
               ) : null}
@@ -185,8 +185,9 @@ export function UpsertBudgetModal({
                 tone="primary"
                 size="sm"
                 isLoading={isBusy}
+                className="px-5 py-2"
               >
-                Lưu hạn mức
+                <span>Lưu hạn mức</span>
               </Button>
             </div>
           </Modal.Footer>

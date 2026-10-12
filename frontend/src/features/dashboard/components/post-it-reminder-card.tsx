@@ -14,32 +14,32 @@ export function PostItReminderCard({ usagePercent }: PostItReminderCardProps) {
 
   return (
     <Card
-      variant="post-it"
-      className="relative rotate-[-1.5deg] overflow-visible rounded-lg transition-transform hover:rotate-0"
+      variant="postIt"
+      className="rotate-[-1.5deg] hover:rotate-0 transition-transform"
     >
-      <div className="mx-auto -mt-6 mb-3 h-3 w-16 rounded-2xs border border-amber-300/70 bg-amber-200/80 shadow-2xs dark:border-amber-600/50 dark:bg-amber-700/50" />
+      <div className="w-16 h-3 bg-amber-200/80 dark:bg-amber-700/50 border border-amber-300/70 dark:border-amber-600/50 rounded-2xs -mt-6 mx-auto mb-3 shadow-2xs" />
 
-      <Card.Header className="border-b border-[#FDE047] pb-2 text-[11px] font-bold tracking-wider uppercase dark:border-[#5C5627]">
+      <Card.Header className="pb-2 border-b border-[#FDE047] dark:border-[#5C5627] text-[11px] font-bold uppercase tracking-wider">
         <span>📌 Giấy Note Nhắc Việc</span>
-        <span className="font-mono text-[10px]">{monthLabel}</span>
+        <span className="text-[10px] font-mono">{monthLabel}</span>
       </Card.Header>
 
-      <Card.Content className="mt-3 space-y-2.5 font-sans text-xs">
+      <Card.Content className="mt-3 space-y-2.5 text-xs font-sans">
         <div className="flex items-start gap-2">
-          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-800 dark:text-amber-400" />
+          <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 text-amber-800 dark:text-amber-400 shrink-0" />
           <span>Kiểm tra kỳ sao kê thẻ tín dụng hàng tháng.</span>
         </div>
         <div className="flex items-start gap-2">
-          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-800 dark:text-amber-400" />
+          <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 text-amber-800 dark:text-amber-400 shrink-0" />
           <span>Hạn mức chi tiêu tháng đã dùng {usagePercent}% kế hoạch.</span>
         </div>
         <div className="flex items-start gap-2">
-          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-800 dark:text-amber-400" />
+          <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 text-amber-800 dark:text-amber-400 shrink-0" />
           <span>Mục tiêu: Ghi chép đầy đủ mọi khoản thu chi trong ngày.</span>
         </div>
       </Card.Content>
 
-      <Card.Footer className="mt-4 justify-end border-t border-[#FDE047] pt-3 dark:border-[#5C5627]">
+      <Card.Footer className="mt-4 pt-3 border-t border-[#FDE047] dark:border-[#5C5627] justify-end">
         <Link href="/budgets" className="text-[11px] font-bold hover:underline">
           Xem chi tiết ngân sách →
         </Link>

@@ -1,12 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Plus,
-  Tag,
-  ArrowDownRight,
-  ArrowUpRight,
-} from 'lucide-react';
+import { Plus, Tag, ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import {
   Card,
   Button,
@@ -65,7 +60,7 @@ export function CreateCategoryForm() {
       <Card.Header bordered>
         <div>
           <Card.Title className="flex items-center gap-2">
-            <Tag className="h-4 w-4 text-accent-coral" />
+            <Tag className="w-4 h-4 text-accent" />
             <span>Tạo danh mục tùy chỉnh mới</span>
           </Card.Title>
           <Card.Description>
@@ -80,7 +75,7 @@ export function CreateCategoryForm() {
           {error ? <Alert variant="danger">{error}</Alert> : null}
           {successMsg ? <Alert variant="success">{successMsg}</Alert> : null}
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Field.Root>
               <Field.Label>Nhóm danh mục</Field.Label>
               <SegmentedControl<CategoryType>
@@ -92,22 +87,22 @@ export function CreateCategoryForm() {
                   {
                     value: 'EXPENSE',
                     label: (
-                      <span className="inline-flex items-center gap-1">
-                        <ArrowDownRight className="h-3.5 w-3.5" />
+                      <>
+                        <ArrowDownRight className="w-3.5 h-3.5" />
                         <span>Chi tiêu</span>
-                      </span>
+                      </>
                     ),
-                    activeClassName: 'bg-accent-coral text-paper-surface shadow-2xs',
+                    activeClassName: 'bg-danger text-white shadow-2xs',
                   },
                   {
                     value: 'INCOME',
                     label: (
-                      <span className="inline-flex items-center gap-1">
-                        <ArrowUpRight className="h-3.5 w-3.5" />
+                      <>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
                         <span>Thu nhập</span>
-                      </span>
+                      </>
                     ),
-                    activeClassName: 'bg-accent-teal text-paper-surface shadow-2xs',
+                    activeClassName: 'bg-success text-white shadow-2xs',
                   },
                 ]}
               />
@@ -125,11 +120,9 @@ export function CreateCategoryForm() {
             </Field.Root>
           </div>
 
-          <div className="flex flex-col justify-between gap-4 pt-2 sm:flex-row sm:items-center">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="mr-1 text-xs text-ink-secondary">
-                Màu mực đánh dấu:
-              </span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs text-muted mr-1">Màu mực đánh dấu:</span>
               {CATEGORY_COLOR_SWATCHES.map((swatch) => {
                 const isSelected = selectedColor === swatch.value;
                 return (
@@ -137,14 +130,14 @@ export function CreateCategoryForm() {
                     key={swatch.value}
                     type="button"
                     onClick={() => setSelectedColor(swatch.value)}
-                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition-all ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs border transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-ink-primary bg-paper-muted font-bold text-ink-primary'
-                        : 'border-ledger-border bg-paper-surface text-ink-secondary hover:text-ink-primary'
+                        ? 'border-foreground bg-surface-secondary font-bold text-foreground'
+                        : 'border-border bg-surface text-muted hover:text-foreground'
                     }`}
                   >
                     <span
-                      className="h-2.5 w-2.5 rounded-full"
+                      className="w-2.5 h-2.5 rounded-full"
                       style={{ backgroundColor: swatch.value }}
                     />
                     <span>{swatch.label}</span>
@@ -161,7 +154,7 @@ export function CreateCategoryForm() {
               className="self-end sm:self-auto"
             >
               {!createCategoryMutation.isPending ? (
-                <Plus className="h-4 w-4" />
+                <Plus className="w-4 h-4" />
               ) : null}
               <span>Thêm danh mục</span>
             </Button>
