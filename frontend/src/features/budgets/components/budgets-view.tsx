@@ -1,50 +1,34 @@
 'use client';
 
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
 
 import { LedgerLoadingState } from '@/components/feedback';
 import { Button, Alert, PageHeader, MonthNavigator } from '@/components/ui';
-import { getCurrentMonthString } from '@/lib/date-utils';
 
-import { useBudgets } from '../hooks/use-budgets';
+import { useBudgetPlanner } from '../hooks/use-budgets';
 import { BudgetEnvelopeList } from './budget-envelope-list';
 import { BudgetRulerSummaryCard } from './budget-ruler-summary-card';
 import { UnbudgetedCategoryGrid } from './unbudgeted-category-grid';
 import { UpsertBudgetModal } from './upsert-budget-modal';
 
-import type { BudgetEnvelopeResponse } from '../types/budget.types';
-
 export function BudgetsView() {
-  const [selectedMonth, setSelectedMonth] = useState<string>(
-    getCurrentMonthString,
-  );
-  const [modalState, setModalState] = useState<{
-    isOpen: boolean;
-    categoryId?: string;
-    amount?: number;
-    budgetId?: string;
-  }>({ isOpen: false });
-
-  const { data: summary, isLoading, error } = useBudgets(selectedMonth);
-
-  const openCreateModal = (categoryId?: string, suggestedAmount?: number) => {
-    setModalState({
-      isOpen: true,
-      categoryId,
-      amount: suggestedAmount,
-      budgetId: undefined,
-    });
-  };
-
-  const openEditModal = (env: BudgetEnvelopeResponse) => {
-    setModalState({
-      isOpen: true,
-      categoryId: env.categoryId,
-      amount: env.budgetAmount,
-      budgetId: env.id,
-    });
-  };
+  const {
+    selectedMonth,
+    setSelectedMonth,
+    dayProgress,
+    totalSpent,
+    totalBudgeted,
+    remainingBudget,
+    overallPercent,
+    envelopes,
+    unbudgetedCategories,
+    isLoading,
+    errorMessage,
+    modalState,
+    openCreateModal,
+    openEditModal,
+    closeModal,
+  } = useBudgetPlanner();
 
   return (
     <div className="space-y-6">
@@ -64,30 +48,27 @@ export function BudgetsView() {
 
       <BudgetRulerSummaryCard
         month={selectedMonth}
-        totalSpent={summary?.totalSpentInBudgeted ?? 0}
-        totalBudgeted={summary?.totalBudgeted ?? 0}
-        remainingBudget={summary?.remainingBudget ?? 0}
-        overallPercent={summary?.overallUsagePercentage ?? 0}
+        dayProgress={dayProgress}
+        totalSpent={totalSpent}
+        totalBudgeted={totalBudgeted}
+        remainingBudget={remainingBudget}
+        overallPercent={overallPercent}
         isLoading={isLoading}
       />
 
       {isLoading ? (
         <LedgerLoadingState message="Đang đối chiếu sổ ngân sách tháng..." />
-      ) : error ? (
-        <Alert variant="danger">
-          {error instanceof Error
-            ? error.message
-            : 'Không thể tải dữ liệu ngân sách tháng'}
-        </Alert>
+      ) : errorMessage ? (
+        <Alert variant="danger">{errorMessage}</Alert>
       ) : (
         <div className="space-y-6">
           <BudgetEnvelopeList
-            envelopes={summary?.envelopes ?? []}
+            envelopes={envelopes}
             onOpenCreate={() => openCreateModal()}
             onOpenEdit={openEditModal}
           />
           <UnbudgetedCategoryGrid
-            categories={summary?.unbudgetedCategories ?? []}
+            categories={unbudgetedCategories}
             onSelectCategory={openCreateModal}
           />
         </div>
@@ -95,7 +76,7 @@ export function BudgetsView() {
 
       <UpsertBudgetModal
         isOpen={modalState.isOpen}
-        onClose={() => setModalState({ isOpen: false })}
+        onClose={closeModal}
         month={selectedMonth}
         initialCategoryId={modalState.categoryId}
         initialAmount={modalState.amount}

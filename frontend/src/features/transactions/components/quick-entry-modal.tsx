@@ -9,7 +9,6 @@ import {
   FileText,
   Tag,
 } from 'lucide-react';
-import { useState } from 'react';
 
 import { Modal } from '@/components/feedback';
 import {
@@ -19,12 +18,9 @@ import {
   SegmentedControl,
   VndAmountInput,
 } from '@/components/ui';
-import { useAccounts } from '@/features/accounts';
-import { useCategories } from '@/features/categories';
-import { getTodayDateString } from '@/lib/date-utils';
 
 import { TRANSACTION_AMOUNT_PRESETS } from '../constants/transaction.constants';
-import { useCreateTransaction } from '../hooks/use-transactions';
+import { useQuickEntryForm } from '../hooks/use-transactions';
 
 import type { TransactionType } from '../types/transaction.types';
 
@@ -34,104 +30,28 @@ interface QuickEntryModalProps {
 }
 
 export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
-  const [txType, setTxType] = useState<TransactionType>('EXPENSE');
-  const [rawAmount, setRawAmount] = useState<number>(0);
-  const [accountId, setAccountId] = useState<string>('');
-  const [targetAccountId, setTargetAccountId] = useState<string>('');
-  const [categoryId, setCategoryId] = useState<string>('');
-  const [transactionDate, setTransactionDate] =
-    useState<string>(getTodayDateString);
-  const [description, setDescription] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-
-  const { data: accounts } = useAccounts();
-  const { data: categories } = useCategories(
-    txType === 'TRANSFER' ? undefined : txType,
-  );
-  const createTransactionMutation = useCreateTransaction();
-
-  const filteredCategories = (categories || []).filter(
-    (c) => c.type === txType,
-  );
-
-  const effectiveAccountId = accountId || accounts?.[0]?.id || '';
-  const effectiveTargetAccountId =
-    targetAccountId && targetAccountId !== effectiveAccountId
-      ? targetAccountId
-      : accounts?.find((a) => a.id !== effectiveAccountId)?.id || '';
-  const effectiveCategoryId = filteredCategories.some(
-    (c) => c.id === categoryId,
-  )
-    ? categoryId
-    : filteredCategories[0]?.id || '';
-
-  const handleClose = () => {
-    setTxType('EXPENSE');
-    setRawAmount(0);
-    setAccountId('');
-    setTargetAccountId('');
-    setCategoryId('');
-    setTransactionDate(getTodayDateString());
-    setDescription('');
-    setError(null);
-    onClose();
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    if (rawAmount <= 0) {
-      setError('Vui lòng nhập số tiền lớn hơn 0 ₫');
-      return;
-    }
-
-    if (!effectiveAccountId) {
-      setError('Vui lòng chọn ví / tài khoản nguồn');
-      return;
-    }
-
-    if (txType === 'TRANSFER') {
-      if (!effectiveTargetAccountId) {
-        setError('Vui lòng chọn ví đích để chuyển khoản');
-        return;
-      }
-      if (effectiveAccountId === effectiveTargetAccountId) {
-        setError('Ví nguồn và ví đích phải khác nhau');
-        return;
-      }
-    }
-
-    const clientTxId =
-      typeof crypto !== 'undefined' && crypto.randomUUID
-        ? crypto.randomUUID()
-        : `tx-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-
-    try {
-      await createTransactionMutation.mutateAsync({
-        clientTxId,
-        accountId: effectiveAccountId,
-        targetAccountId:
-          txType === 'TRANSFER' ? effectiveTargetAccountId : undefined,
-        categoryId:
-          txType !== 'TRANSFER' && effectiveCategoryId
-            ? effectiveCategoryId
-            : undefined,
-        amount: rawAmount,
-        type: txType,
-        transactionDate,
-        description: description.trim() || undefined,
-      });
-
-      handleClose();
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Không thể lưu giao dịch. Vui lòng thử lại.');
-      }
-    }
-  };
+  const {
+    txType,
+    setTxType,
+    rawAmount,
+    setRawAmount,
+    accounts,
+    filteredCategories,
+    effectiveAccountId,
+    setAccountId,
+    effectiveTargetAccountId,
+    setTargetAccountId,
+    effectiveCategoryId,
+    setCategoryId,
+    transactionDate,
+    setTransactionDate,
+    description,
+    setDescription,
+    error,
+    isPending,
+    handleClose,
+    handleSubmit,
+  } = useQuickEntryForm({ onClose });
 
   return (
     <Modal.Root isOpen={isOpen} onClose={handleClose}>
@@ -145,7 +65,6 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
         <Modal.Body>
           {error ? <Alert variant="danger">{error}</Alert> : null}
 
-          {/* 1. Transaction Type Tabs */}
           <SegmentedControl<TransactionType>
             value={txType}
             onChange={setTxType}
@@ -165,7 +84,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                 value: 'INCOME',
                 label: (
                   <>
-                    <ArrowUpRight className="h-3.5 w-3.5" />
+                    <ArrowUpRight className="h-3.5" />
                     <span>Thu nhập</span>
                   </>
                 ),
@@ -184,7 +103,6 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
             ]}
           />
 
-          {/* 2. Reusable VND Amount Input with Banknote Presets */}
           <VndAmountInput
             label="Số tiền giao dịch (VND)"
             amount={rawAmount}
@@ -194,7 +112,6 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
             autoFocus
           />
 
-          {/* 3. Account Selector & Date (Consistent across all tabs) */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field.Root>
               <Field.Label icon={<Wallet className="h-3.5 w-3.5" />} uppercase>
@@ -204,7 +121,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                 value={effectiveAccountId}
                 onChange={(e) => setAccountId(e.target.value)}
               >
-                {(accounts || []).map((acc) => (
+                {accounts.map((acc) => (
                   <option key={acc.id} value={acc.id}>
                     {acc.name} ({acc.currentBalance.toLocaleString('vi-VN')} ₫)
                   </option>
@@ -228,7 +145,6 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
             </Field.Root>
           </div>
 
-          {/* 4. Fixed-Height Dynamic Slot: Category Grid or Target Account */}
           <div className="flex h-[152px] flex-col">
             {txType !== 'TRANSFER' ? (
               <>
@@ -273,7 +189,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                     value={effectiveTargetAccountId}
                     onChange={(e) => setTargetAccountId(e.target.value)}
                   >
-                    {(accounts || []).map((acc) => (
+                    {accounts.map((acc) => (
                       <option key={acc.id} value={acc.id}>
                         {acc.name} ({acc.currentBalance.toLocaleString('vi-VN')}{' '}
                         ₫)
@@ -289,7 +205,6 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
             )}
           </div>
 
-          {/* 5. Note / Description */}
           <Field.Root>
             <Field.Label icon={<FileText className="h-3.5 w-3.5" />} uppercase>
               Diễn giải / Ghi chú bút mực
@@ -309,7 +224,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                 type="button"
                 tone="ghost"
                 size="sm"
-                isDisabled={createTransactionMutation.isPending}
+                isDisabled={isPending}
                 onPress={handleClose}
               >
                 Hủy
@@ -318,7 +233,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
                 type="submit"
                 tone="primary"
                 size="sm"
-                isLoading={createTransactionMutation.isPending}
+                isLoading={isPending}
                 className="px-5 py-2"
               >
                 <span>Lưu Vào Sổ Cái</span>

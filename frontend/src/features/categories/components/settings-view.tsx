@@ -3,19 +3,13 @@
 import { LedgerLoadingState } from '@/components/feedback';
 import { PageHeader } from '@/components/ui';
 
-import { useCategories } from '../hooks/use-categories';
+import { useCategoryDirectory } from '../hooks/use-categories';
 import { CategoryDirectoryCard } from './category-directory-card';
 import { CreateCategoryForm } from './create-category-form';
 
 export function SettingsView() {
-  const { data: categories, isLoading } = useCategories();
-
-  const expenseCategories = (categories || []).filter(
-    (c) => c.type === 'EXPENSE',
-  );
-  const incomeCategories = (categories || []).filter(
-    (c) => c.type === 'INCOME',
-  );
+  const { expenseCategories, incomeCategories, isLoading } =
+    useCategoryDirectory();
 
   return (
     <div className="space-y-6">

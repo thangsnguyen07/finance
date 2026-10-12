@@ -1,14 +1,12 @@
 'use client';
 
 import { Tag, Calendar, Trash2 } from 'lucide-react';
-import { useState } from 'react';
 
 import { Modal } from '@/components/feedback';
 import { Button, Field, Alert, VndAmountInput } from '@/components/ui';
-import { useCategories } from '@/features/categories';
 
 import { BUDGET_AMOUNT_PRESETS } from '../constants/budget.constants';
-import { useUpsertBudget, useDeleteBudget } from '../hooks/use-budgets';
+import { useUpsertBudgetForm } from '../hooks/use-budgets';
 
 interface UpsertBudgetModalProps {
   isOpen: boolean;
@@ -27,75 +25,24 @@ export function UpsertBudgetModal({
   initialAmount,
   existingBudgetId,
 }: UpsertBudgetModalProps) {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
-  const [rawAmount, setRawAmount] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const { data: categories } = useCategories('EXPENSE');
-  const upsertMutation = useUpsertBudget();
-  const deleteMutation = useDeleteBudget();
-
-  const expenseCategories = (categories || []).filter(
-    (c) => c.type === 'EXPENSE',
-  );
-
-  const effectiveCategoryId =
-    selectedCategoryId || initialCategoryId || expenseCategories[0]?.id || '';
-  const effectiveAmount = rawAmount !== null ? rawAmount : (initialAmount ?? 0);
-
-  const handleClose = () => {
-    setSelectedCategoryId('');
-    setRawAmount(null);
-    setError(null);
-    onClose();
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    if (!effectiveCategoryId) {
-      setError('Vui lòng chọn một danh mục chi tiêu');
-      return;
-    }
-
-    if (effectiveAmount < 1000) {
-      setError('Vui lòng đặt hạn mức tối thiểu từ 1.000 ₫ trở lên');
-      return;
-    }
-
-    try {
-      await upsertMutation.mutateAsync({
-        categoryId: effectiveCategoryId,
-        month,
-        amount: effectiveAmount,
-      });
-      handleClose();
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Không thể lưu hạn mức. Vui lòng thử lại.');
-      }
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!existingBudgetId) return;
-    setError(null);
-    try {
-      await deleteMutation.mutateAsync(existingBudgetId);
-      handleClose();
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Không thể xóa hạn mức này.');
-      }
-    }
-  };
-
-  const isBusy = upsertMutation.isPending || deleteMutation.isPending;
+  const {
+    expenseCategories,
+    effectiveCategoryId,
+    setSelectedCategoryId,
+    effectiveAmount,
+    setRawAmount,
+    error,
+    isBusy,
+    handleClose,
+    handleSubmit,
+    handleDelete,
+  } = useUpsertBudgetForm({
+    month,
+    initialCategoryId,
+    initialAmount,
+    existingBudgetId,
+    onClose,
+  });
 
   return (
     <Modal.Root isOpen={isOpen} onClose={handleClose}>

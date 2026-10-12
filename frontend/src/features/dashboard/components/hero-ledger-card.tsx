@@ -11,6 +11,9 @@ interface HeroLedgerCardProps {
   totalSpent: number;
   remainingBudget: number;
   usagePercent: number;
+  currentDay: number;
+  daysInMonth: number;
+  currentMonthNumber: number;
 }
 
 export function HeroLedgerCard({
@@ -20,16 +23,10 @@ export function HeroLedgerCard({
   totalSpent,
   remainingBudget,
   usagePercent,
+  currentDay,
+  daysInMonth,
+  currentMonthNumber,
 }: HeroLedgerCardProps) {
-  const now = new Date();
-  const currentDay = now.getDate();
-  const daysInMonth = new Date(
-    now.getFullYear(),
-    now.getMonth() + 1,
-    0,
-  ).getDate();
-  const currentMonthNumber = now.getMonth() + 1;
-
   return (
     <Card className="relative space-y-4 overflow-hidden">
       <Card.Header className="flex-col items-start">

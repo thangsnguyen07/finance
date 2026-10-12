@@ -7,12 +7,13 @@ import { Card } from '@/components/ui';
 
 interface PostItReminderCardProps {
   usagePercent: number;
+  monthLabel: string;
 }
 
-export function PostItReminderCard({ usagePercent }: PostItReminderCardProps) {
-  const now = new Date();
-  const monthLabel = `T${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
-
+export function PostItReminderCard({
+  usagePercent,
+  monthLabel,
+}: PostItReminderCardProps) {
   return (
     <Card
       variant="postIt"

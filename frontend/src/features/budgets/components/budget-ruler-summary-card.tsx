@@ -3,11 +3,16 @@
 import { Ruler } from 'lucide-react';
 
 import { Card, CurrencyText, K3WoodenRuler } from '@/components/ui';
-import { getMonthDayProgress } from '@/lib/date-utils';
 import { formatMonthDisplay } from '@/lib/formatters';
 
 interface BudgetRulerSummaryCardProps {
   month: string;
+  dayProgress: {
+    currentDay: number;
+    daysInMonth: number;
+    dayPercentage: number;
+    isCurrentMonth: boolean;
+  };
   totalSpent: number;
   totalBudgeted: number;
   remainingBudget: number;
@@ -17,14 +22,13 @@ interface BudgetRulerSummaryCardProps {
 
 export function BudgetRulerSummaryCard({
   month,
+  dayProgress,
   totalSpent,
   totalBudgeted,
   remainingBudget,
   overallPercent,
   isLoading,
 }: BudgetRulerSummaryCardProps) {
-  const dayProgress = getMonthDayProgress(month);
-
   return (
     <Card>
       <Card.Header

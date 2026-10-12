@@ -2,59 +2,32 @@
 
 import { Plus, Receipt, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
 
 import { LedgerLoadingState, LedgerEmptyState } from '@/components/feedback';
 import { Button, Alert, PageHeader } from '@/components/ui';
-import { useAccounts } from '@/features/accounts';
-import { useUiStore } from '@/stores/use-ui-store';
 
-import {
-  useTransactions,
-  useDeleteTransaction,
-} from '../hooks/use-transactions';
+import { useTransactionLedger } from '../hooks/use-transactions';
 import { TransactionFilterBar } from './transaction-filter-bar';
 import { TransactionLedgerList } from './transaction-ledger-list';
 import { TransactionSummaryCards } from './transaction-summary-cards';
 
-import type { TransactionType } from '../types/transaction.types';
-
 export function TransactionsView() {
-  const [filterType, setFilterType] = useState<TransactionType | 'ALL'>('ALL');
-  const [filterAccountId, setFilterAccountId] = useState<string>('');
-  const openQuickEntry = useUiStore((state) => state.openQuickEntry);
-
-  const { data: accounts } = useAccounts();
   const {
-    data: txData,
+    filterType,
+    setFilterType,
+    filterAccountId,
+    setFilterAccountId,
+    accounts,
+    items,
+    totalCount,
+    totalIncome,
+    totalExpense,
     isLoading,
     isError,
-  } = useTransactions({
-    type: filterType === 'ALL' ? undefined : filterType,
-    accountId: filterAccountId || undefined,
-    limit: 50,
-  });
-  const deleteMutation = useDeleteTransaction();
-
-  const items = txData?.items || [];
-
-  const totalIncome = items
-    .filter((tx) => tx.type === 'INCOME')
-    .reduce((sum, tx) => sum + tx.amount, 0);
-
-  const totalExpense = items
-    .filter((tx) => tx.type === 'EXPENSE')
-    .reduce((sum, tx) => sum + tx.amount, 0);
-
-  const handleDelete = async (id: string, label: string) => {
-    if (
-      window.confirm(
-        `Xóa giao dịch "${label}"? Số dư ví liên quan sẽ được hoàn lại tự động.`,
-      )
-    ) {
-      await deleteMutation.mutateAsync(id);
-    }
-  };
+    isDeleting,
+    openQuickEntry,
+    handleDelete,
+  } = useTransactionLedger();
 
   return (
     <div className="space-y-6">
@@ -89,7 +62,7 @@ export function TransactionsView() {
         onFilterTypeChange={setFilterType}
         filterAccountId={filterAccountId}
         onFilterAccountChange={setFilterAccountId}
-        accounts={accounts || []}
+        accounts={accounts}
       />
 
       {isLoading ? (
@@ -112,8 +85,8 @@ export function TransactionsView() {
       ) : (
         <TransactionLedgerList
           items={items}
-          totalCount={txData?.total || items.length}
-          isDeleting={deleteMutation.isPending}
+          totalCount={totalCount}
+          isDeleting={isDeleting}
           onDelete={handleDelete}
         />
       )}

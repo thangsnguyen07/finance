@@ -1,56 +1,27 @@
 'use client';
 
 import { Plus, Tag, ArrowDownRight, ArrowUpRight } from 'lucide-react';
-import { useState } from 'react';
 
 import { Card, Button, Field, Alert, SegmentedControl } from '@/components/ui';
 
 import { CATEGORY_COLOR_SWATCHES } from '../constants/category.constants';
-import { useCreateCategory } from '../hooks/use-categories';
+import { useCreateCategoryForm } from '../hooks/use-categories';
 
 import type { CategoryType } from '../types/category.types';
 
 export function CreateCategoryForm() {
-  const [categoryName, setCategoryName] = useState<string>('');
-  const [categoryType, setCategoryType] = useState<CategoryType>('EXPENSE');
-  const [selectedColor, setSelectedColor] = useState<string>('#991B1B');
-  const [error, setError] = useState<string | null>(null);
-  const [successMsg, setSuccessMsg] = useState<string | null>(null);
-
-  const createCategoryMutation = useCreateCategory();
-
-  const handleTypeChange = (nextType: CategoryType) => {
-    setCategoryType(nextType);
-    setSelectedColor(nextType === 'EXPENSE' ? '#991B1B' : '#166534');
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccessMsg(null);
-
-    const trimmed = categoryName.trim();
-    if (!trimmed) {
-      setError('Vui lòng nhập tên danh mục');
-      return;
-    }
-
-    try {
-      await createCategoryMutation.mutateAsync({
-        name: trimmed,
-        type: categoryType,
-        color: selectedColor,
-      });
-      setCategoryName('');
-      setSuccessMsg(`Đã thêm danh mục "${trimmed}" vào sổ.`);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Không thể tạo danh mục mới. Vui lòng thử lại.');
-      }
-    }
-  };
+  const {
+    categoryName,
+    setCategoryName,
+    categoryType,
+    handleTypeChange,
+    selectedColor,
+    setSelectedColor,
+    error,
+    successMsg,
+    isPending,
+    handleSubmit,
+  } = useCreateCategoryForm();
 
   return (
     <Card>
@@ -95,7 +66,7 @@ export function CreateCategoryForm() {
                     value: 'INCOME',
                     label: (
                       <>
-                        <ArrowUpRight className="h-3.5 w-3.5" />
+                        <ArrowUpRight className="h-3.5" />
                         <span>Thu nhập</span>
                       </>
                     ),
@@ -147,12 +118,10 @@ export function CreateCategoryForm() {
               type="submit"
               tone="primary"
               size="sm"
-              isLoading={createCategoryMutation.isPending}
+              isLoading={isPending}
               className="self-end sm:self-auto"
             >
-              {!createCategoryMutation.isPending ? (
-                <Plus className="h-4 w-4" />
-              ) : null}
+              {!isPending ? <Plus className="h-4 w-4" /> : null}
               <span>Thêm danh mục</span>
             </Button>
           </div>

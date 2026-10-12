@@ -1,14 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-
 import { Modal } from '@/components/feedback';
 import { Button, Field, Alert, VndAmountInput } from '@/components/ui';
 
 import { ACCOUNT_TYPE_OPTIONS } from '../constants/account.constants';
-import { useCreateAccount } from '../hooks/use-accounts';
-
-import type { AccountType } from '../types/account.types';
+import { useCreateAccountForm } from '../hooks/use-accounts';
 
 interface CreateAccountModalProps {
   isOpen: boolean;
@@ -19,57 +15,22 @@ export function CreateAccountModal({
   isOpen,
   onClose,
 }: CreateAccountModalProps) {
-  const [name, setName] = useState('');
-  const [type, setType] = useState<AccountType>('BANK');
-  const [initialBalance, setInitialBalance] = useState<number>(0);
-  const [creditLimit, setCreditLimit] = useState<number>(0);
-  const [statementDay, setStatementDay] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-
-  const createMutation = useCreateAccount();
-
-  const handleClose = () => {
-    setName('');
-    setType('BANK');
-    setInitialBalance(0);
-    setCreditLimit(0);
-    setStatementDay('');
-    setError(null);
-    onClose();
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    if (!name.trim()) {
-      setError('Vui lòng nhập tên tài khoản / ví');
-      return;
-    }
-
-    const parsedStatementDay = statementDay
-      ? parseInt(statementDay, 10)
-      : undefined;
-
-    try {
-      await createMutation.mutateAsync({
-        name: name.trim(),
-        type,
-        initialBalance,
-        creditLimit:
-          type === 'CREDIT_CARD' && creditLimit > 0 ? creditLimit : undefined,
-        statementDay: type === 'CREDIT_CARD' ? parsedStatementDay : undefined,
-      });
-
-      handleClose();
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Đã có lỗi xảy ra khi tạo tài khoản');
-      }
-    }
-  };
+  const {
+    name,
+    setName,
+    type,
+    setType,
+    initialBalance,
+    setInitialBalance,
+    creditLimit,
+    setCreditLimit,
+    statementDay,
+    setStatementDay,
+    error,
+    isPending,
+    handleClose,
+    handleSubmit,
+  } = useCreateAccountForm({ onClose });
 
   return (
     <Modal.Root isOpen={isOpen} onClose={handleClose} maxWidthClass="max-w-md">
@@ -161,7 +122,7 @@ export function CreateAccountModal({
                 type="button"
                 tone="ghost"
                 size="sm"
-                isDisabled={createMutation.isPending}
+                isDisabled={isPending}
                 onPress={handleClose}
               >
                 Hủy
@@ -170,7 +131,7 @@ export function CreateAccountModal({
                 type="submit"
                 tone="primary"
                 size="sm"
-                isLoading={createMutation.isPending}
+                isLoading={isPending}
                 className="px-5 py-2"
               >
                 <span>Tạo tài khoản</span>

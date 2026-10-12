@@ -2,36 +2,23 @@
 
 import { Receipt } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
 
 import { LedgerLoadingState } from '@/components/feedback';
 import { PageHeader, MonthNavigator } from '@/components/ui';
-import { useTransactions } from '@/features/transactions';
-import { getCurrentMonthString, getSixMonthWindow } from '@/lib/date-utils';
-import { formatMonthDisplay } from '@/lib/formatters';
 
-import { computeAnalyticsSinglePass } from '../utils/compute-cashflow-analytics';
+import { useCashflowReport } from '../hooks/use-cashflow-report';
 import { CashflowBalanceCard } from './cashflow-balance-card';
 import { CashflowTrendChart } from './cashflow-trend-chart';
 import { CategoryProportionSheet } from './category-proportion-sheet';
 
 export function ReportsView() {
-  const [selectedMonth, setSelectedMonth] = useState<string>(
-    getCurrentMonthString,
-  );
-
-  const windowRange = getSixMonthWindow(selectedMonth);
-  const { data: txData, isLoading } = useTransactions({
-    startDate: windowRange.startDate,
-    endDate: windowRange.endDate,
-    limit: 200,
-  });
-
-  const analytics = computeAnalyticsSinglePass(
-    txData?.items || [],
+  const {
     selectedMonth,
-    windowRange.months,
-  );
+    setSelectedMonth,
+    formattedMonth,
+    isLoading,
+    analytics,
+  } = useCashflowReport();
 
   return (
     <div className="space-y-6">
@@ -77,7 +64,7 @@ export function ReportsView() {
             <CategoryProportionSheet.Root
               items={analytics.expenseBreakdown}
               totalAmount={analytics.monthExpense}
-              emptyMessage={`Chưa có khoản chi tiêu nào trong ${formatMonthDisplay(selectedMonth)}.`}
+              emptyMessage={`Chưa có khoản chi tiêu nào trong ${formattedMonth}.`}
             >
               <div>
                 <CategoryProportionSheet.Header
@@ -92,7 +79,7 @@ export function ReportsView() {
             <CategoryProportionSheet.Root
               items={analytics.incomeBreakdown}
               totalAmount={analytics.monthIncome}
-              emptyMessage={`Chưa có khoản thu nhập nào trong ${formatMonthDisplay(selectedMonth)}.`}
+              emptyMessage={`Chưa có khoản thu nhập nào trong ${formattedMonth}.`}
             >
               <div>
                 <CategoryProportionSheet.Header
