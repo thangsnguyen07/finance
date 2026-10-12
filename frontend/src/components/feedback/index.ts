@@ -1,3 +1,4 @@
-export { Modal } from './modal';
-export { LedgerLoadingState } from './ledger-loading-state';
-export { LedgerEmptyState } from './ledger-empty-state';
+export { Modal } from './Modal';
+export type { ModalProps } from './Modal';
+export { LedgerEmptyState } from './LedgerEmptyState';
+export { LedgerLoadingState } from './LedgerLoadingState';
