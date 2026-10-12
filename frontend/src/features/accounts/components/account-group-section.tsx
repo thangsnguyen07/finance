@@ -4,7 +4,10 @@ import { Archive } from 'lucide-react';
 
 import { Button, Card, Badge, CurrencyText } from '@/components/ui';
 
-import { ACCOUNT_TYPE_CONFIG } from '../constants/account.constants';
+import {
+  ACCOUNT_GROUP_VARIANT_CONFIG,
+  ACCOUNT_TYPE_CONFIG,
+} from '../constants/account.constants';
 
 import type { AccountResponse } from '../types/account.types';
 
@@ -23,7 +26,7 @@ export function AccountGroupSection({
 }: AccountGroupSectionProps) {
   if (accounts.length === 0) return null;
 
-  const isCredit = variant === 'credit';
+  const variantConfig = ACCOUNT_GROUP_VARIANT_CONFIG[variant];
 
   return (
     <section className="space-y-3">
@@ -79,14 +82,12 @@ export function AccountGroupSection({
                     <p>
                       <CurrencyText
                         amount={balance}
-                        type={isCredit ? 'EXPENSE' : undefined}
-                        signed={isCredit && balance > 0}
-                        className={`text-sm font-bold ${
-                          isCredit ? 'text-danger' : 'text-foreground'
-                        }`}
+                        type={variantConfig.amountType}
+                        signed={variantConfig.showCreditLimit && balance > 0}
+                        className={variantConfig.amountClassName}
                       />
                     </p>
-                    {isCredit && creditLimit > 0 ? (
+                    {variantConfig.showCreditLimit && creditLimit > 0 ? (
                       <p className="mt-0.5 font-mono text-[10px] text-muted tabular-nums">
                         Còn hạn mức: <CurrencyText amount={remainingLimit} />
                       </p>

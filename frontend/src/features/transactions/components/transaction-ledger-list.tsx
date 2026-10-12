@@ -1,17 +1,15 @@
 'use client';
 
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  ArrowRightLeft,
-  Trash2,
-} from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 import { Button, Card, Badge, CurrencyText } from '@/components/ui';
 
+import { TRANSACTION_TYPE_UI_CONFIG } from '../constants/transaction.constants';
+import {
+  TRANSACTION_TYPE,
+  type TransactionResponse,
+} from '../types/transaction.types';
 import { getTransactionDisplayTitle } from '../utils/transaction.utils';
-
-import type { TransactionResponse } from '../types/transaction.types';
 
 interface TransactionLedgerListProps {
   items: TransactionResponse[];
@@ -35,8 +33,8 @@ export function TransactionLedgerList({
 
       <div className="divide-y divide-border/70">
         {items.map((tx) => {
-          const isExpense = tx.type === 'EXPENSE';
-          const isIncome = tx.type === 'INCOME';
+          const txConfig = TRANSACTION_TYPE_UI_CONFIG[tx.type];
+          const TxIcon = txConfig.icon;
           const displayTitle = getTransactionDisplayTitle(tx);
 
           return (
@@ -46,21 +44,9 @@ export function TransactionLedgerList({
             >
               <div className="flex min-w-0 items-center gap-3.5">
                 <div
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
-                    isExpense
-                      ? 'bg-danger/10 text-danger'
-                      : isIncome
-                        ? 'bg-success/10 text-success'
-                        : 'bg-accent/10 text-accent'
-                  }`}
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${txConfig.badgeClass}`}
                 >
-                  {isExpense ? (
-                    <ArrowDownRight className="h-4 w-4" />
-                  ) : isIncome ? (
-                    <ArrowUpRight className="h-4 w-4" />
-                  ) : (
-                    <ArrowRightLeft className="h-4 w-4" />
-                  )}
+                  <TxIcon className="h-4 w-4" />
                 </div>
 
                 <div className="min-w-0">
@@ -71,7 +57,8 @@ export function TransactionLedgerList({
                     <span className="font-mono">{tx.transactionDate}</span>
                     <span>•</span>
                     <span>{tx.account?.name || 'Ví đã lưu'}</span>
-                    {tx.type === 'TRANSFER' && tx.targetAccount ? (
+                    {tx.type === TRANSACTION_TYPE.TRANSFER &&
+                    tx.targetAccount ? (
                       <>
                         <span>→</span>
                         <span className="font-medium text-foreground">

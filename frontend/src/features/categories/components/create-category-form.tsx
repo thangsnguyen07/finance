@@ -1,10 +1,14 @@
 'use client';
 
-import { Plus, Tag, ArrowDownRight, ArrowUpRight } from 'lucide-react';
+import { Plus, Tag } from 'lucide-react';
 
 import { Card, Button, Field, Alert, SegmentedControl } from '@/components/ui';
 
-import { CATEGORY_COLOR_SWATCHES } from '../constants/category.constants';
+import {
+  CATEGORY_COLOR_SWATCHES,
+  CATEGORY_TYPE_OPTIONS,
+  CATEGORY_TYPE_UI_CONFIG,
+} from '../constants/category.constants';
 import { useCreateCategoryForm } from '../hooks/use-categories';
 
 import type { CategoryType } from '../types/category.types';
@@ -51,28 +55,20 @@ export function CreateCategoryForm() {
                 onChange={handleTypeChange}
                 fullWidth
                 size="sm"
-                options={[
-                  {
-                    value: 'EXPENSE',
+                options={CATEGORY_TYPE_OPTIONS.map((typeOption) => {
+                  const config = CATEGORY_TYPE_UI_CONFIG[typeOption];
+                  const Icon = config.icon;
+                  return {
+                    value: typeOption,
                     label: (
                       <>
-                        <ArrowDownRight className="h-3.5 w-3.5" />
-                        <span>Chi tiêu</span>
+                        <Icon className="h-3.5 w-3.5" />
+                        <span>{config.label}</span>
                       </>
                     ),
-                    activeClassName: 'bg-danger text-white shadow-2xs',
-                  },
-                  {
-                    value: 'INCOME',
-                    label: (
-                      <>
-                        <ArrowUpRight className="h-3.5" />
-                        <span>Thu nhập</span>
-                      </>
-                    ),
-                    activeClassName: 'bg-success text-white shadow-2xs',
-                  },
-                ]}
+                    activeClassName: config.activeSegmentClass,
+                  };
+                })}
               />
             </Field.Root>
 

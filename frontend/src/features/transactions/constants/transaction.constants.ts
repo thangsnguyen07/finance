@@ -1,6 +1,10 @@
+import { ArrowDownRight, ArrowUpRight, ArrowRightLeft } from 'lucide-react';
+
 import {
   TRANSACTION_FILTER_TYPE,
   TRANSACTION_TYPE,
+  type TransactionFilterType,
+  type TransactionType,
 } from '../types/transaction.types';
 
 import type { AmountPresetItem } from '@/components/ui/vnd-amount-input';
@@ -11,6 +15,72 @@ export const TRANSACTION_DEFAULTS = {
   DEFAULT_TYPE: TRANSACTION_TYPE.EXPENSE,
   DEFAULT_FILTER_TYPE: TRANSACTION_FILTER_TYPE.ALL,
 } as const;
+
+export const TRANSACTION_TYPE_UI_CONFIG: Record<
+  TransactionType,
+  {
+    label: string;
+    icon: typeof ArrowDownRight;
+    activeSegmentClass: string;
+    badgeClass: string;
+    accountFieldLabel: string;
+    categorySectionLabel: string;
+    amountClassName: string;
+  }
+> = {
+  [TRANSACTION_TYPE.EXPENSE]: {
+    label: 'Chi tiêu',
+    icon: ArrowDownRight,
+    activeSegmentClass: 'bg-danger text-white shadow-xs',
+    badgeClass: 'bg-danger/10 text-danger',
+    accountFieldLabel: 'Ví / Tài khoản',
+    categorySectionLabel: 'Danh mục (Chi tiêu)',
+    amountClassName: '',
+  },
+  [TRANSACTION_TYPE.INCOME]: {
+    label: 'Thu nhập',
+    icon: ArrowUpRight,
+    activeSegmentClass: 'bg-success text-white shadow-xs',
+    badgeClass: 'bg-success/10 text-success',
+    accountFieldLabel: 'Ví / Tài khoản',
+    categorySectionLabel: 'Danh mục (Thu nhập)',
+    amountClassName: '',
+  },
+  [TRANSACTION_TYPE.TRANSFER]: {
+    label: 'Chuyển khoản',
+    icon: ArrowRightLeft,
+    activeSegmentClass: 'bg-accent text-white shadow-xs',
+    badgeClass: 'bg-accent/10 text-accent',
+    accountFieldLabel: 'Từ ví nguồn',
+    categorySectionLabel: '',
+    amountClassName: 'text-foreground',
+  },
+};
+
+export const TRANSACTION_TYPE_OPTIONS: ReadonlyArray<TransactionType> = [
+  TRANSACTION_TYPE.EXPENSE,
+  TRANSACTION_TYPE.INCOME,
+  TRANSACTION_TYPE.TRANSFER,
+];
+
+export const TRANSACTION_FILTER_TABS: ReadonlyArray<{
+  key: TransactionFilterType;
+  label: string;
+}> = [
+  { key: TRANSACTION_FILTER_TYPE.ALL, label: 'Tất cả' },
+  {
+    key: TRANSACTION_FILTER_TYPE.EXPENSE,
+    label: TRANSACTION_TYPE_UI_CONFIG[TRANSACTION_TYPE.EXPENSE].label,
+  },
+  {
+    key: TRANSACTION_FILTER_TYPE.INCOME,
+    label: TRANSACTION_TYPE_UI_CONFIG[TRANSACTION_TYPE.INCOME].label,
+  },
+  {
+    key: TRANSACTION_FILTER_TYPE.TRANSFER,
+    label: TRANSACTION_TYPE_UI_CONFIG[TRANSACTION_TYPE.TRANSFER].label,
+  },
+];
 
 export const TRANSACTION_MESSAGES = {
   AMOUNT_REQUIRED: 'Vui lòng nhập số tiền lớn hơn 0 ₫',

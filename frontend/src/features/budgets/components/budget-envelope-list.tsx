@@ -101,13 +101,7 @@ export function BudgetEnvelopeList({
 
                   <div className="h-2 w-full overflow-hidden rounded-full border border-border/50 bg-surface-secondary">
                     <div
-                      className={`h-full rounded-full transition-all duration-300 ${
-                        env.status === 'EXCEEDED'
-                          ? 'bg-danger'
-                          : env.status === 'WARNING'
-                            ? 'bg-warning'
-                            : 'bg-success'
-                      }`}
+                      className={`h-full rounded-full transition-all duration-300 ${badge.barColorClass}`}
                       style={{ width: `${clampedBar}%` }}
                     />
                   </div>

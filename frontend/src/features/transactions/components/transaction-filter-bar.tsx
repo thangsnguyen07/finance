@@ -4,26 +4,18 @@ import { Filter } from 'lucide-react';
 
 import { Card, Field } from '@/components/ui';
 
-import type { TransactionType } from '../types/transaction.types';
+import { TRANSACTION_FILTER_TABS } from '../constants/transaction.constants';
+
+import type { TransactionFilterType } from '../types/transaction.types';
 import type { AccountResponse } from '@/features/accounts';
 
 interface TransactionFilterBarProps {
-  filterType: TransactionType | 'ALL';
-  onFilterTypeChange: (next: TransactionType | 'ALL') => void;
+  filterType: TransactionFilterType;
+  onFilterTypeChange: (next: TransactionFilterType) => void;
   filterAccountId: string;
   onFilterAccountChange: (next: string) => void;
   accounts: AccountResponse[];
 }
-
-const FILTER_TABS: ReadonlyArray<{
-  key: TransactionType | 'ALL';
-  label: string;
-}> = [
-  { key: 'ALL', label: 'Tất cả' },
-  { key: 'EXPENSE', label: 'Chi tiêu' },
-  { key: 'INCOME', label: 'Thu nhập' },
-  { key: 'TRANSFER', label: 'Chuyển khoản' },
-];
 
 export function TransactionFilterBar({
   filterType,
@@ -37,7 +29,7 @@ export function TransactionFilterBar({
       <Card.Content className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-1.5">
           <Filter className="mr-1 h-3.5 w-3.5 text-muted" />
-          {FILTER_TABS.map((tab) => (
+          {TRANSACTION_FILTER_TABS.map((tab) => (
             <button
               key={tab.key}
               type="button"

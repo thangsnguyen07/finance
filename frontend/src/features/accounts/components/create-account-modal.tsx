@@ -3,8 +3,12 @@
 import { Modal } from '@/components/feedback';
 import { Button, Field, Alert, VndAmountInput } from '@/components/ui';
 
-import { ACCOUNT_TYPE_OPTIONS } from '../constants/account.constants';
+import {
+  ACCOUNT_TYPE_CONFIG,
+  ACCOUNT_TYPE_OPTIONS,
+} from '../constants/account.constants';
 import { useCreateAccountForm } from '../hooks/use-accounts';
+import { ACCOUNT_TYPE } from '../types/account.types';
 
 interface CreateAccountModalProps {
   isOpen: boolean;
@@ -31,6 +35,8 @@ export function CreateAccountModal({
     handleClose,
     handleSubmit,
   } = useCreateAccountForm({ onClose });
+
+  const selectedTypeConfig = ACCOUNT_TYPE_CONFIG[type];
 
   return (
     <Modal.Root isOpen={isOpen} onClose={handleClose} maxWidthClass="max-w-md">
@@ -81,17 +87,13 @@ export function CreateAccountModal({
           </Field.Root>
 
           <VndAmountInput
-            label={
-              type === 'CREDIT_CARD'
-                ? 'Dư nợ hiện tại (VND)'
-                : 'Số dư ban đầu (VND)'
-            }
+            label={selectedTypeConfig.initialBalanceLabel}
             amount={initialBalance}
             onChange={setInitialBalance}
             showThousandMultiplier
           />
 
-          {type === 'CREDIT_CARD' ? (
+          {type === ACCOUNT_TYPE.CREDIT_CARD ? (
             <div className="space-y-3 pt-1">
               <VndAmountInput
                 label="Hạn mức tín dụng tối đa (VND)"

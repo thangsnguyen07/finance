@@ -31,22 +31,26 @@ export const BUDGET_STATUS_CONFIG: Record<
   {
     label: string;
     color: 'success' | 'warning' | 'danger';
+    barColorClass: string;
     icon: typeof CheckCircle2;
   }
 > = {
   [BUDGET_STATUS.SAFE]: {
     label: 'Trong tầm kiểm soát',
     color: 'success',
+    barColorClass: 'bg-success',
     icon: CheckCircle2,
   },
   [BUDGET_STATUS.WARNING]: {
     label: 'Sắp chạm trần',
     color: 'warning',
+    barColorClass: 'bg-warning',
     icon: AlertTriangle,
   },
   [BUDGET_STATUS.EXCEEDED]: {
     label: 'Vượt kế hoạch',
     color: 'danger',
+    barColorClass: 'bg-danger',
     icon: Flame,
   },
 };

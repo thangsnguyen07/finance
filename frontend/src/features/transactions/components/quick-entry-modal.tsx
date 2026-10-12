@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  ArrowRightLeft,
-  Wallet,
-  Calendar,
-  FileText,
-  Tag,
-} from 'lucide-react';
+import { ArrowRightLeft, Wallet, Calendar, FileText, Tag } from 'lucide-react';
 
 import { Modal } from '@/components/feedback';
 import {
@@ -19,10 +11,16 @@ import {
   VndAmountInput,
 } from '@/components/ui';
 
-import { TRANSACTION_AMOUNT_PRESETS } from '../constants/transaction.constants';
+import {
+  TRANSACTION_AMOUNT_PRESETS,
+  TRANSACTION_TYPE_OPTIONS,
+  TRANSACTION_TYPE_UI_CONFIG,
+} from '../constants/transaction.constants';
 import { useQuickEntryForm } from '../hooks/use-transactions';
-
-import type { TransactionType } from '../types/transaction.types';
+import {
+  TRANSACTION_TYPE,
+  type TransactionType,
+} from '../types/transaction.types';
 
 interface QuickEntryModalProps {
   isOpen: boolean;
@@ -53,6 +51,8 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
     handleSubmit,
   } = useQuickEntryForm({ onClose });
 
+  const currentTypeConfig = TRANSACTION_TYPE_UI_CONFIG[txType];
+
   return (
     <Modal.Root isOpen={isOpen} onClose={handleClose}>
       <Modal.Header
@@ -69,38 +69,20 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
             value={txType}
             onChange={setTxType}
             fullWidth
-            options={[
-              {
-                value: 'EXPENSE',
+            options={TRANSACTION_TYPE_OPTIONS.map((typeOption) => {
+              const config = TRANSACTION_TYPE_UI_CONFIG[typeOption];
+              const Icon = config.icon;
+              return {
+                value: typeOption,
                 label: (
                   <>
-                    <ArrowDownRight className="h-3.5 w-3.5" />
-                    <span>Chi tiêu</span>
+                    <Icon className="h-3.5 w-3.5" />
+                    <span>{config.label}</span>
                   </>
                 ),
-                activeClassName: 'bg-danger text-white shadow-xs',
-              },
-              {
-                value: 'INCOME',
-                label: (
-                  <>
-                    <ArrowUpRight className="h-3.5" />
-                    <span>Thu nhập</span>
-                  </>
-                ),
-                activeClassName: 'bg-success text-white shadow-xs',
-              },
-              {
-                value: 'TRANSFER',
-                label: (
-                  <>
-                    <ArrowRightLeft className="h-3.5 w-3.5" />
-                    <span>Chuyển khoản</span>
-                  </>
-                ),
-                activeClassName: 'bg-accent text-white shadow-xs',
-              },
-            ]}
+                activeClassName: config.activeSegmentClass,
+              };
+            })}
           />
 
           <VndAmountInput
@@ -115,7 +97,7 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field.Root>
               <Field.Label icon={<Wallet className="h-3.5 w-3.5" />} uppercase>
-                {txType === 'TRANSFER' ? 'Từ ví nguồn' : 'Ví / Tài khoản'}
+                {currentTypeConfig.accountFieldLabel}
               </Field.Label>
               <Field.Select
                 value={effectiveAccountId}
@@ -146,14 +128,14 @@ export function QuickEntryModal({ isOpen, onClose }: QuickEntryModalProps) {
           </div>
 
           <div className="flex h-[152px] flex-col">
-            {txType !== 'TRANSFER' ? (
+            {txType !== TRANSACTION_TYPE.TRANSFER ? (
               <>
                 <Field.Label
                   icon={<Tag className="h-3.5 w-3.5" />}
                   uppercase
                   className="mb-1.5 shrink-0"
                 >
-                  Danh mục ({txType === 'EXPENSE' ? 'Chi tiêu' : 'Thu nhập'})
+                  {currentTypeConfig.categorySectionLabel}
                 </Field.Label>
                 <div className="grid flex-1 grid-cols-2 content-start gap-2 overflow-y-auto p-0.5">
                   {filteredCategories.map((cat) => {

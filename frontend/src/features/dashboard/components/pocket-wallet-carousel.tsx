@@ -1,11 +1,10 @@
 'use client';
 
-import { Paperclip, Plus, CreditCard, Banknote } from 'lucide-react';
+import { Paperclip, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 import { Card, CurrencyText } from '@/components/ui';
-
-import type { AccountResponse } from '@/features/accounts';
+import { ACCOUNT_TYPE_CONFIG, type AccountResponse } from '@/features/accounts';
 
 interface PocketWalletCarouselProps {
   accounts: AccountResponse[];
@@ -53,54 +52,47 @@ export function PocketWalletCarousel({
           </Card>
         ) : (
           <>
-            {accounts.map((acc, idx) => (
-              <Card
-                key={acc.id}
-                padding="sm"
-                className="group relative w-48 shrink-0 overflow-visible rounded-lg transition-all hover:border-accent sm:w-56"
-              >
-                <div className="absolute -top-1.5 left-4 h-3.5 w-2 rounded-full bg-amber-800/80" />
+            {accounts.map((acc, idx) => {
+              const typeConfig = ACCOUNT_TYPE_CONFIG[acc.type];
+              const TypeIcon = typeConfig.icon;
 
-                <Card.Content>
-                  <div className="mb-2 flex items-center justify-between text-xs text-muted">
-                    <span className="font-mono text-[10px] tracking-wider uppercase">
-                      Thẻ #{idx + 1}
-                    </span>
-                    <span className="flex items-center gap-1 rounded bg-muted/10 px-1.5 py-0.5 text-[10px] font-medium text-muted">
-                      {acc.type === 'CASH' ? (
-                        <>
-                          <Banknote className="h-3 w-3 text-emerald-600" />
-                          <span>Tiền mặt</span>
-                        </>
-                      ) : acc.type === 'CREDIT_CARD' ? (
-                        <>
-                          <CreditCard className="h-3 w-3 text-danger" />
-                          <span className="font-bold text-danger">
-                            Thẻ tín dụng
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <CreditCard className="h-3 w-3 text-accent" />
-                          <span>Ngân hàng</span>
-                        </>
-                      )}
-                    </span>
-                  </div>
+              return (
+                <Card
+                  key={acc.id}
+                  padding="sm"
+                  className="group relative w-48 shrink-0 overflow-visible rounded-lg transition-all hover:border-accent sm:w-56"
+                >
+                  <div className="absolute -top-1.5 left-4 h-3.5 w-2 rounded-full bg-amber-800/80" />
 
-                  <h3 className="truncate text-xs font-medium text-foreground sm:text-sm">
-                    {acc.name}
-                  </h3>
+                  <Card.Content>
+                    <div className="mb-2 flex items-center justify-between text-xs text-muted">
+                      <span className="font-mono text-[10px] tracking-wider uppercase">
+                        Thẻ #{idx + 1}
+                      </span>
+                      <span className="flex items-center gap-1 rounded bg-muted/10 px-1.5 py-0.5 text-[10px] font-medium text-muted">
+                        <TypeIcon
+                          className={`h-3 w-3 ${typeConfig.pocketIconClass}`}
+                        />
+                        <span className={typeConfig.pocketLabelClass}>
+                          {typeConfig.label}
+                        </span>
+                      </span>
+                    </div>
 
-                  <div className="mt-2">
-                    <CurrencyText
-                      amount={acc.currentBalance || 0}
-                      className="font-serif text-base font-bold text-foreground"
-                    />
-                  </div>
-                </Card.Content>
-              </Card>
-            ))}
+                    <h3 className="truncate text-xs font-medium text-foreground sm:text-sm">
+                      {acc.name}
+                    </h3>
+
+                    <div className="mt-2">
+                      <CurrencyText
+                        amount={acc.currentBalance || 0}
+                        className="font-serif text-base font-bold text-foreground"
+                      />
+                    </div>
+                  </Card.Content>
+                </Card>
+              );
+            })}
 
             <Link
               href="/accounts"
