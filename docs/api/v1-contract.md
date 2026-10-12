@@ -9,8 +9,9 @@
 
 ## 1. Architectural Philosophy
 
-Frontend (`frontend/`) and Backend (`backend/`) operate as **two decoupled, independent source bases**. 
+Frontend (`frontend/`) and Backend (`backend/`) operate as **two decoupled, independent source bases**.
 This document acts as the definitive contract:
+
 - Backend implements NestJS controllers and DTOs using `class-validator` / `class-transformer`.
 - Frontend defines TypeScript interface mirrors in `frontend/src/types/api.ts`.
 - Changes to endpoints or payload schemas require explicit versioning and mutual agreement.
@@ -20,27 +21,28 @@ This document acts as the definitive contract:
 ## 2. Standard Request & Response Envelopes
 
 ### 2.1 Success Responses
+
 Direct REST representation with standard HTTP status codes (no unnecessary wrapper envelopes):
+
 - `200 OK`: Request succeeded, payload returned directly (Object or Array).
 - `201 Created`: Resource created successfully.
 - `204 No Content`: Successful deletion or action with no response body.
 
 ### 2.2 Error Envelope
+
 All error responses adhere to the standard NestJS exception schema:
 
 ```json
 {
   "statusCode": 400,
   "error": "Bad Request",
-  "message": [
-    "amount must be a positive number",
-    "account_id must be a UUID"
-  ],
+  "message": ["amount must be a positive number", "account_id must be a UUID"],
   "timestamp": "2026-10-07T15:00:00.000Z"
 }
 ```
 
 ### 2.3 Idempotency & Conflict Handling (HTTP 409)
+
 Duplicate requests containing an identical `client_tx_id` return:
 
 ```json
@@ -57,8 +59,14 @@ Duplicate requests containing an identical `client_tx_id` return:
 ## 3. Account / Wallet Endpoints (`/api/v1/accounts`)
 
 ### 3.1 Data Model: `Account`
+
 ```typescript
-export type AccountType = 'CASH' | 'BANK' | 'CREDIT_CARD' | 'E_WALLET' | 'INVESTMENT';
+export type AccountType =
+  | 'CASH'
+  | 'BANK'
+  | 'CREDIT_CARD'
+  | 'E_WALLET'
+  | 'INVESTMENT';
 
 export interface AccountResponse {
   id: string; // UUID
@@ -76,13 +84,17 @@ export interface AccountResponse {
 ```
 
 ### 3.2 `GET /api/v1/accounts`
+
 Returns all active accounts for the authenticated user.
+
 - **Query Parameters**:
   - `includeArchived` (optional boolean, default `false`)
 - **Response `200 OK`**: `AccountResponse[]`
 
 ### 3.3 `POST /api/v1/accounts`
+
 Creates a new account/wallet.
+
 - **Request Body**:
   ```typescript
   export interface CreateAccountDto {
@@ -97,11 +109,14 @@ Creates a new account/wallet.
 - **Response `201 Created`**: `AccountResponse`
 
 ### 3.4 `GET /api/v1/accounts/:id`
+
 - **Response `200 OK`**: `AccountResponse`
 - **Response `404 Not Found`**: Account does not exist or belongs to another user.
 
 ### 3.5 `PATCH /api/v1/accounts/:id`
+
 Updates mutable account attributes (balance is modified exclusively via transactions).
+
 - **Request Body**:
   ```typescript
   export interface UpdateAccountDto {
@@ -114,7 +129,9 @@ Updates mutable account attributes (balance is modified exclusively via transact
 - **Response `200 OK`**: `AccountResponse`
 
 ### 3.6 `DELETE /api/v1/accounts/:id`
+
 Soft-deletes or archives an account.
+
 - **Response `204 No Content`**
 
 ---
@@ -122,6 +139,7 @@ Soft-deletes or archives an account.
 ## 4. Transaction Endpoints (`/api/v1/transactions`)
 
 ### 4.1 Data Model: `Transaction`
+
 ```typescript
 export type TransactionType = 'INCOME' | 'EXPENSE' | 'TRANSFER';
 export type TransactionStatus = 'CLEARED' | 'UNCLEARED' | 'RECONCILED';
@@ -147,7 +165,9 @@ export interface TransactionResponse {
 ```
 
 ### 4.2 `GET /api/v1/transactions`
+
 Paginated and filterable transaction list.
+
 - **Query Parameters**:
   - `account_id` (optional UUID)
   - `category_id` (optional UUID)
@@ -168,7 +188,9 @@ Paginated and filterable transaction list.
   ```
 
 ### 4.3 `POST /api/v1/transactions`
+
 Atomic transaction creation with account snapshot balance update.
+
 - **Request Body**:
   ```typescript
   export interface CreateTransactionDto {
@@ -187,11 +209,15 @@ Atomic transaction creation with account snapshot balance update.
 - **Response `409 Conflict`**: Duplicate `client_tx_id`.
 
 ### 4.4 `PATCH /api/v1/transactions/:id`
+
 Updates an existing transaction and atomically adjusts balances.
+
 - **Response `200 OK`**: `TransactionResponse`
 
 ### 4.5 `DELETE /api/v1/transactions/:id`
+
 Deletes a transaction and reverses its balance impact atomically.
+
 - **Response `204 No Content`**
 
 ---
@@ -218,7 +244,9 @@ export interface CategoryResponse {
 ## 6. Budget Endpoints (`/api/v1/budgets`)
 
 ### 6.1 `GET /api/v1/budgets/current`
+
 Aggregated budget overview for a specific month.
+
 - **Query Parameters**:
   - `month` (e.g. `2026-10`, defaults to current month)
 - **Response `200 OK`**:
@@ -241,7 +269,9 @@ Aggregated budget overview for a specific month.
   ```
 
 ### 6.2 `PUT /api/v1/budgets`
+
 Sets or updates the spending limit for a category in a month.
+
 - **Request Body**:
   ```typescript
   export interface SetBudgetDto {

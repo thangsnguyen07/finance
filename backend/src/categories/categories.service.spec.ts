@@ -1,10 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import {
-  CategoriesService,
-  DEFAULT_CATEGORIES,
-} from './categories.service.js';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+import { CategoriesService, DEFAULT_CATEGORIES } from './categories.service.js';
 import { Category } from './entities/category.entity.js';
+
 import type { Repository } from 'typeorm';
 
 describe('CategoriesService', () => {
@@ -41,7 +40,9 @@ describe('CategoriesService', () => {
 
       const result = await service.findAll('user-1');
 
-      expect(repository.create).toHaveBeenCalledTimes(DEFAULT_CATEGORIES.length);
+      expect(repository.create).toHaveBeenCalledTimes(
+        DEFAULT_CATEGORIES.length,
+      );
       expect(repository.save).toHaveBeenCalledOnce();
       expect(result).toHaveLength(DEFAULT_CATEGORIES.length);
     });

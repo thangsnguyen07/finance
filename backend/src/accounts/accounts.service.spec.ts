@@ -1,7 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { NotFoundException, ConflictException } from '@nestjs/common';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { AccountsService } from './accounts.service.js';
 import { Account } from './entities/account.entity.js';
+
 import type { Repository } from 'typeorm';
 
 describe('AccountsService', () => {
@@ -119,7 +121,11 @@ describe('AccountsService', () => {
 
   describe('findOne', () => {
     it('should return account when found', async () => {
-      const account = { id: 'acc-1', userId: 'user-1', name: 'Tiền mặt' } as Account;
+      const account = {
+        id: 'acc-1',
+        userId: 'user-1',
+        name: 'Tiền mặt',
+      } as Account;
       vi.mocked(repository.findOne!).mockResolvedValueOnce(account);
 
       const result = await service.findOne('user-1', 'acc-1');

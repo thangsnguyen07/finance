@@ -1,39 +1,29 @@
 'use client';
 
-import { useState } from 'react';
-import { Sidebar } from '@/components/navigation/sidebar';
-import { BottomNav } from '@/components/navigation/bottom-nav';
-import { NotebookHeader } from '@/components/navigation/notebook-header';
-import { QuickEntryModal } from '@/components/transactions/quick-entry-modal';
+import { BottomNav } from '@/components/layout/bottom-nav';
+import { NotebookHeader } from '@/components/layout/notebook-header';
+import { Sidebar } from '@/components/layout/sidebar';
+import { QuickEntryModal } from '@/features/transactions';
+import { useUiStore } from '@/stores/use-ui-store';
 
-export default function AppLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [isQuickEntryOpen, setIsQuickEntryOpen] = useState(false);
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const isQuickEntryOpen = useUiStore((state) => state.isQuickEntryOpen);
+  const closeQuickEntry = useUiStore((state) => state.closeQuickEntry);
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      {/* Desktop Left Sidebar */}
-      <Sidebar onQuickEntryClick={() => setIsQuickEntryOpen(true)} />
+      <Sidebar />
 
-      {/* Main Content Area with Sticky Notebook Header */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex min-w-0 flex-1 flex-col">
         <NotebookHeader />
-        <main className="flex-1 min-w-0 pb-20 lg:pb-8 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-5">
+        <main className="mx-auto w-full max-w-5xl min-w-0 flex-1 px-4 pt-5 pb-20 sm:px-6 lg:px-8 lg:pb-8">
           {children}
         </main>
       </div>
 
-      {/* Mobile Bottom Navigation */}
-      <BottomNav onQuickEntryClick={() => setIsQuickEntryOpen(true)} />
+      <BottomNav />
 
-      {/* Global Quick Entry Modal */}
-      <QuickEntryModal
-        isOpen={isQuickEntryOpen}
-        onClose={() => setIsQuickEntryOpen(false)}
-      />
+      <QuickEntryModal isOpen={isQuickEntryOpen} onClose={closeQuickEntry} />
     </div>
   );
 }

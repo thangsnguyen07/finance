@@ -7,6 +7,7 @@
 ---
 
 ## 1. Context
+
 A personal finance application's adoption and data consistency hinge on the speed and ergonomics of logging daily expenses. Users frequently abandon manual tracking apps if recording a cup of coffee or meal requires more than 5 seconds or navigating nested screens. Furthermore, the home dashboard must provide instant situational awareness regarding net worth, liquidity across accounts, and category budget health.
 
 ---
@@ -14,6 +15,7 @@ A personal finance application's adoption and data consistency hinge on the spee
 ## 2. Options Considered
 
 Through prototype exploration (`prototype/mobile-entry-dashboard.html`), three interface archetypes were evaluated:
+
 - **Variant A (Numpad Calculator-First)**: Emphasized a large bottom-sheet calculator with a stacked-card dashboard (Net worth card + horizontal accounts slider + category budget progress bars).
 - **Variant B (Category-First & Preset Quick Taps)**: Emphasized a 2-tap entry flow (tap category icon -> enter amount with `+20k`, `+50k`, `+100k`, `+500k` preset chips) with a spending velocity speedometer.
 - **Variant C (Timeline Stream & Docked Input)**: Chat-like transaction stream with a persistent input dock and net cashflow bar chart.
@@ -21,6 +23,7 @@ Through prototype exploration (`prototype/mobile-entry-dashboard.html`), three i
 ---
 
 ## 3. Decision
+
 We adopt a **Hybrid Architecture (Variant A Dashboard + Variant B Quick Entry)**:
 
 1. **Dashboard Architecture (from Variant A)**:
@@ -37,6 +40,7 @@ We adopt a **Hybrid Architecture (Variant A Dashboard + Variant B Quick Entry)**
 ---
 
 ## 4. Consequences
+
 - **Positive**:
   - Sub-3-second expense logging for common purchases.
   - Clear, zero-clutter financial overview on mobile viewports.

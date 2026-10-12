@@ -8,6 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+
 import { Category } from '../../categories/entities/category.entity.js';
 
 const BIGINT_TRANSFORMER = {

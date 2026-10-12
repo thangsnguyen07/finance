@@ -16,14 +16,15 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
+
+import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import {
   BudgetsService,
   type MonthlyBudgetSummary,
 } from './budgets.service.js';
-import { UpsertBudgetDto } from './dto/upsert-budget.dto.js';
 import { QueryBudgetsDto } from './dto/query-budgets.dto.js';
+import { UpsertBudgetDto } from './dto/upsert-budget.dto.js';
 import { Budget } from './entities/budget.entity.js';
-import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 
 @ApiTags('budgets')
 @ApiBearerAuth()
@@ -32,7 +33,9 @@ export class BudgetsController {
   constructor(private readonly budgetsService: BudgetsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get monthly budget envelopes and spending summary' })
+  @ApiOperation({
+    summary: 'Get monthly budget envelopes and spending summary',
+  })
   @ApiResponse({ status: 200, description: 'Monthly budget summary' })
   async findByMonth(
     @CurrentUser() userId: string,

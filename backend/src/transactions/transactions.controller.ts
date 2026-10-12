@@ -16,14 +16,15 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
+
+import { CurrentUser } from '../common/decorators/current-user.decorator.js';
+import { CreateTransactionDto } from './dto/create-transaction.dto.js';
+import { QueryTransactionsDto } from './dto/query-transactions.dto.js';
 import { Transaction } from './entities/transaction.entity.js';
 import {
   TransactionsService,
   type PaginatedTransactionsResult,
 } from './transactions.service.js';
-import { CreateTransactionDto } from './dto/create-transaction.dto.js';
-import { QueryTransactionsDto } from './dto/query-transactions.dto.js';
-import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 
 @ApiTags('transactions')
 @ApiBearerAuth()
@@ -43,7 +44,8 @@ export class TransactionsController {
 
   @Post()
   @ApiOperation({
-    summary: 'Log an income, expense, or transfer and update balances atomically',
+    summary:
+      'Log an income, expense, or transfer and update balances atomically',
   })
   @ApiResponse({ status: 201, description: 'Transaction logged successfully' })
   @ApiResponse({ status: 409, description: 'Duplicate clientTxId' })
@@ -59,7 +61,10 @@ export class TransactionsController {
   @ApiOperation({
     summary: 'Delete a transaction and revert its balance impact atomically',
   })
-  @ApiResponse({ status: 204, description: 'Transaction deleted and balances restored' })
+  @ApiResponse({
+    status: 204,
+    description: 'Transaction deleted and balances restored',
+  })
   @ApiResponse({ status: 404, description: 'Transaction not found' })
   async remove(
     @CurrentUser() userId: string,

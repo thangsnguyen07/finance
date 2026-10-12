@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsIn,
   IsInt,
@@ -8,7 +9,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
 import type { AccountType } from '../entities/account.entity.js';
 
 export class CreateAccountDto {

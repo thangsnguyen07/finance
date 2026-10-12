@@ -34,11 +34,13 @@ finance/
 ## 2. Quick Start
 
 ### Start Local PostgreSQL Database
+
 ```bash
 docker compose up -d
 ```
 
 ### Run Frontend (Next.js 15 + HeroUI)
+
 ```bash
 cd frontend
 pnpm dev
@@ -46,6 +48,7 @@ pnpm dev
 ```
 
 ### Run Backend (NestJS + TypeORM)
+
 ```bash
 cd backend
 pnpm start:dev
@@ -54,6 +57,7 @@ pnpm start:dev
 ```
 
 ### Run Linter (OXC)
+
 ```bash
 pnpm dlx oxlint frontend backend
 ```
@@ -63,6 +67,7 @@ pnpm dlx oxlint frontend backend
 ## 3. Git Workflow & Approval Gate
 
 AI Agents operating in this repository adhere to a strict **Propose-First** human-in-the-loop gate:
+
 1. Agent proposes planned scope of work and draft commit message.
 2. Maintainer reviews and approves.
 3. Agent executes, verifies, and commits directly on `main`.

@@ -1,131 +1,134 @@
-@import "tailwindcss";
-@import "@heroui/styles";
+@import 'tailwindcss';
+@import '@heroui/styles';
 
 /* ==========================================================================
    Paperlike Design System - HeroUI v3 & Tailwind CSS v4 Theme Tokens
    ========================================================================== */
 
 :root,
-[data-theme="light"],
+[data-theme='light'],
 .light {
   color-scheme: light;
 
   /* Base Paper Canvas & Charcoal Graphite Ink */
-  --background: #FAF6EE;
-  --foreground: #26221F;
+  --background: #faf6ee;
+  --foreground: #26221f;
 
   /* Paper Surfaces */
-  --surface: #FFFDF9;
-  --surface-foreground: #26221F;
-  --surface-secondary: #F4EFE4;
-  --surface-secondary-foreground: #26221F;
-  --surface-tertiary: #EFE8D8;
-  --surface-tertiary-foreground: #26221F;
+  --surface: #fffdf9;
+  --surface-foreground: #26221f;
+  --surface-secondary: #f4efe4;
+  --surface-secondary-foreground: #26221f;
+  --surface-tertiary: #efe8d8;
+  --surface-tertiary-foreground: #26221f;
 
   /* Overlay & Popovers */
-  --overlay: #FFFDF9;
-  --overlay-foreground: #26221F;
+  --overlay: #fffdf9;
+  --overlay-foreground: #26221f;
 
   /* Secondary Pencil Notes & Metadata */
-  --muted: #6E665E;
+  --muted: #6e665e;
 
   /* Ledger Ruling Borders & Separators */
-  --border: #E8DFC8;
-  --separator: #E8DFC8;
+  --border: #e8dfc8;
+  --separator: #e8dfc8;
 
   /* Neutral Controls & Pills */
-  --default: #F4EFE4;
-  --default-foreground: #26221F;
+  --default: #f4efe4;
+  --default-foreground: #26221f;
 
   /* Semantic Inks: Fountain Pen & Archival Stamps */
-  --accent: #1E3A8A;
-  --accent-foreground: #FFFFFF;
+  --accent: #1e3a8a;
+  --accent-foreground: #ffffff;
   --success: #166534;
-  --success-foreground: #FFFFFF;
-  --warning: #B45309;
-  --warning-foreground: #FFFFFF;
-  --danger: #991B1B;
-  --danger-foreground: #FFFFFF;
-  --link: #1E3A8A;
-  --focus: #1E3A8A;
+  --success-foreground: #ffffff;
+  --warning: #b45309;
+  --warning-foreground: #ffffff;
+  --danger: #991b1b;
+  --danger-foreground: #ffffff;
+  --link: #1e3a8a;
+  --focus: #1e3a8a;
 
   /* Form Fields */
-  --field-background: #FFFDF9;
-  --field-foreground: #26221F;
-  --field-placeholder: #6E665E;
-  --field-border: #E8DFC8;
+  --field-background: #fffdf9;
+  --field-foreground: #26221f;
+  --field-placeholder: #6e665e;
+  --field-border: #e8dfc8;
 
   /* Paper Tactility: Subtle Corner Softening (6px) */
   --radius: 0.375rem;
 
   /* Custom Post-It Note Tokens */
-  --post-it: #FEF9C3;
-  --post-it-foreground: #713F12;
+  --post-it: #fef9c3;
+  --post-it-foreground: #713f12;
 }
 
 .dark,
-[data-theme="dark"] {
+[data-theme='dark'] {
   color-scheme: dark;
 
   /* Dark Archival Leather Cover & Warm Parchment Ink */
-  --background: #1C1917;
-  --foreground: #F5F0E6;
+  --background: #1c1917;
+  --foreground: #f5f0e6;
 
   /* Surfaces */
   --surface: #292524;
-  --surface-foreground: #F5F0E6;
-  --surface-secondary: #332E2B;
-  --surface-secondary-foreground: #F5F0E6;
-  --surface-tertiary: #3E3834;
-  --surface-tertiary-foreground: #F5F0E6;
+  --surface-foreground: #f5f0e6;
+  --surface-secondary: #332e2b;
+  --surface-secondary-foreground: #f5f0e6;
+  --surface-tertiary: #3e3834;
+  --surface-tertiary-foreground: #f5f0e6;
 
   /* Overlay & Popovers */
   --overlay: #292524;
-  --overlay-foreground: #F5F0E6;
+  --overlay-foreground: #f5f0e6;
 
   /* Dimmed Graphite Notes */
-  --muted: #A8A29E;
+  --muted: #a8a29e;
 
   /* Subtle Dark Ruling Lines */
-  --border: #44403C;
-  --separator: #44403C;
+  --border: #44403c;
+  --separator: #44403c;
 
   /* Neutral Controls */
-  --default: #332E2B;
-  --default-foreground: #F5F0E6;
+  --default: #332e2b;
+  --default-foreground: #f5f0e6;
 
   /* Semantic Inks (Dark Mode) */
-  --accent: #60A5FA;
-  --accent-foreground: #0F172A;
-  --success: #4ADE80;
-  --success-foreground: #052E16;
-  --warning: #FBBF24;
-  --warning-foreground: #451A03;
-  --danger: #F87171;
-  --danger-foreground: #450A0A;
-  --link: #60A5FA;
-  --focus: #60A5FA;
+  --accent: #60a5fa;
+  --accent-foreground: #0f172a;
+  --success: #4ade80;
+  --success-foreground: #052e16;
+  --warning: #fbbf24;
+  --warning-foreground: #451a03;
+  --danger: #f87171;
+  --danger-foreground: #450a0a;
+  --link: #60a5fa;
+  --focus: #60a5fa;
 
   /* Form Fields */
   --field-background: #292524;
-  --field-foreground: #F5F0E6;
-  --field-placeholder: #A8A29E;
-  --field-border: #44403C;
+  --field-foreground: #f5f0e6;
+  --field-placeholder: #a8a29e;
+  --field-border: #44403c;
 
   /* Paper Tactility */
   --radius: 0.375rem;
 
   /* Custom Post-It Note Tokens (Dark Mode) */
-  --post-it: #423E1C;
-  --post-it-foreground: #FEF08A;
+  --post-it: #423e1c;
+  --post-it-foreground: #fef08a;
 }
 
 @theme inline {
   --color-post-it: var(--post-it);
   --color-post-it-foreground: var(--post-it-foreground);
 
-  --font-serif: var(--font-newsreader), "Newsreader", "Merriweather", Georgia, serif;
-  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
-  --font-sans: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-hand: var(--font-caveat), "Caveat", cursive;
+  --font-serif:
+    var(--font-newsreader), 'Newsreader', 'Merriweather', Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+  --font-sans:
+    var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, sans-serif;
+  --font-hand: var(--font-caveat), 'Caveat', cursive;
 }

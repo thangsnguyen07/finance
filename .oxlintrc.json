@@ -9,9 +9,5 @@
     "browser": true,
     "node": true
   },
-  "ignorePatterns": [
-    "**/node_modules/**",
-    "**/.next/**",
-    "**/dist/**"
-  ]
+  "ignorePatterns": ["**/node_modules/**", "**/.next/**", "**/dist/**"]
 }

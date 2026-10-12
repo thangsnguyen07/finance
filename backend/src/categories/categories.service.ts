@@ -5,8 +5,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Category, type CategoryType } from './entities/category.entity.js';
+
 import { CreateCategoryDto } from './dto/create-category.dto.js';
+import { Category, type CategoryType } from './entities/category.entity.js';
 
 export const DEFAULT_CATEGORIES: ReadonlyArray<{
   name: string;

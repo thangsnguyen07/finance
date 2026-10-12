@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsDateString,
   IsIn,
@@ -9,7 +10,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
 import type { TransactionType } from '../entities/transaction.entity.js';
 
 export class CreateTransactionDto {

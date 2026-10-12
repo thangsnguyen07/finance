@@ -15,6 +15,7 @@
 ## 2. Scope & Boundaries
 
 ### In-Scope (MVP)
+
 - **Account & Wallet Management**: Cash, Bank accounts, and Credit Cards (credit limit, statement day, due day, Net Worth tracking).
 - **Transaction Engine**: Income, Expense, and internal Transfers (unified single-record, excluded from budget tracking).
 - **Mobile-First Quick Entry**: 2-tap category-first flow with standard Vietnamese banknote presets (`+20k`, `+50k`, `+100k`, `+500k`) and a custom numpad with `000`.
@@ -24,6 +25,7 @@
 - **Security**: Clerk Authentication with secure session verification on NestJS API routes.
 
 ### Out-of-Scope (Deferred to Post-MVP)
+
 - Automated Open Banking sync via private bank APIs.
 - Bank statement file import / PDF parsing (deferred in Ticket #8).
 - Multi-user joint accounts and family sharing.
@@ -46,13 +48,13 @@ graph TD
     API -- "TypeORM Connection Pool" --> DB
 ```
 
-| Component | Technology | Rationale | Reference ADR |
-|---|---|---|---|
-| **Frontend** | Next.js 15, Tailwind CSS v4, HeroUI, TanStack Query v5, Zustand, Lucide | Instant mobile UX, modern component library, offline optimistic caching | [ADR-0003](../adr/0003-mobile-first-ui-and-quick-entry-flow.md) |
-| **Backend** | NestJS 11, TypeORM, Express Adapter, Swagger | Enterprise TypeScript architecture, seamless decorator data modeling | [ADR-0001](../adr/0001-nestjs-backend-and-clerk-auth.md), [ADR-0007](../adr/0007-typeorm-database-orm.md) |
-| **Database** | PostgreSQL 16 (via Docker Compose) | ACID compliance, row-level locking for atomic transfers | [ADR-0002](../adr/0002-relational-schema-and-transaction-state-machine.md) |
-| **Auth** | Clerk Auth | Turn-key auth UI, OAuth, Passkeys, zero password storage liability | [ADR-0001](../adr/0001-nestjs-backend-and-clerk-auth.md) |
-| **Linter** | OXC (`oxlint`) | Ultra-fast Rust-based linting across both standalone projects | Root `.oxlintrc.json` |
+| Component    | Technology                                                              | Rationale                                                               | Reference ADR                                                                                             |
+| ------------ | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Frontend** | Next.js 15, Tailwind CSS v4, HeroUI, TanStack Query v5, Zustand, Lucide | Instant mobile UX, modern component library, offline optimistic caching | [ADR-0003](../adr/0003-mobile-first-ui-and-quick-entry-flow.md)                                           |
+| **Backend**  | NestJS 11, TypeORM, Express Adapter, Swagger                            | Enterprise TypeScript architecture, seamless decorator data modeling    | [ADR-0001](../adr/0001-nestjs-backend-and-clerk-auth.md), [ADR-0007](../adr/0007-typeorm-database-orm.md) |
+| **Database** | PostgreSQL 16 (via Docker Compose)                                      | ACID compliance, row-level locking for atomic transfers                 | [ADR-0002](../adr/0002-relational-schema-and-transaction-state-machine.md)                                |
+| **Auth**     | Clerk Auth                                                              | Turn-key auth UI, OAuth, Passkeys, zero password storage liability      | [ADR-0001](../adr/0001-nestjs-backend-and-clerk-auth.md)                                                  |
+| **Linter**   | OXC (`oxlint`)                                                          | Ultra-fast Rust-based linting across both standalone projects           | Root `.oxlintrc.json`                                                                                     |
 
 ---
 
@@ -61,6 +63,7 @@ graph TD
 Refer to `CONTEXT.md` for full ubiquitous language definitions.
 
 ### Core Tables
+
 1. **`accounts`**: `id`, `user_id`, `name`, `type` (`CASH` | `BANK` | `CREDIT_CARD`), `balance` (numeric snapshot), `currency` (VND), `credit_limit`, `statement_day`, `due_day`.
 2. **`categories`**: `id`, `user_id`, `name`, `icon`, `color`, `type` (`EXPENSE` | `INCOME`).
 3. **`transactions`**: `id`, `client_tx_id` (UUID unique), `user_id`, `type` (`EXPENSE` | `INCOME` | `TRANSFER`), `amount`, `account_id`, `destination_account_id`, `category_id`, `transaction_date`, `note`.
@@ -68,6 +71,7 @@ Refer to `CONTEXT.md` for full ubiquitous language definitions.
 5. **`recurring_transactions`**: `id`, `user_id`, `name`, `type`, `amount`, `is_variable_amount`, `account_id`, `category_id`, `frequency`, `due_day`, `next_due_date`, `is_active`.
 
 ### Critical Invariants
+
 - **Net Worth**: $\text{Net Worth} = \sum \text{Balance}_{\text{Cash/Bank}} - \sum \text{Balance}_{\text{Credit Card}}$.
 - **Snapshot Atomicity**: All balance modifications must be executed inside database transactions using `SELECT ... FOR UPDATE` row locks.
 - **Transfer Neutrality**: Transfers do not alter net worth and are excluded from category budget tracking.

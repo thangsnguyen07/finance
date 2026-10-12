@@ -1,8 +1,10 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { BudgetsService } from './budgets.service.js';
-import type { Budget } from './entities/budget.entity.js';
+
 import type { Category } from '../categories/entities/category.entity.js';
+import type { Budget } from './entities/budget.entity.js';
 
 describe('BudgetsService', () => {
   const userId = 'user-111';

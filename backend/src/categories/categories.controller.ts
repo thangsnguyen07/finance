@@ -1,20 +1,15 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { Category, type CategoryType } from './entities/category.entity.js';
+
+import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { CategoriesService } from './categories.service.js';
 import { CreateCategoryDto } from './dto/create-category.dto.js';
-import { CurrentUser } from '../common/decorators/current-user.decorator.js';
+import { Category, type CategoryType } from './entities/category.entity.js';
 
 @ApiTags('categories')
 @ApiBearerAuth()

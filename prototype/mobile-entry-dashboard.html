@@ -1,153 +1,295 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi" class="h-full bg-slate-950 text-slate-100">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Finance App - Mobile First UI Prototype</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#ecfdf5',
-              500: '#10b981',
-              600: '#059669',
-              700: '#047857',
-            }
-          }
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Finance App - Mobile First UI Prototype</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#ecfdf5',
+                500: '#10b981',
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+      body {
+        font-family:
+          'Plus Jakarta Sans',
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
       }
-    }
-  </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  </style>
-</head>
-<body class="h-full flex flex-col items-center justify-center p-0 md:p-6 select-none bg-slate-950">
-
-  <!-- Frame Container (Simulated iPhone Frame on Desktop, full on Mobile) -->
-  <div id="device-container" class="w-full h-full md:h-[844px] md:max-w-[390px] bg-slate-900 md:rounded-[44px] md:ring-8 md:ring-slate-800 md:shadow-2xl flex flex-col relative overflow-hidden transition-all duration-300">
-    
-    <!-- Top Status Bar (Simulated Mobile Header) -->
-    <div class="h-10 px-6 pt-3 flex items-center justify-between text-xs text-slate-400 font-medium z-10 shrink-0">
-      <span id="current-time">09:41</span>
-      <div class="flex items-center gap-1.5">
-        <i data-lucide="signal" class="w-3.5 h-3.5"></i>
-        <i data-lucide="wifi" class="w-3.5 h-3.5"></i>
-        <i data-lucide="battery-charging" class="w-4 h-4 text-emerald-400"></i>
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body
+    class="flex h-full flex-col items-center justify-center bg-slate-950 p-0 select-none md:p-6"
+  >
+    <!-- Frame Container (Simulated iPhone Frame on Desktop, full on Mobile) -->
+    <div
+      id="device-container"
+      class="relative flex h-full w-full flex-col overflow-hidden bg-slate-900 transition-all duration-300 md:h-[844px] md:max-w-[390px] md:rounded-[44px] md:shadow-2xl md:ring-8 md:ring-slate-800"
+    >
+      <!-- Top Status Bar (Simulated Mobile Header) -->
+      <div
+        class="z-10 flex h-10 shrink-0 items-center justify-between px-6 pt-3 text-xs font-medium text-slate-400"
+      >
+        <span id="current-time">09:41</span>
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="signal" class="h-3.5 w-3.5"></i>
+          <i data-lucide="wifi" class="h-3.5 w-3.5"></i>
+          <i
+            data-lucide="battery-charging"
+            class="h-4 w-4 text-emerald-400"
+          ></i>
+        </div>
       </div>
+
+      <!-- Main Content Area Rendered Per Variant -->
+      <main
+        id="app-viewport"
+        class="no-scrollbar relative flex flex-1 flex-col overflow-y-auto pb-16"
+      >
+        <!-- Injected via JavaScript -->
+      </main>
+
+      <!-- Bottom Navigation Bar for Mobile -->
+      <nav
+        class="z-20 flex h-16 shrink-0 items-center justify-around border-t border-slate-800/80 bg-slate-900/95 px-6 text-[11px] font-medium text-slate-400 backdrop-blur"
+      >
+        <button
+          onclick="setTab('dashboard')"
+          id="nav-dash"
+          class="flex flex-col items-center gap-1 text-emerald-400"
+        >
+          <i data-lucide="layout-grid" class="h-5 w-5"></i>
+          <span>Tổng quan</span>
+        </button>
+        <button
+          onclick="triggerQuickEntry()"
+          class="-mt-5 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 transition-transform hover:bg-emerald-400 active:scale-95"
+        >
+          <i data-lucide="plus" class="h-6 w-6 stroke-[2.5]"></i>
+        </button>
+        <button
+          onclick="setTab('wallets')"
+          id="nav-wallets"
+          class="flex flex-col items-center gap-1 hover:text-slate-200"
+        >
+          <i data-lucide="wallet" class="h-5 w-5"></i>
+          <span>Ví & Thẻ</span>
+        </button>
+      </nav>
     </div>
 
-    <!-- Main Content Area Rendered Per Variant -->
-    <main id="app-viewport" class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col pb-16">
-      <!-- Injected via JavaScript -->
-    </main>
-
-    <!-- Bottom Navigation Bar for Mobile -->
-    <nav class="h-16 border-t border-slate-800/80 bg-slate-900/95 backdrop-blur px-6 flex items-center justify-around text-slate-400 text-[11px] font-medium shrink-0 z-20">
-      <button onclick="setTab('dashboard')" id="nav-dash" class="flex flex-col items-center gap-1 text-emerald-400">
-        <i data-lucide="layout-grid" class="w-5 h-5"></i>
-        <span>Tổng quan</span>
+    <!-- FLOATING PROTOTYPE SWITCHER (Mandatory per prototype skill) -->
+    <aside
+      class="fixed bottom-3 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full border border-slate-700 bg-slate-800/95 px-4 py-2 text-xs font-semibold text-slate-200 shadow-2xl backdrop-blur-md md:bottom-6"
+    >
+      <button
+        onclick="cycleVariant(-1)"
+        class="flex h-6 w-6 items-center justify-center rounded-full text-slate-300 hover:bg-slate-700 active:scale-90"
+      >
+        <i data-lucide="chevron-left" class="h-4 w-4"></i>
       </button>
-      <button onclick="triggerQuickEntry()" class="w-12 h-12 -mt-5 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/30 transition-transform">
-        <i data-lucide="plus" class="w-6 h-6 stroke-[2.5]"></i>
+      <div class="flex items-center gap-2">
+        <span
+          class="rounded bg-emerald-500/20 px-2 py-0.5 font-mono text-emerald-300"
+          id="variant-pill"
+          >A</span
+        >
+        <span id="variant-label" class="max-w-[200px] truncate"
+          >Numpad Calculator-First</span
+        >
+      </div>
+      <button
+        onclick="cycleVariant(1)"
+        class="flex h-6 w-6 items-center justify-center rounded-full text-slate-300 hover:bg-slate-700 active:scale-90"
+      >
+        <i data-lucide="chevron-right" class="h-4 w-4"></i>
       </button>
-      <button onclick="setTab('wallets')" id="nav-wallets" class="flex flex-col items-center gap-1 hover:text-slate-200">
-        <i data-lucide="wallet" class="w-5 h-5"></i>
-        <span>Ví & Thẻ</span>
+      <div class="mx-1 h-3 w-[1px] bg-slate-700"></div>
+      <button
+        onclick="toggleViewport()"
+        title="Phóng to / thu nhỏ khung iPhone"
+        class="flex items-center gap-1 text-slate-400 hover:text-white"
+      >
+        <i data-lucide="smartphone" class="h-4 w-4"></i>
       </button>
-    </nav>
-  </div>
+    </aside>
 
-  <!-- FLOATING PROTOTYPE SWITCHER (Mandatory per prototype skill) -->
-  <aside class="fixed bottom-3 md:bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-800/95 backdrop-blur-md border border-slate-700 text-slate-200 px-4 py-2 rounded-full shadow-2xl flex items-center gap-3 text-xs font-semibold">
-    <button onclick="cycleVariant(-1)" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-700 active:scale-90 text-slate-300">
-      <i data-lucide="chevron-left" class="w-4 h-4"></i>
-    </button>
-    <div class="flex items-center gap-2">
-      <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded font-mono" id="variant-pill">A</span>
-      <span id="variant-label" class="truncate max-w-[200px]">Numpad Calculator-First</span>
-    </div>
-    <button onclick="cycleVariant(1)" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-700 active:scale-90 text-slate-300">
-      <i data-lucide="chevron-right" class="w-4 h-4"></i>
-    </button>
-    <div class="h-3 w-[1px] bg-slate-700 mx-1"></div>
-    <button onclick="toggleViewport()" title="Phóng to / thu nhỏ khung iPhone" class="text-slate-400 hover:text-white flex items-center gap-1">
-      <i data-lucide="smartphone" class="w-4 h-4"></i>
-    </button>
-  </aside>
+    <script>
+      // State Model
+      const state = {
+        variant: 'A', // 'A' | 'B' | 'C'
+        currentTab: 'dashboard',
+        isPhoneFrame: true,
+        amountBuffer: '0',
+        selectedCategory: 'food',
+        selectedAccount: 'acc1',
+        quickEntryOpen: false,
+        netWorth: 45200000,
+        accounts: [
+          {
+            id: 'acc1',
+            name: 'Tiền mặt',
+            type: 'CASH',
+            balance: 5200000,
+            icon: 'banknote',
+            color: 'emerald',
+          },
+          {
+            id: 'acc2',
+            name: 'Techcombank',
+            type: 'BANK',
+            balance: 55000000,
+            icon: 'building-2',
+            color: 'blue',
+          },
+          {
+            id: 'acc3',
+            name: 'VPBank StepUp',
+            type: 'CREDIT_CARD',
+            balance: 15000000,
+            limit: 30000000,
+            statementDay: 20,
+            dueDay: 5,
+            icon: 'credit-card',
+            color: 'purple',
+          },
+        ],
+        categories: [
+          { id: 'food', name: 'Ăn uống', icon: 'utensils', color: 'amber' },
+          { id: 'transport', name: 'Di chuyển', icon: 'car', color: 'sky' },
+          {
+            id: 'shopping',
+            name: 'Mua sắm',
+            icon: 'shopping-bag',
+            color: 'pink',
+          },
+          { id: 'bills', name: 'Hóa đơn', icon: 'receipt', color: 'rose' },
+          { id: 'coffee', name: 'Cà phê', icon: 'coffee', color: 'orange' },
+          {
+            id: 'salary',
+            name: 'Lương thưởng',
+            icon: 'wallet-cards',
+            color: 'emerald',
+          },
+        ],
+        budgets: [
+          {
+            categoryId: 'food',
+            name: 'Ăn uống',
+            spent: 3850000,
+            limit: 6000000,
+          },
+          {
+            categoryId: 'coffee',
+            name: 'Cà phê',
+            spent: 850000,
+            limit: 1000000,
+          },
+          {
+            categoryId: 'shopping',
+            name: 'Mua sắm',
+            spent: 2100000,
+            limit: 3000000,
+          },
+        ],
+        transactions: [
+          {
+            id: 't1',
+            desc: 'Bún chả trưa',
+            amount: 45000,
+            categoryId: 'food',
+            accountId: 'acc1',
+            time: '12:30 hôm nay',
+          },
+          {
+            id: 't2',
+            desc: 'Highlands Coffee',
+            amount: 55000,
+            categoryId: 'coffee',
+            accountId: 'acc2',
+            time: '09:15 hôm nay',
+          },
+          {
+            id: 't3',
+            desc: 'Đổ xăng xe máy',
+            amount: 90000,
+            categoryId: 'transport',
+            accountId: 'acc1',
+            time: 'Hôm qua',
+          },
+          {
+            id: 't4',
+            desc: 'Tiền điện tháng 9',
+            amount: 680000,
+            categoryId: 'bills',
+            accountId: 'acc2',
+            time: '20/09',
+          },
+        ],
+      };
 
-  <script>
-    // State Model
-    const state = {
-      variant: 'A', // 'A' | 'B' | 'C'
-      currentTab: 'dashboard',
-      isPhoneFrame: true,
-      amountBuffer: '0',
-      selectedCategory: 'food',
-      selectedAccount: 'acc1',
-      quickEntryOpen: false,
-      netWorth: 45200000,
-      accounts: [
-        { id: 'acc1', name: 'Tiền mặt', type: 'CASH', balance: 5200000, icon: 'banknote', color: 'emerald' },
-        { id: 'acc2', name: 'Techcombank', type: 'BANK', balance: 55000000, icon: 'building-2', color: 'blue' },
-        { id: 'acc3', name: 'VPBank StepUp', type: 'CREDIT_CARD', balance: 15000000, limit: 30000000, statementDay: 20, dueDay: 5, icon: 'credit-card', color: 'purple' }
-      ],
-      categories: [
-        { id: 'food', name: 'Ăn uống', icon: 'utensils', color: 'amber' },
-        { id: 'transport', name: 'Di chuyển', icon: 'car', color: 'sky' },
-        { id: 'shopping', name: 'Mua sắm', icon: 'shopping-bag', color: 'pink' },
-        { id: 'bills', name: 'Hóa đơn', icon: 'receipt', color: 'rose' },
-        { id: 'coffee', name: 'Cà phê', icon: 'coffee', color: 'orange' },
-        { id: 'salary', name: 'Lương thưởng', icon: 'wallet-cards', color: 'emerald' }
-      ],
-      budgets: [
-        { categoryId: 'food', name: 'Ăn uống', spent: 3850000, limit: 6000000 },
-        { categoryId: 'coffee', name: 'Cà phê', spent: 850000, limit: 1000000 },
-        { categoryId: 'shopping', name: 'Mua sắm', spent: 2100000, limit: 3000000 }
-      ],
-      transactions: [
-        { id: 't1', desc: 'Bún chả trưa', amount: 45000, categoryId: 'food', accountId: 'acc1', time: '12:30 hôm nay' },
-        { id: 't2', desc: 'Highlands Coffee', amount: 55000, categoryId: 'coffee', accountId: 'acc2', time: '09:15 hôm nay' },
-        { id: 't3', desc: 'Đổ xăng xe máy', amount: 90000, categoryId: 'transport', accountId: 'acc1', time: 'Hôm qua' },
-        { id: 't4', desc: 'Tiền điện tháng 9', amount: 680000, categoryId: 'bills', accountId: 'acc2', time: '20/09' }
-      ]
-    };
-
-    function formatVND(num) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num).replace('₫', 'đ');
-    }
-
-    // VARIANT DEFINITIONS
-    const VARIANTS = {
-      'A': {
-        key: 'A',
-        label: 'Numpad Calculator-First',
-        render: renderVariantA
-      },
-      'B': {
-        key: 'B',
-        label: 'Category-First + Presets',
-        render: renderVariantB
-      },
-      'C': {
-        key: 'C',
-        label: 'Timeline Stream + Docked Bar',
-        render: renderVariantC
+      function formatVND(num) {
+        return new Intl.NumberFormat('vi-VN', {
+          style: 'currency',
+          currency: 'VND',
+        })
+          .format(num)
+          .replace('₫', 'đ');
       }
-    };
 
-    // --- VARIANT A: Calculator First Bottom Sheet + Stacked Cards ---
-    function renderVariantA() {
-      const net = state.accounts.reduce((acc, a) => a.type === 'CREDIT_CARD' ? acc - a.balance : acc + a.balance, 0);
-      return `
+      // VARIANT DEFINITIONS
+      const VARIANTS = {
+        A: {
+          key: 'A',
+          label: 'Numpad Calculator-First',
+          render: renderVariantA,
+        },
+        B: {
+          key: 'B',
+          label: 'Category-First + Presets',
+          render: renderVariantB,
+        },
+        C: {
+          key: 'C',
+          label: 'Timeline Stream + Docked Bar',
+          render: renderVariantC,
+        },
+      };
+
+      // --- VARIANT A: Calculator First Bottom Sheet + Stacked Cards ---
+      function renderVariantA() {
+        const net = state.accounts.reduce(
+          (acc, a) =>
+            a.type === 'CREDIT_CARD' ? acc - a.balance : acc + a.balance,
+          0,
+        );
+        return `
         <div class="px-5 pt-2 flex flex-col gap-5">
           <!-- Header & Net Worth Stack Card -->
           <div class="flex items-center justify-between">
@@ -162,7 +304,9 @@
 
           <!-- Accounts Horizontal Slider -->
           <div class="flex gap-3 overflow-x-auto no-scrollbar -mx-5 px-5 pb-1">
-            ${state.accounts.map(acc => `
+            ${state.accounts
+              .map(
+                (acc) => `
               <div class="shrink-0 w-44 p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60 flex flex-col justify-between h-24">
                 <div class="flex items-center justify-between text-xs text-slate-400">
                   <span class="truncate font-medium">${acc.name}</span>
@@ -173,7 +317,9 @@
                   ${acc.type === 'CREDIT_CARD' ? `<p class="text-[10px] text-slate-400 mt-0.5">Khả dụng: ${formatVND(acc.limit - acc.balance)}</p>` : ''}
                 </div>
               </div>
-            `).join('')}
+            `,
+              )
+              .join('')}
           </div>
 
           <!-- Monthly Budget Progress Bars -->
@@ -183,10 +329,19 @@
               <span class="text-slate-400">6.8tr / 10.0tr đ (68%)</span>
             </div>
             <div class="space-y-3">
-              ${state.budgets.map(b => {
-                const pct = Math.min(100, Math.round((b.spent / b.limit) * 100));
-                const color = pct > 90 ? 'bg-rose-500' : pct > 75 ? 'bg-amber-500' : 'bg-emerald-500';
-                return `
+              ${state.budgets
+                .map((b) => {
+                  const pct = Math.min(
+                    100,
+                    Math.round((b.spent / b.limit) * 100),
+                  );
+                  const color =
+                    pct > 90
+                      ? 'bg-rose-500'
+                      : pct > 75
+                        ? 'bg-amber-500'
+                        : 'bg-emerald-500';
+                  return `
                   <div>
                     <div class="flex justify-between text-[11px] mb-1">
                       <span class="text-slate-300">${b.name}</span>
@@ -197,7 +352,8 @@
                     </div>
                   </div>
                 `;
-              }).join('')}
+                })
+                .join('')}
             </div>
           </div>
 
@@ -205,7 +361,9 @@
           <div>
             <h2 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">Giao dịch gần đây</h2>
             <div class="space-y-2">
-              ${state.transactions.map(t => `
+              ${state.transactions
+                .map(
+                  (t) => `
                 <div class="p-3 bg-slate-800/30 border border-slate-800/60 rounded-xl flex items-center justify-between">
                   <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
@@ -218,13 +376,17 @@
                   </div>
                   <span class="text-xs font-bold text-rose-400">-${formatVND(t.amount)}</span>
                 </div>
-              `).join('')}
+              `,
+                )
+                .join('')}
             </div>
           </div>
         </div>
 
         <!-- VARIANT A BOTTOM SHEET QUICK ENTRY (Always Docked or Pop-up) -->
-        ${state.quickEntryOpen ? `
+        ${
+          state.quickEntryOpen
+            ? `
           <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-30 flex flex-col justify-end" onclick="closeQuickEntry(event)">
             <div class="bg-slate-900 border-t border-slate-800 rounded-t-3xl p-5 shadow-2xl flex flex-col gap-4 animate-in slide-in-from-bottom" onclick="event.stopPropagation()">
               <!-- Drag handle -->
@@ -240,29 +402,50 @@
 
               <!-- Category Scroll (1-tap above numpad) -->
               <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
-                ${state.categories.map(c => `
+                ${state.categories
+                  .map(
+                    (c) => `
                   <button onclick="selectCategory('${c.id}')" class="px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shrink-0 border transition-all ${state.selectedCategory === c.id ? 'bg-emerald-500 text-slate-950 font-bold border-emerald-400 shadow-md shadow-emerald-500/20' : 'bg-slate-800 text-slate-300 border-slate-700'}">
                     <i data-lucide="${c.icon}" class="w-3.5 h-3.5"></i>
                     <span>${c.name}</span>
                   </button>
-                `).join('')}
+                `,
+                  )
+                  .join('')}
               </div>
 
               <!-- Wallet Selector -->
               <div class="flex items-center justify-between px-1 text-xs text-slate-400">
                 <span>Trừ từ ví:</span>
                 <select onchange="state.selectedAccount = this.value" class="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-lg px-2.5 py-1 focus:outline-none">
-                  ${state.accounts.map(a => `<option value="${a.id}" ${state.selectedAccount === a.id ? 'selected' : ''}>${a.name} (${formatVND(a.balance)})</option>`).join('')}
+                  ${state.accounts.map((a) => `<option value="${a.id}" ${state.selectedAccount === a.id ? 'selected' : ''}>${a.name} (${formatVND(a.balance)})</option>`).join('')}
                 </select>
               </div>
 
               <!-- Large Calculator Numpad (Single-Thumb Optimized) -->
               <div class="grid grid-cols-3 gap-2 text-lg font-semibold">
-                ${['1','2','3','4','5','6','7','8','9','000','0','DEL'].map(key => `
+                ${[
+                  '1',
+                  '2',
+                  '3',
+                  '4',
+                  '5',
+                  '6',
+                  '7',
+                  '8',
+                  '9',
+                  '000',
+                  '0',
+                  'DEL',
+                ]
+                  .map(
+                    (key) => `
                   <button onclick="handleKey('${key}')" class="h-12 rounded-xl bg-slate-800 hover:bg-slate-750 active:bg-slate-700 border border-slate-750 text-slate-100 flex items-center justify-center transition-colors">
                     ${key === 'DEL' ? '<i data-lucide="delete" class="w-5 h-5 text-rose-400"></i>' : key}
                   </button>
-                `).join('')}
+                `,
+                  )
+                  .join('')}
               </div>
 
               <!-- Confirm Button -->
@@ -272,13 +455,15 @@
               </button>
             </div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
       `;
-    }
+      }
 
-    // --- VARIANT B: Category-First Grid + VND Preset Buttons + Speedometer ---
-    function renderVariantB() {
-      return `
+      // --- VARIANT B: Category-First Grid + VND Preset Buttons + Speedometer ---
+      function renderVariantB() {
+        return `
         <div class="px-5 pt-2 flex flex-col gap-5">
           <!-- Header with Speedometer Gauge -->
           <div class="bg-gradient-to-b from-slate-800/80 to-slate-900 border border-slate-700/80 rounded-3xl p-5 text-center relative overflow-hidden">
@@ -303,14 +488,18 @@
               <span class="text-[11px] text-emerald-400">2-Chạm siêu tốc</span>
             </div>
             <div class="grid grid-cols-3 gap-2.5">
-              ${state.categories.map(c => `
+              ${state.categories
+                .map(
+                  (c) => `
                 <button onclick="openCategoryEntry('${c.id}')" class="p-3 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 active:scale-95 flex flex-col items-center gap-1.5 transition-all">
                   <div class="w-10 h-10 rounded-xl bg-slate-700/50 flex items-center justify-center text-emerald-400">
                     <i data-lucide="${c.icon}" class="w-5 h-5"></i>
                   </div>
                   <span class="text-xs font-medium text-slate-200">${c.name}</span>
                 </button>
-              `).join('')}
+              `,
+                )
+                .join('')}
             </div>
           </div>
 
@@ -328,13 +517,15 @@
         </div>
 
         <!-- VARIANT B MODAL: Preset Amount Chips + Compact Numpad -->
-        ${state.quickEntryOpen ? `
+        ${
+          state.quickEntryOpen
+            ? `
           <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-30 flex flex-col justify-end" onclick="closeQuickEntry(event)">
             <div class="bg-slate-900 border-t border-slate-800 rounded-t-3xl p-5 flex flex-col gap-3.5 animate-in slide-in-from-bottom" onclick="event.stopPropagation()">
               <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                 <span class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
                   <i data-lucide="tag" class="w-3.5 h-3.5 text-emerald-400"></i>
-                  ${state.categories.find(c => c.id === state.selectedCategory)?.name || 'Chi tiêu'}
+                  ${state.categories.find((c) => c.id === state.selectedCategory)?.name || 'Chi tiêu'}
                 </span>
                 <button onclick="state.quickEntryOpen = false; render();" class="text-slate-400 hover:text-white text-xs">Đóng</button>
               </div>
@@ -348,20 +539,41 @@
 
               <!-- VND Preset Amount Fast Buttons -->
               <div class="grid grid-cols-4 gap-1.5">
-                ${[20000, 50000, 100000, 500000].map(val => `
+                ${[20000, 50000, 100000, 500000]
+                  .map(
+                    (val) => `
                   <button onclick="addPresetAmount(${val})" class="py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 rounded-lg text-xs font-bold text-emerald-300">
-                    +${val >= 1000000 ? (val/1000000)+'tr' : (val/1000)+'k'}
+                    +${val >= 1000000 ? val / 1000000 + 'tr' : val / 1000 + 'k'}
                   </button>
-                `).join('')}
+                `,
+                  )
+                  .join('')}
               </div>
 
               <!-- Compact Numpad -->
               <div class="grid grid-cols-3 gap-1.5 text-base font-semibold">
-                ${['1','2','3','4','5','6','7','8','9','000','0','DEL'].map(key => `
+                ${[
+                  '1',
+                  '2',
+                  '3',
+                  '4',
+                  '5',
+                  '6',
+                  '7',
+                  '8',
+                  '9',
+                  '000',
+                  '0',
+                  'DEL',
+                ]
+                  .map(
+                    (key) => `
                   <button onclick="handleKey('${key}')" class="h-11 rounded-xl bg-slate-800 active:bg-slate-700 text-slate-100 flex items-center justify-center">
                     ${key === 'DEL' ? '<i data-lucide="delete" class="w-4 h-4 text-rose-400"></i>' : key}
                   </button>
-                `).join('')}
+                `,
+                  )
+                  .join('')}
               </div>
 
               <button onclick="saveTransaction()" class="w-full py-2.5 bg-emerald-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg flex items-center justify-center gap-1.5">
@@ -369,13 +581,15 @@
               </button>
             </div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
       `;
-    }
+      }
 
-    // --- VARIANT C: Timeline Stream + Persistent Docked Input Bar ---
-    function renderVariantC() {
-      return `
+      // --- VARIANT C: Timeline Stream + Persistent Docked Input Bar ---
+      function renderVariantC() {
+        return `
         <div class="px-5 pt-2 flex flex-col gap-4">
           <!-- Net Flow Bar Overview -->
           <div class="p-4 bg-slate-800/60 border border-slate-700 rounded-2xl">
@@ -385,12 +599,16 @@
             </div>
             <!-- Mini Bar Chart -->
             <div class="h-14 flex items-end justify-between gap-2 pt-2">
-              ${[40, 65, 30, 85, 45, 95, 60].map((h, i) => `
+              ${[40, 65, 30, 85, 45, 95, 60]
+                .map(
+                  (h, i) => `
                 <div class="flex-1 flex flex-col items-center gap-1">
                   <div class="w-full bg-emerald-500/80 rounded-t" style="height: ${h}%"></div>
-                  <span class="text-[9px] text-slate-500">T${i+2}</span>
+                  <span class="text-[9px] text-slate-500">T${i + 2}</span>
                 </div>
-              `).join('')}
+              `,
+                )
+                .join('')}
             </div>
           </div>
 
@@ -402,7 +620,9 @@
             </div>
 
             <div class="space-y-3 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-800">
-              ${state.transactions.map(t => `
+              ${state.transactions
+                .map(
+                  (t) => `
                 <div class="flex items-start gap-3 pl-1">
                   <div class="w-6 h-6 rounded-full bg-slate-800 border-2 border-slate-900 ring-2 ring-slate-700 flex items-center justify-center text-slate-300 z-10 shrink-0">
                     <i data-lucide="tag" class="w-3 h-3"></i>
@@ -410,12 +630,14 @@
                   <div class="flex-1 p-3 bg-slate-800/40 border border-slate-800 rounded-xl flex items-center justify-between">
                     <div>
                       <p class="text-xs font-semibold text-slate-200">${t.desc}</p>
-                      <p class="text-[10px] text-slate-500">${t.time} • ${state.accounts.find(a=>a.id===t.accountId)?.name || 'Ví'}</p>
+                      <p class="text-[10px] text-slate-500">${t.time} • ${state.accounts.find((a) => a.id === t.accountId)?.name || 'Ví'}</p>
                     </div>
                     <span class="text-xs font-bold text-rose-400">-${formatVND(t.amount)}</span>
                   </div>
                 </div>
-              `).join('')}
+              `,
+                )
+                .join('')}
             </div>
           </div>
         </div>
@@ -431,129 +653,146 @@
           </button>
         </div>
       `;
-    }
-
-    // --- CONTROLLER & INTERACTIONS ---
-    function render() {
-      const activeVariant = VARIANTS[state.variant] || VARIANTS['A'];
-      document.getElementById('variant-pill').innerText = activeVariant.key;
-      document.getElementById('variant-label').innerText = activeVariant.label;
-      
-      const viewport = document.getElementById('app-viewport');
-      viewport.innerHTML = activeVariant.render();
-      lucide.createIcons();
-
-      // Update URL param without page reload
-      const url = new URL(window.location);
-      url.searchParams.set('variant', state.variant);
-      window.history.replaceState({}, '', url);
-    }
-
-    function cycleVariant(direction) {
-      const keys = Object.keys(VARIANTS);
-      let idx = keys.indexOf(state.variant) + direction;
-      if (idx < 0) idx = keys.length - 1;
-      if (idx >= keys.length) idx = 0;
-      state.variant = keys[idx];
-      render();
-    }
-
-    function toggleViewport() {
-      state.isPhoneFrame = !state.isPhoneFrame;
-      const el = document.getElementById('device-container');
-      if (state.isPhoneFrame) {
-        el.className = "w-full h-full md:h-[844px] md:max-w-[390px] bg-slate-900 md:rounded-[44px] md:ring-8 md:ring-slate-800 md:shadow-2xl flex flex-col relative overflow-hidden transition-all duration-300";
-      } else {
-        el.className = "w-full h-full max-w-2xl bg-slate-900 rounded-2xl shadow-2xl flex flex-col relative overflow-hidden transition-all duration-300";
       }
-    }
 
-    function triggerQuickEntry() {
-      state.amountBuffer = '0';
-      state.quickEntryOpen = true;
-      render();
-    }
+      // --- CONTROLLER & INTERACTIONS ---
+      function render() {
+        const activeVariant = VARIANTS[state.variant] || VARIANTS['A'];
+        document.getElementById('variant-pill').innerText = activeVariant.key;
+        document.getElementById('variant-label').innerText =
+          activeVariant.label;
 
-    function closeQuickEntry(e) {
-      state.quickEntryOpen = false;
-      render();
-    }
+        const viewport = document.getElementById('app-viewport');
+        viewport.innerHTML = activeVariant.render();
+        lucide.createIcons();
 
-    function openCategoryEntry(catId) {
-      state.selectedCategory = catId;
-      state.amountBuffer = '0';
-      state.quickEntryOpen = true;
-      render();
-    }
-
-    function selectCategory(catId) {
-      state.selectedCategory = catId;
-      render();
-    }
-
-    function handleKey(key) {
-      if (key === 'DEL') {
-        state.amountBuffer = state.amountBuffer.length > 1 ? state.amountBuffer.slice(0, -1) : '0';
-      } else if (key === '000') {
-        if (state.amountBuffer !== '0') state.amountBuffer += '000';
-      } else {
-        state.amountBuffer = state.amountBuffer === '0' ? key : state.amountBuffer + key;
+        // Update URL param without page reload
+        const url = new URL(window.location);
+        url.searchParams.set('variant', state.variant);
+        window.history.replaceState({}, '', url);
       }
-      render();
-    }
 
-    function addPresetAmount(val) {
-      const curr = parseInt(state.amountBuffer) || 0;
-      state.amountBuffer = String(curr + val);
-      render();
-    }
+      function cycleVariant(direction) {
+        const keys = Object.keys(VARIANTS);
+        let idx = keys.indexOf(state.variant) + direction;
+        if (idx < 0) idx = keys.length - 1;
+        if (idx >= keys.length) idx = 0;
+        state.variant = keys[idx];
+        render();
+      }
 
-    function saveTransaction() {
-      const amt = parseInt(state.amountBuffer) || 0;
-      if (amt <= 0) return;
-      const cat = state.categories.find(c => c.id === state.selectedCategory);
-      state.transactions.unshift({
-        id: 't_' + Date.now(),
-        desc: cat?.name || 'Chi tiêu',
-        amount: amt,
-        categoryId: state.selectedCategory,
-        accountId: state.selectedAccount,
-        time: 'Vừa xong'
+      function toggleViewport() {
+        state.isPhoneFrame = !state.isPhoneFrame;
+        const el = document.getElementById('device-container');
+        if (state.isPhoneFrame) {
+          el.className =
+            'w-full h-full md:h-[844px] md:max-w-[390px] bg-slate-900 md:rounded-[44px] md:ring-8 md:ring-slate-800 md:shadow-2xl flex flex-col relative overflow-hidden transition-all duration-300';
+        } else {
+          el.className =
+            'w-full h-full max-w-2xl bg-slate-900 rounded-2xl shadow-2xl flex flex-col relative overflow-hidden transition-all duration-300';
+        }
+      }
+
+      function triggerQuickEntry() {
+        state.amountBuffer = '0';
+        state.quickEntryOpen = true;
+        render();
+      }
+
+      function closeQuickEntry(e) {
+        state.quickEntryOpen = false;
+        render();
+      }
+
+      function openCategoryEntry(catId) {
+        state.selectedCategory = catId;
+        state.amountBuffer = '0';
+        state.quickEntryOpen = true;
+        render();
+      }
+
+      function selectCategory(catId) {
+        state.selectedCategory = catId;
+        render();
+      }
+
+      function handleKey(key) {
+        if (key === 'DEL') {
+          state.amountBuffer =
+            state.amountBuffer.length > 1
+              ? state.amountBuffer.slice(0, -1)
+              : '0';
+        } else if (key === '000') {
+          if (state.amountBuffer !== '0') state.amountBuffer += '000';
+        } else {
+          state.amountBuffer =
+            state.amountBuffer === '0' ? key : state.amountBuffer + key;
+        }
+        render();
+      }
+
+      function addPresetAmount(val) {
+        const curr = parseInt(state.amountBuffer) || 0;
+        state.amountBuffer = String(curr + val);
+        render();
+      }
+
+      function saveTransaction() {
+        const amt = parseInt(state.amountBuffer) || 0;
+        if (amt <= 0) return;
+        const cat = state.categories.find(
+          (c) => c.id === state.selectedCategory,
+        );
+        state.transactions.unshift({
+          id: 't_' + Date.now(),
+          desc: cat?.name || 'Chi tiêu',
+          amount: amt,
+          categoryId: state.selectedCategory,
+          accountId: state.selectedAccount,
+          time: 'Vừa xong',
+        });
+        // Deduct from account
+        const acc = state.accounts.find((a) => a.id === state.selectedAccount);
+        if (acc) acc.balance -= amt;
+
+        state.quickEntryOpen = false;
+        state.amountBuffer = '0';
+        render();
+      }
+
+      function setTab(t) {
+        state.currentTab = t;
+        // In prototype, keeping dashboard as core view
+        render();
+      }
+
+      // Keyboard navigation (← and → to switch variants)
+      window.addEventListener('keydown', (e) => {
+        if (
+          ['input', 'textarea', 'select'].includes(
+            document.activeElement.tagName.toLowerCase(),
+          )
+        )
+          return;
+        if (e.key === 'ArrowLeft') cycleVariant(-1);
+        if (e.key === 'ArrowRight') cycleVariant(1);
       });
-      // Deduct from account
-      const acc = state.accounts.find(a => a.id === state.selectedAccount);
-      if (acc) acc.balance -= amt;
 
-      state.quickEntryOpen = false;
-      state.amountBuffer = '0';
+      // Clock
+      setInterval(() => {
+        const d = new Date();
+        document.getElementById('current-time').innerText =
+          d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+      }, 1000);
+
+      // Initial load from URL search param if present
+      const initParam = new URLSearchParams(window.location.search).get(
+        'variant',
+      );
+      if (initParam && VARIANTS[initParam]) {
+        state.variant = initParam;
+      }
       render();
-    }
-
-    function setTab(t) {
-      state.currentTab = t;
-      // In prototype, keeping dashboard as core view
-      render();
-    }
-
-    // Keyboard navigation (← and → to switch variants)
-    window.addEventListener('keydown', (e) => {
-      if (['input', 'textarea', 'select'].includes(document.activeElement.tagName.toLowerCase())) return;
-      if (e.key === 'ArrowLeft') cycleVariant(-1);
-      if (e.key === 'ArrowRight') cycleVariant(1);
-    });
-
-    // Clock
-    setInterval(() => {
-      const d = new Date();
-      document.getElementById('current-time').innerText = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-    }, 1000);
-
-    // Initial load from URL search param if present
-    const initParam = new URLSearchParams(window.location.search).get('variant');
-    if (initParam && VARIANTS[initParam]) {
-      state.variant = initParam;
-    }
-    render();
-  </script>
-</body>
+    </script>
+  </body>
 </html>
