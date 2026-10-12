@@ -3,7 +3,9 @@
 import { cn } from '@heroui/react';
 
 import type {
+  HTMLAttributes,
   InputHTMLAttributes,
+  LabelHTMLAttributes,
   ReactNode,
   SelectHTMLAttributes,
 } from 'react';
@@ -16,11 +18,18 @@ export interface SelectOptionItem {
 function FieldRoot({
   className,
   children,
-}: {
-  className?: string;
-  children: ReactNode;
-}) {
-  return <div className={cn('space-y-1.5', className)}>{children}</div>;
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div className={cn('space-y-1.5', className)} {...props}>
+      {children}
+    </div>
+  );
+}
+
+export interface FieldLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+  icon?: ReactNode;
+  uppercase?: boolean;
 }
 
 function FieldLabel({
@@ -28,12 +37,8 @@ function FieldLabel({
   uppercase = false,
   className,
   children,
-}: {
-  icon?: ReactNode;
-  uppercase?: boolean;
-  className?: string;
-  children: ReactNode;
-}) {
+  ...props
+}: FieldLabelProps) {
   return (
     <label
       className={cn(
@@ -42,6 +47,7 @@ function FieldLabel({
           'text-[11px] font-bold tracking-wider text-muted uppercase',
         className,
       )}
+      {...props}
     >
       {icon ? <span className="shrink-0 text-muted">{icon}</span> : null}
       <span>{children}</span>

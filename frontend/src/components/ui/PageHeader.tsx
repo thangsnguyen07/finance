@@ -1,12 +1,13 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { cn } from '@heroui/react';
 
-export interface PageHeaderProps {
+import type { HTMLAttributes, PropsWithChildren, ReactNode } from 'react';
+
+export interface PageHeaderProps extends HTMLAttributes<HTMLDivElement> {
   title?: string;
   description?: string;
   actions?: ReactNode;
-  children?: ReactNode;
 }
 
 function PageHeaderContent({
@@ -28,7 +29,7 @@ function PageHeaderContent({
   );
 }
 
-function PageHeaderActions({ children }: { children: ReactNode }) {
+function PageHeaderActions({ children }: PropsWithChildren) {
   return (
     <div className="flex shrink-0 items-center gap-2.5 self-start sm:self-auto">
       {children}
@@ -40,10 +41,18 @@ function PageHeaderRoot({
   title,
   description,
   actions,
+  className,
   children,
+  ...props
 }: PageHeaderProps) {
   return (
-    <div className="flex flex-col justify-between gap-4 border-b border-border pb-4 sm:flex-row sm:items-center">
+    <div
+      className={cn(
+        'flex flex-col justify-between gap-4 border-b border-border pb-4 sm:flex-row sm:items-center',
+        className,
+      )}
+      {...props}
+    >
       {title ? (
         <>
           <PageHeaderContent title={title} description={description} />

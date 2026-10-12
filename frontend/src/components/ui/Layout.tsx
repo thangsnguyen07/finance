@@ -2,7 +2,7 @@
 
 import { cn } from '@heroui/react';
 
-import type { ElementType, ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ElementType, ComponentPropsWithoutRef } from 'react';
 
 export type LayoutSpacing = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type LayoutPadding = 'none' | 'xs' | 'sm' | 'md' | 'lg';
@@ -70,8 +70,6 @@ interface StackBaseProps {
   justify?: FlexJustify;
   padding?: LayoutPadding;
   divided?: boolean;
-  className?: string;
-  children?: ReactNode;
 }
 
 export function Stack<E extends ElementType = 'div'>({
@@ -111,8 +109,6 @@ interface RowBaseProps {
   wrap?: boolean;
   scrollX?: boolean;
   padding?: LayoutPadding;
-  className?: string;
-  children?: ReactNode;
 }
 
 export function Row<E extends ElementType = 'div'>({
@@ -151,8 +147,6 @@ interface GridBaseProps {
   cols?: GridColumns;
   gap?: LayoutSpacing;
   padding?: LayoutPadding;
-  className?: string;
-  children?: ReactNode;
 }
 
 export function Grid<E extends ElementType = 'div'>({

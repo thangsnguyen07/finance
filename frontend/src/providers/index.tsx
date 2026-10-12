@@ -5,7 +5,9 @@ import { useState } from 'react';
 
 import { makeQueryClient } from '@/lib/query-client';
 
-export function AppProviders({ children }: { children: React.ReactNode }) {
+import type { PropsWithChildren } from 'react';
+
+export function AppProviders({ children }: PropsWithChildren) {
   const [queryClient] = useState(makeQueryClient);
 
   return (

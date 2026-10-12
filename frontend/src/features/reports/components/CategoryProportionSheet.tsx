@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, use } from 'react';
+import { createContext, use, type PropsWithChildren } from 'react';
 
 import { Card, CurrencyText, Row, Stack, Text } from '@/components/ui';
 
@@ -30,12 +30,7 @@ function CategoryProportionRoot({
   totalAmount,
   emptyMessage,
   children,
-}: {
-  items: CategoryBreakdownItem[];
-  totalAmount: number;
-  emptyMessage: string;
-  children: React.ReactNode;
-}) {
+}: PropsWithChildren<CategoryProportionContextValue>) {
   return (
     <CategoryProportionContext value={{ items, totalAmount, emptyMessage }}>
       <Card className="flex flex-col justify-between">{children}</Card>

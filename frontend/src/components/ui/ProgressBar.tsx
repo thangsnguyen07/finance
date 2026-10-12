@@ -4,7 +4,7 @@ import { cn } from '@heroui/react';
 
 import { Row, Stack } from './Layout';
 
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
 export type ProgressTone = 'accent' | 'success' | 'warning' | 'danger';
 
@@ -15,14 +15,16 @@ const PROGRESS_TONE_CLASSES: Record<ProgressTone, string> = {
   danger: 'bg-danger',
 };
 
-export interface ProgressBarProps {
+export interface ProgressBarProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'color'
+> {
   value: number;
   tone?: ProgressTone;
   color?: string;
   size?: 'sm' | 'md';
   leftLabel?: ReactNode;
   rightLabel?: ReactNode;
-  className?: string;
 }
 
 export function ProgressBar({
@@ -33,6 +35,7 @@ export function ProgressBar({
   leftLabel,
   rightLabel,
   className,
+  ...props
 }: ProgressBarProps) {
   const clamped = Math.min(100, Math.max(0, value));
 
@@ -43,6 +46,7 @@ export function ProgressBar({
         size === 'sm' ? 'h-1.5' : 'h-2',
         className,
       )}
+      {...props}
     >
       <div
         className={cn(

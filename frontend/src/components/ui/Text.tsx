@@ -2,7 +2,7 @@
 
 import { cn } from '@heroui/react';
 
-import type { ElementType, ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ElementType, ComponentPropsWithoutRef } from 'react';
 
 export type TextVariant =
   | 'display'
@@ -64,18 +64,16 @@ const WEIGHT_CLASSES: Record<TextWeight, string> = {
   black: 'font-black',
 };
 
-type PolymorphicTextProps<E extends ElementType> = {
+interface TextOwnProps<E extends ElementType> {
   as?: E;
   variant?: TextVariant;
   tone?: TextTone;
   weight?: TextWeight;
   truncate?: boolean;
-  className?: string;
-  children?: ReactNode;
-} & Omit<
-  ComponentPropsWithoutRef<E>,
-  'as' | 'variant' | 'tone' | 'weight' | 'truncate' | 'className' | 'children'
->;
+}
+
+type PolymorphicTextProps<E extends ElementType> = TextOwnProps<E> &
+  Omit<ComponentPropsWithoutRef<E>, keyof TextOwnProps<E>>;
 
 export function Text<E extends ElementType = 'span'>({
   as,

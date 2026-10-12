@@ -2,7 +2,7 @@
 
 import { Card as HeroCard, cn } from '@heroui/react';
 
-import type { ComponentProps, ReactNode } from 'react';
+import type { ComponentProps, HTMLAttributes, ReactNode } from 'react';
 
 type HeroCardRootProps = ComponentProps<typeof HeroCard>;
 type HeroCardHeaderProps = ComponentProps<typeof HeroCard.Header>;
@@ -102,16 +102,15 @@ function CardTitle({ className, children, ...props }: HeroCardTitleProps) {
 function CardEyebrow({
   className,
   children,
-}: {
-  className?: string;
-  children: ReactNode;
-}) {
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
   return (
     <span
       className={cn(
         'block text-[11px] font-bold tracking-wider text-muted uppercase',
         className,
       )}
+      {...props}
     >
       {children}
     </span>

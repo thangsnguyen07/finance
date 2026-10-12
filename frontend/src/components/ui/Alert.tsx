@@ -3,7 +3,7 @@
 import { Surface as HeroSurface, cn } from '@heroui/react';
 import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
 
-import type { ReactNode } from 'react';
+import type { ComponentProps } from 'react';
 
 export type AlertVariant = 'danger' | 'success' | 'warning';
 
@@ -19,13 +19,19 @@ const ALERT_ICONS: Record<AlertVariant, typeof AlertCircle> = {
   warning: Info,
 };
 
-interface AlertProps {
+export interface AlertProps extends Omit<
+  ComponentProps<typeof HeroSurface>,
+  'variant'
+> {
   variant?: AlertVariant;
-  children: ReactNode;
-  className?: string;
 }
 
-export function Alert({ variant = 'danger', children, className }: AlertProps) {
+export function Alert({
+  variant = 'danger',
+  children,
+  className,
+  ...props
+}: AlertProps) {
   const Icon = ALERT_ICONS[variant];
 
   return (
@@ -35,6 +41,7 @@ export function Alert({ variant = 'danger', children, className }: AlertProps) {
         ALERT_STYLES[variant],
         className,
       )}
+      {...props}
     >
       <Icon className="h-4 w-4 shrink-0" />
       <span>{children}</span>

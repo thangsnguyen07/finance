@@ -6,7 +6,9 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import { QuickEntryModal } from '@/features/transactions';
 import { useUiStore } from '@/stores/use-ui-store';
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+import type { PropsWithChildren } from 'react';
+
+export default function AppLayout({ children }: PropsWithChildren) {
   const isQuickEntryOpen = useUiStore((state) => state.isQuickEntryOpen);
   const closeQuickEntry = useUiStore((state) => state.closeQuickEntry);
 

@@ -6,9 +6,9 @@ import { X } from 'lucide-react';
 import { Alert } from '@/components/ui/Alert';
 import { Button } from '@/components/ui/Button';
 
-import type { FormEvent, ReactNode } from 'react';
+import type { FormEvent, PropsWithChildren, ReactNode } from 'react';
 
-export interface ModalProps {
+export interface ModalProps extends PropsWithChildren {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
@@ -20,7 +20,6 @@ export interface ModalProps {
   isSubmitting?: boolean;
   footerLeading?: ReactNode;
   maxWidthClass?: string;
-  children: ReactNode;
 }
 
 function ModalHeader({
@@ -56,11 +55,11 @@ function ModalHeader({
   );
 }
 
-function ModalBody({ children }: { children: ReactNode }) {
+function ModalBody({ children }: PropsWithChildren) {
   return <div className="space-y-4 overflow-y-auto p-5">{children}</div>;
 }
 
-function ModalFooter({ children }: { children: ReactNode }) {
+function ModalFooter({ children }: PropsWithChildren) {
   return (
     <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
       {children}
