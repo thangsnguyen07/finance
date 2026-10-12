@@ -1,5 +1,6 @@
 export * from './types/account.types';
 export * from './constants/account.constants';
+export * from './utils/account.utils';
 export * from './services/accounts.api';
 export * from './hooks/use-accounts';
 export * from './components/accounts-view';

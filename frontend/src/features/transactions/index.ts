@@ -1,5 +1,6 @@
 export * from './types/transaction.types';
 export * from './constants/transaction.constants';
+export * from './utils/transaction.utils';
 export * from './services/transactions.api';
 export * from './hooks/use-transactions';
 export * from './components/quick-entry-modal';

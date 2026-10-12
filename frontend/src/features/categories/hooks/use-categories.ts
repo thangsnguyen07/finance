@@ -4,6 +4,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { getCategories, createCategory } from '../services/categories.api';
+import {
+  getDefaultCategoryColor,
+  splitCategoriesByType,
+  validateAndBuildCreateCategoryDto,
+} from '../utils/category.utils';
 
 import type { CategoryType, CreateCategoryDto } from '../types/category.types';
 
@@ -29,10 +34,8 @@ export function useCreateCategory() {
 
 export function useCategoryDirectory() {
   const { data: categories, isLoading } = useCategories();
-
-  const allCategories = categories || [];
-  const expenseCategories = allCategories.filter((c) => c.type === 'EXPENSE');
-  const incomeCategories = allCategories.filter((c) => c.type === 'INCOME');
+  const { expenseCategories, incomeCategories } =
+    splitCategoriesByType(categories);
 
   return {
     expenseCategories,
@@ -44,7 +47,9 @@ export function useCategoryDirectory() {
 export function useCreateCategoryForm() {
   const [categoryName, setCategoryName] = useState<string>('');
   const [categoryType, setCategoryType] = useState<CategoryType>('EXPENSE');
-  const [selectedColor, setSelectedColor] = useState<string>('#991B1B');
+  const [selectedColor, setSelectedColor] = useState<string>(
+    getDefaultCategoryColor('EXPENSE'),
+  );
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
@@ -52,7 +57,7 @@ export function useCreateCategoryForm() {
 
   const handleTypeChange = (nextType: CategoryType) => {
     setCategoryType(nextType);
-    setSelectedColor(nextType === 'EXPENSE' ? '#991B1B' : '#166534');
+    setSelectedColor(getDefaultCategoryColor(nextType));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,26 +65,27 @@ export function useCreateCategoryForm() {
     setError(null);
     setSuccessMsg(null);
 
-    const trimmed = categoryName.trim();
-    if (!trimmed) {
-      setError('Vui lòng nhập tên danh mục');
+    const { dto, error: validationError } = validateAndBuildCreateCategoryDto({
+      name: categoryName,
+      type: categoryType,
+      color: selectedColor,
+    });
+
+    if (validationError || !dto) {
+      setError(validationError ?? 'Dữ liệu không hợp lệ');
       return;
     }
 
     try {
-      await createCategoryMutation.mutateAsync({
-        name: trimmed,
-        type: categoryType,
-        color: selectedColor,
-      });
+      await createCategoryMutation.mutateAsync(dto);
       setCategoryName('');
-      setSuccessMsg(`Đã thêm danh mục "${trimmed}" vào sổ.`);
+      setSuccessMsg(`Đã thêm danh mục "${dto.name}" vào sổ.`);
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Không thể tạo danh mục mới. Vui lòng thử lại.');
-      }
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Không thể tạo danh mục mới. Vui lòng thử lại.',
+      );
     }
   };
 

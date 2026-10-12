@@ -13,6 +13,11 @@ import {
   createTransaction,
   deleteTransaction,
 } from '../services/transactions.api';
+import {
+  computeTransactionTotals,
+  resolveQuickEntrySelections,
+  validateAndBuildTransactionDto,
+} from '../utils/transaction.utils';
 
 import type {
   CreateTransactionDto,
@@ -71,14 +76,7 @@ export function useTransactionLedger() {
   const deleteMutation = useDeleteTransaction();
 
   const items = txData?.items || [];
-
-  const totalIncome = items
-    .filter((tx) => tx.type === 'INCOME')
-    .reduce((sum, tx) => sum + tx.amount, 0);
-
-  const totalExpense = items
-    .filter((tx) => tx.type === 'EXPENSE')
-    .reduce((sum, tx) => sum + tx.amount, 0);
+  const { totalIncome, totalExpense } = computeTransactionTotals(items);
 
   const handleDelete = async (id: string, label: string) => {
     if (
@@ -125,20 +123,19 @@ export function useQuickEntryForm({ onClose }: { onClose: () => void }) {
   );
   const createTransactionMutation = useCreateTransaction();
 
-  const filteredCategories = (categories || []).filter(
-    (c) => c.type === txType,
-  );
-
-  const effectiveAccountId = accountId || accounts?.[0]?.id || '';
-  const effectiveTargetAccountId =
-    targetAccountId && targetAccountId !== effectiveAccountId
-      ? targetAccountId
-      : accounts?.find((a) => a.id !== effectiveAccountId)?.id || '';
-  const effectiveCategoryId = filteredCategories.some(
-    (c) => c.id === categoryId,
-  )
-    ? categoryId
-    : filteredCategories[0]?.id || '';
+  const {
+    filteredCategories,
+    effectiveAccountId,
+    effectiveTargetAccountId,
+    effectiveCategoryId,
+  } = resolveQuickEntrySelections({
+    txType,
+    accountId,
+    targetAccountId,
+    categoryId,
+    accounts: accounts || [],
+    categories: categories || [],
+  });
 
   const handleClose = () => {
     setTxType('EXPENSE');
@@ -156,55 +153,30 @@ export function useQuickEntryForm({ onClose }: { onClose: () => void }) {
     e.preventDefault();
     setError(null);
 
-    if (rawAmount <= 0) {
-      setError('Vui lòng nhập số tiền lớn hơn 0 ₫');
+    const { dto, error: validationError } = validateAndBuildTransactionDto({
+      txType,
+      rawAmount,
+      effectiveAccountId,
+      effectiveTargetAccountId,
+      effectiveCategoryId,
+      transactionDate,
+      description,
+    });
+
+    if (validationError || !dto) {
+      setError(validationError ?? 'Dữ liệu giao dịch không hợp lệ');
       return;
     }
-
-    if (!effectiveAccountId) {
-      setError('Vui lòng chọn ví / tài khoản nguồn');
-      return;
-    }
-
-    if (txType === 'TRANSFER') {
-      if (!effectiveTargetAccountId) {
-        setError('Vui lòng chọn ví đích để chuyển khoản');
-        return;
-      }
-      if (effectiveAccountId === effectiveTargetAccountId) {
-        setError('Ví nguồn và ví đích phải khác nhau');
-        return;
-      }
-    }
-
-    const clientTxId =
-      typeof crypto !== 'undefined' && crypto.randomUUID
-        ? crypto.randomUUID()
-        : `tx-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
     try {
-      await createTransactionMutation.mutateAsync({
-        clientTxId,
-        accountId: effectiveAccountId,
-        targetAccountId:
-          txType === 'TRANSFER' ? effectiveTargetAccountId : undefined,
-        categoryId:
-          txType !== 'TRANSFER' && effectiveCategoryId
-            ? effectiveCategoryId
-            : undefined,
-        amount: rawAmount,
-        type: txType,
-        transactionDate,
-        description: description.trim() || undefined,
-      });
-
+      await createTransactionMutation.mutateAsync(dto);
       handleClose();
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Không thể lưu giao dịch. Vui lòng thử lại.');
-      }
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Không thể lưu giao dịch. Vui lòng thử lại.',
+      );
     }
   };
 

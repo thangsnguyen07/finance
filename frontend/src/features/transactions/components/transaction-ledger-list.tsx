@@ -9,6 +9,8 @@ import {
 
 import { Button, Card, Badge, CurrencyText } from '@/components/ui';
 
+import { getTransactionDisplayTitle } from '../utils/transaction.utils';
+
 import type { TransactionResponse } from '../types/transaction.types';
 
 interface TransactionLedgerListProps {
@@ -35,12 +37,7 @@ export function TransactionLedgerList({
         {items.map((tx) => {
           const isExpense = tx.type === 'EXPENSE';
           const isIncome = tx.type === 'INCOME';
-          const displayTitle =
-            tx.description ||
-            tx.category?.name ||
-            (tx.type === 'TRANSFER'
-              ? `Chuyển khoản: ${tx.account?.name || ''} → ${tx.targetAccount?.name || ''}`
-              : 'Giao dịch');
+          const displayTitle = getTransactionDisplayTitle(tx);
 
           return (
             <div

@@ -9,6 +9,10 @@ import {
   updateAccount,
   deleteAccount,
 } from '../services/accounts.api';
+import {
+  computeAccountOverviewMetrics,
+  validateAndBuildCreateAccountDto,
+} from '../utils/account.utils';
 
 import type {
   AccountType,
@@ -63,24 +67,7 @@ export function useAccountOverview() {
   const deleteMutation = useDeleteAccount();
 
   const allAccounts = accounts || [];
-  const assetAccounts = allAccounts.filter((acc) => acc.type !== 'CREDIT_CARD');
-  const creditCards = allAccounts.filter((acc) => acc.type === 'CREDIT_CARD');
-
-  const totalAssets = assetAccounts.reduce(
-    (sum, acc) => sum + (acc.currentBalance || 0),
-    0,
-  );
-  const totalDebt = creditCards.reduce(
-    (sum, acc) => sum + (acc.currentBalance || 0),
-    0,
-  );
-  const netWorth = totalAssets - totalDebt;
-
-  const cashAndWallets = allAccounts.filter(
-    (acc) => acc.type === 'CASH' || acc.type === 'E_WALLET',
-  );
-  const bankAccounts = allAccounts.filter((acc) => acc.type === 'BANK');
-  const investments = allAccounts.filter((acc) => acc.type === 'INVESTMENT');
+  const metrics = computeAccountOverviewMetrics(allAccounts);
 
   const openCreateModal = () => setIsCreateModalOpen(true);
   const closeCreateModal = () => setIsCreateModalOpen(false);
@@ -93,14 +80,7 @@ export function useAccountOverview() {
 
   return {
     allAccounts,
-    assetAccounts,
-    creditCards,
-    cashAndWallets,
-    bankAccounts,
-    investments,
-    totalAssets,
-    totalDebt,
-    netWorth,
+    ...metrics,
     isLoading,
     errorMessage:
       error instanceof Error
@@ -139,32 +119,28 @@ export function useCreateAccountForm({ onClose }: { onClose: () => void }) {
     e.preventDefault();
     setError(null);
 
-    if (!name.trim()) {
-      setError('Vui lòng nhập tên tài khoản / ví');
+    const { dto, error: validationError } = validateAndBuildCreateAccountDto({
+      name,
+      type,
+      initialBalance,
+      creditLimit,
+      statementDay,
+    });
+
+    if (validationError || !dto) {
+      setError(validationError ?? 'Dữ liệu không hợp lệ');
       return;
     }
 
-    const parsedStatementDay = statementDay
-      ? parseInt(statementDay, 10)
-      : undefined;
-
     try {
-      await createMutation.mutateAsync({
-        name: name.trim(),
-        type,
-        initialBalance,
-        creditLimit:
-          type === 'CREDIT_CARD' && creditLimit > 0 ? creditLimit : undefined,
-        statementDay: type === 'CREDIT_CARD' ? parsedStatementDay : undefined,
-      });
-
+      await createMutation.mutateAsync(dto);
       handleClose();
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Đã có lỗi xảy ra khi tạo tài khoản');
-      }
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Đã có lỗi xảy ra khi tạo tài khoản',
+      );
     }
   };
 

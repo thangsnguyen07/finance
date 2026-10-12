@@ -11,6 +11,11 @@ import {
   upsertBudget,
   deleteBudget,
 } from '../services/budgets.api';
+import {
+  extractBudgetSummaryMetrics,
+  resolveUpsertBudgetSelections,
+  validateAndBuildUpsertBudgetDto,
+} from '../utils/budget.utils';
 
 import type {
   BudgetEnvelopeResponse,
@@ -59,6 +64,7 @@ export function useBudgetPlanner() {
 
   const { data: summary, isLoading, error } = useBudgets(selectedMonth);
   const dayProgress = getMonthDayProgress(selectedMonth);
+  const metrics = extractBudgetSummaryMetrics(summary);
 
   const openCreateModal = (categoryId?: string, suggestedAmount?: number) => {
     setModalState({
@@ -84,12 +90,7 @@ export function useBudgetPlanner() {
     selectedMonth,
     setSelectedMonth,
     dayProgress,
-    totalSpent: summary?.totalSpentInBudgeted ?? 0,
-    totalBudgeted: summary?.totalBudgeted ?? 0,
-    remainingBudget: summary?.remainingBudget ?? 0,
-    overallPercent: summary?.overallUsagePercentage ?? 0,
-    envelopes: summary?.envelopes ?? [],
-    unbudgetedCategories: summary?.unbudgetedCategories ?? [],
+    ...metrics,
     isLoading,
     errorMessage:
       error instanceof Error
@@ -125,13 +126,14 @@ export function useUpsertBudgetForm({
   const upsertMutation = useUpsertBudget();
   const deleteMutation = useDeleteBudget();
 
-  const expenseCategories = (categories || []).filter(
-    (c) => c.type === 'EXPENSE',
-  );
-
-  const effectiveCategoryId =
-    selectedCategoryId || initialCategoryId || expenseCategories[0]?.id || '';
-  const effectiveAmount = rawAmount !== null ? rawAmount : (initialAmount ?? 0);
+  const { expenseCategories, effectiveCategoryId, effectiveAmount } =
+    resolveUpsertBudgetSelections({
+      categories: categories || [],
+      selectedCategoryId,
+      initialCategoryId,
+      rawAmount,
+      initialAmount,
+    });
 
   const handleClose = () => {
     setSelectedCategoryId('');
@@ -144,29 +146,26 @@ export function useUpsertBudgetForm({
     e.preventDefault();
     setError(null);
 
-    if (!effectiveCategoryId) {
-      setError('Vui lòng chọn một danh mục chi tiêu');
-      return;
-    }
+    const { dto, error: validationError } = validateAndBuildUpsertBudgetDto({
+      month,
+      effectiveCategoryId,
+      effectiveAmount,
+    });
 
-    if (effectiveAmount < 1000) {
-      setError('Vui lòng đặt hạn mức tối thiểu từ 1.000 ₫ trở lên');
+    if (validationError || !dto) {
+      setError(validationError ?? 'Dữ liệu hạn mức không hợp lệ');
       return;
     }
 
     try {
-      await upsertMutation.mutateAsync({
-        categoryId: effectiveCategoryId,
-        month,
-        amount: effectiveAmount,
-      });
+      await upsertMutation.mutateAsync(dto);
       handleClose();
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Không thể lưu hạn mức. Vui lòng thử lại.');
-      }
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Không thể lưu hạn mức. Vui lòng thử lại.',
+      );
     }
   };
 
@@ -177,11 +176,9 @@ export function useUpsertBudgetForm({
       await deleteMutation.mutateAsync(existingBudgetId);
       handleClose();
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Không thể xóa hạn mức này.');
-      }
+      setError(
+        err instanceof Error ? err.message : 'Không thể xóa hạn mức này.',
+      );
     }
   };
 

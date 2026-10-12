@@ -1,5 +1,6 @@
 export * from './types/budget.types';
 export * from './constants/budget.constants';
+export * from './utils/budget.utils';
 export * from './services/budgets.api';
 export * from './hooks/use-budgets';
 export * from './components/budget-ruler-summary-card';
