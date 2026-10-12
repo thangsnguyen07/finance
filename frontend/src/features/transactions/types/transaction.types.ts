@@ -2,8 +2,31 @@ import type { AccountResponse } from '@/features/accounts';
 import type { CategoryResponse } from '@/features/categories';
 import type { PaginatedResponse } from '@/types/common.types';
 
-export type TransactionType = 'INCOME' | 'EXPENSE' | 'TRANSFER';
-export type TransactionStatus = 'CLEARED' | 'UNCLEARED' | 'RECONCILED';
+export const TRANSACTION_TYPE = {
+  INCOME: 'INCOME',
+  EXPENSE: 'EXPENSE',
+  TRANSFER: 'TRANSFER',
+} as const;
+
+export type TransactionType =
+  (typeof TRANSACTION_TYPE)[keyof typeof TRANSACTION_TYPE];
+
+export const TRANSACTION_FILTER_TYPE = {
+  ALL: 'ALL',
+  ...TRANSACTION_TYPE,
+} as const;
+
+export type TransactionFilterType =
+  (typeof TRANSACTION_FILTER_TYPE)[keyof typeof TRANSACTION_FILTER_TYPE];
+
+export const TRANSACTION_STATUS = {
+  CLEARED: 'CLEARED',
+  UNCLEARED: 'UNCLEARED',
+  RECONCILED: 'RECONCILED',
+} as const;
+
+export type TransactionStatus =
+  (typeof TRANSACTION_STATUS)[keyof typeof TRANSACTION_STATUS];
 
 export interface TransactionResponse {
   id: string;

@@ -1,23 +1,21 @@
+import {
+  TRANSACTION_TYPE,
+  type TransactionResponse,
+} from '@/features/transactions';
 import { formatShortMonthLabel } from '@/lib/formatters';
+
+import {
+  EXPENSE_PALETTE,
+  INCOME_PALETTE,
+  REPORT_DEFAULTS,
+  REPORT_FALLBACK_CATEGORIES,
+} from '../constants/report.constants';
 
 import type {
   CategoryBreakdownItem,
   MonthlyCashflowPoint,
   ReportsAnalyticsData,
 } from '../types/report.types';
-import type { TransactionResponse } from '@/features/transactions';
-
-const EXPENSE_PALETTE = [
-  '#991B1B',
-  '#B45309',
-  '#1E3A8A',
-  '#7C2D12',
-  '#4338CA',
-  '#BE123C',
-  '#6E665E',
-];
-
-const INCOME_PALETTE = ['#166534', '#15803D', '#047857', '#0F766E', '#1E3A8A'];
 
 export function computeAnalyticsSinglePass(
   transactions: TransactionResponse[],
@@ -46,18 +44,21 @@ export function computeAnalyticsSinglePass(
     const bucket = monthPointMap.get(txMonth);
 
     if (bucket) {
-      if (tx.type === 'INCOME') {
+      if (tx.type === TRANSACTION_TYPE.INCOME) {
         bucket.income += tx.amount;
-      } else if (tx.type === 'EXPENSE') {
+      } else if (tx.type === TRANSACTION_TYPE.EXPENSE) {
         bucket.expense += tx.amount;
       }
     }
 
     if (txMonth === selectedMonth) {
-      if (tx.type === 'EXPENSE') {
+      if (tx.type === TRANSACTION_TYPE.EXPENSE) {
         monthExpense += tx.amount;
-        const catId = tx.categoryId || 'uncategorized-expense';
-        const catName = tx.category?.name || 'Chưa phân loại';
+        const catId =
+          tx.categoryId || REPORT_FALLBACK_CATEGORIES.UNCATEGORIZED_EXPENSE_ID;
+        const catName =
+          tx.category?.name ||
+          REPORT_FALLBACK_CATEGORIES.UNCATEGORIZED_EXPENSE_LABEL;
         const existing = expenseCatMap.get(catId);
         if (existing) {
           existing.amount += tx.amount;
@@ -70,10 +71,13 @@ export function computeAnalyticsSinglePass(
             count: 1,
           });
         }
-      } else if (tx.type === 'INCOME') {
+      } else if (tx.type === TRANSACTION_TYPE.INCOME) {
         monthIncome += tx.amount;
-        const catId = tx.categoryId || 'uncategorized-income';
-        const catName = tx.category?.name || 'Thu nhập khác';
+        const catId =
+          tx.categoryId || REPORT_FALLBACK_CATEGORIES.UNCATEGORIZED_INCOME_ID;
+        const catName =
+          tx.category?.name ||
+          REPORT_FALLBACK_CATEGORIES.UNCATEGORIZED_INCOME_LABEL;
         const existing = incomeCatMap.get(catId);
         if (existing) {
           existing.amount += tx.amount;
@@ -117,7 +121,7 @@ export function computeAnalyticsSinglePass(
       color:
         item.color ||
         EXPENSE_PALETTE[idx % EXPENSE_PALETTE.length] ||
-        '#991B1B',
+        REPORT_DEFAULTS.DEFAULT_EXPENSE_COLOR,
       amount: item.amount,
       count: item.count,
       percentage:
@@ -134,7 +138,9 @@ export function computeAnalyticsSinglePass(
       categoryId,
       categoryName: item.name,
       color:
-        item.color || INCOME_PALETTE[idx % INCOME_PALETTE.length] || '#166534',
+        item.color ||
+        INCOME_PALETTE[idx % INCOME_PALETTE.length] ||
+        REPORT_DEFAULTS.DEFAULT_INCOME_COLOR,
       amount: item.amount,
       count: item.count,
       percentage:

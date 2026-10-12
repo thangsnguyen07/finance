@@ -1,4 +1,10 @@
-export type BudgetStatus = 'SAFE' | 'WARNING' | 'EXCEEDED';
+export const BUDGET_STATUS = {
+  SAFE: 'SAFE',
+  WARNING: 'WARNING',
+  EXCEEDED: 'EXCEEDED',
+} as const;
+
+export type BudgetStatus = (typeof BUDGET_STATUS)[keyof typeof BUDGET_STATUS];
 
 export interface BudgetEnvelopeResponse {
   id: string;

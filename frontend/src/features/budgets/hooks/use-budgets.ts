@@ -3,9 +3,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useCategories } from '@/features/categories';
+import { CATEGORY_TYPE, useCategories } from '@/features/categories';
 import { getCurrentMonthString, getMonthDayProgress } from '@/lib/date-utils';
 
+import { BUDGET_LIMITS, BUDGET_MESSAGES } from '../constants/budget.constants';
 import {
   getMonthlyBudgets,
   upsertBudget,
@@ -22,11 +23,14 @@ import type {
   UpsertBudgetDto,
 } from '../types/budget.types';
 
-export const BUDGETS_QUERY_KEY = ['budgets'];
+export const BUDGETS_QUERY_KEY = ['budgets'] as const;
 
 export function useBudgets(month?: string) {
   return useQuery({
-    queryKey: [...BUDGETS_QUERY_KEY, month ?? 'current'],
+    queryKey: [
+      ...BUDGETS_QUERY_KEY,
+      month ?? BUDGET_LIMITS.DEFAULT_QUERY_MONTH_KEY,
+    ],
     queryFn: () => getMonthlyBudgets(month),
   });
 }
@@ -96,7 +100,7 @@ export function useBudgetPlanner() {
       error instanceof Error
         ? error.message
         : error
-          ? 'Không thể tải dữ liệu ngân sách tháng'
+          ? BUDGET_MESSAGES.LOAD_ERROR
           : null,
     modalState,
     openCreateModal,
@@ -122,7 +126,7 @@ export function useUpsertBudgetForm({
   const [rawAmount, setRawAmount] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const { data: categories } = useCategories('EXPENSE');
+  const { data: categories } = useCategories(CATEGORY_TYPE.EXPENSE);
   const upsertMutation = useUpsertBudget();
   const deleteMutation = useDeleteBudget();
 
@@ -153,7 +157,7 @@ export function useUpsertBudgetForm({
     });
 
     if (validationError || !dto) {
-      setError(validationError ?? 'Dữ liệu hạn mức không hợp lệ');
+      setError(validationError ?? BUDGET_MESSAGES.INVALID_DATA);
       return;
     }
 
@@ -162,9 +166,7 @@ export function useUpsertBudgetForm({
       handleClose();
     } catch (err: unknown) {
       setError(
-        err instanceof Error
-          ? err.message
-          : 'Không thể lưu hạn mức. Vui lòng thử lại.',
+        err instanceof Error ? err.message : BUDGET_MESSAGES.UPSERT_ERROR,
       );
     }
   };
@@ -177,7 +179,7 @@ export function useUpsertBudgetForm({
       handleClose();
     } catch (err: unknown) {
       setError(
-        err instanceof Error ? err.message : 'Không thể xóa hạn mức này.',
+        err instanceof Error ? err.message : BUDGET_MESSAGES.DELETE_ERROR,
       );
     }
   };

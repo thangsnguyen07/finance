@@ -3,6 +3,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import {
+  CATEGORY_MESSAGES,
+  DEFAULT_CATEGORY_TYPE,
+} from '../constants/category.constants';
 import { getCategories, createCategory } from '../services/categories.api';
 import {
   getDefaultCategoryColor,
@@ -12,7 +16,7 @@ import {
 
 import type { CategoryType, CreateCategoryDto } from '../types/category.types';
 
-export const CATEGORIES_QUERY_KEY = ['categories'];
+export const CATEGORIES_QUERY_KEY = ['categories'] as const;
 
 export function useCategories(type?: CategoryType) {
   return useQuery({
@@ -46,9 +50,11 @@ export function useCategoryDirectory() {
 
 export function useCreateCategoryForm() {
   const [categoryName, setCategoryName] = useState<string>('');
-  const [categoryType, setCategoryType] = useState<CategoryType>('EXPENSE');
+  const [categoryType, setCategoryType] = useState<CategoryType>(
+    DEFAULT_CATEGORY_TYPE,
+  );
   const [selectedColor, setSelectedColor] = useState<string>(
-    getDefaultCategoryColor('EXPENSE'),
+    getDefaultCategoryColor(DEFAULT_CATEGORY_TYPE),
   );
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -72,19 +78,17 @@ export function useCreateCategoryForm() {
     });
 
     if (validationError || !dto) {
-      setError(validationError ?? 'Dữ liệu không hợp lệ');
+      setError(validationError ?? CATEGORY_MESSAGES.INVALID_DATA);
       return;
     }
 
     try {
       await createCategoryMutation.mutateAsync(dto);
       setCategoryName('');
-      setSuccessMsg(`Đã thêm danh mục "${dto.name}" vào sổ.`);
+      setSuccessMsg(CATEGORY_MESSAGES.CREATE_SUCCESS(dto.name));
     } catch (err: unknown) {
       setError(
-        err instanceof Error
-          ? err.message
-          : 'Không thể tạo danh mục mới. Vui lòng thử lại.',
+        err instanceof Error ? err.message : CATEGORY_MESSAGES.CREATE_ERROR,
       );
     }
   };

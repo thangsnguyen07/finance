@@ -2,7 +2,7 @@
 
 import { useAccounts } from '@/features/accounts';
 import { useBudgets } from '@/features/budgets';
-import { useTransactions } from '@/features/transactions';
+import { TRANSACTION_DEFAULTS, useTransactions } from '@/features/transactions';
 
 import {
   computeNetWorthFromAccounts,
@@ -13,7 +13,7 @@ import {
 export function useDashboardOverview() {
   const { data: accounts, isLoading } = useAccounts();
   const { data: txData, isLoading: isTxLoading } = useTransactions({
-    limit: 5,
+    limit: TRANSACTION_DEFAULTS.RECENT_DASHBOARD_LIMIT,
   });
   const { data: budgetSummary } = useBudgets();
 

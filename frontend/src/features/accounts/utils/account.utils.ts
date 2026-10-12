@@ -1,7 +1,9 @@
-import type {
-  AccountResponse,
-  AccountType,
-  CreateAccountDto,
+import { ACCOUNT_MESSAGES } from '../constants/account.constants';
+import {
+  ACCOUNT_TYPE,
+  type AccountResponse,
+  type AccountType,
+  type CreateAccountDto,
 } from '../types/account.types';
 
 export interface AccountOverviewMetrics {
@@ -18,8 +20,12 @@ export interface AccountOverviewMetrics {
 export function computeAccountOverviewMetrics(
   accounts: AccountResponse[] = [],
 ): AccountOverviewMetrics {
-  const assetAccounts = accounts.filter((acc) => acc.type !== 'CREDIT_CARD');
-  const creditCards = accounts.filter((acc) => acc.type === 'CREDIT_CARD');
+  const assetAccounts = accounts.filter(
+    (acc) => acc.type !== ACCOUNT_TYPE.CREDIT_CARD,
+  );
+  const creditCards = accounts.filter(
+    (acc) => acc.type === ACCOUNT_TYPE.CREDIT_CARD,
+  );
 
   const totalAssets = assetAccounts.reduce(
     (sum, acc) => sum + (acc.currentBalance || 0),
@@ -32,10 +38,13 @@ export function computeAccountOverviewMetrics(
   const netWorth = totalAssets - totalDebt;
 
   const cashAndWallets = accounts.filter(
-    (acc) => acc.type === 'CASH' || acc.type === 'E_WALLET',
+    (acc) =>
+      acc.type === ACCOUNT_TYPE.CASH || acc.type === ACCOUNT_TYPE.E_WALLET,
   );
-  const bankAccounts = accounts.filter((acc) => acc.type === 'BANK');
-  const investments = accounts.filter((acc) => acc.type === 'INVESTMENT');
+  const bankAccounts = accounts.filter((acc) => acc.type === ACCOUNT_TYPE.BANK);
+  const investments = accounts.filter(
+    (acc) => acc.type === ACCOUNT_TYPE.INVESTMENT,
+  );
 
   return {
     assetAccounts,
@@ -58,7 +67,7 @@ export function validateAndBuildCreateAccountDto(input: {
 }): { dto?: CreateAccountDto; error?: string } {
   const trimmedName = input.name.trim();
   if (!trimmedName) {
-    return { error: 'Vui lòng nhập tên tài khoản / ví' };
+    return { error: ACCOUNT_MESSAGES.NAME_REQUIRED };
   }
 
   const parsedStatementDay = input.statementDay
@@ -71,11 +80,13 @@ export function validateAndBuildCreateAccountDto(input: {
       type: input.type,
       initialBalance: input.initialBalance,
       creditLimit:
-        input.type === 'CREDIT_CARD' && input.creditLimit > 0
+        input.type === ACCOUNT_TYPE.CREDIT_CARD && input.creditLimit > 0
           ? input.creditLimit
           : undefined,
       statementDay:
-        input.type === 'CREDIT_CARD' ? parsedStatementDay : undefined,
+        input.type === ACCOUNT_TYPE.CREDIT_CARD
+          ? parsedStatementDay
+          : undefined,
     },
   };
 }

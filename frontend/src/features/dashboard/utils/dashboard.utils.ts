@@ -1,4 +1,5 @@
-import type { AccountResponse } from '@/features/accounts';
+import { ACCOUNT_TYPE, type AccountResponse } from '@/features/accounts';
+
 import type { MonthlyBudgetSummaryResponse } from '@/features/budgets';
 
 export function computeNetWorthFromAccounts(
@@ -8,7 +9,7 @@ export function computeNetWorthFromAccounts(
   let totalDebt = 0;
 
   for (const acc of accounts) {
-    if (acc.type === 'CREDIT_CARD') {
+    if (acc.type === ACCOUNT_TYPE.CREDIT_CARD) {
       totalDebt += acc.currentBalance || 0;
     } else {
       totalAssets += acc.currentBalance || 0;

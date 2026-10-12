@@ -1,16 +1,25 @@
-export type AccountType =
-  | 'CASH'
-  | 'BANK'
-  | 'CREDIT_CARD'
-  | 'E_WALLET'
-  | 'INVESTMENT';
+export const ACCOUNT_TYPE = {
+  CASH: 'CASH',
+  BANK: 'BANK',
+  CREDIT_CARD: 'CREDIT_CARD',
+  E_WALLET: 'E_WALLET',
+  INVESTMENT: 'INVESTMENT',
+} as const;
+
+export type AccountType = (typeof ACCOUNT_TYPE)[keyof typeof ACCOUNT_TYPE];
+
+export const CURRENCY_CODE = {
+  VND: 'VND',
+} as const;
+
+export type CurrencyCode = (typeof CURRENCY_CODE)[keyof typeof CURRENCY_CODE];
 
 export interface AccountResponse {
   id: string;
   userId: string;
   name: string;
   type: AccountType;
-  currency: 'VND';
+  currency: CurrencyCode;
   currentBalance: number;
   creditLimit?: number | null;
   statementDay?: number | null;
@@ -23,7 +32,7 @@ export interface CreateAccountDto {
   name: string;
   type: AccountType;
   initialBalance: number;
-  currency?: 'VND';
+  currency?: CurrencyCode;
   creditLimit?: number;
   statementDay?: number;
 }

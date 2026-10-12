@@ -9,23 +9,29 @@ import { getTodayDateString } from '@/lib/date-utils';
 import { useUiStore } from '@/stores/use-ui-store';
 
 import {
+  TRANSACTION_DEFAULTS,
+  TRANSACTION_MESSAGES,
+} from '../constants/transaction.constants';
+import {
   getTransactions,
   createTransaction,
   deleteTransaction,
 } from '../services/transactions.api';
+import {
+  TRANSACTION_FILTER_TYPE,
+  TRANSACTION_TYPE,
+  type CreateTransactionDto,
+  type QueryTransactionsParams,
+  type TransactionFilterType,
+  type TransactionType,
+} from '../types/transaction.types';
 import {
   computeTransactionTotals,
   resolveQuickEntrySelections,
   validateAndBuildTransactionDto,
 } from '../utils/transaction.utils';
 
-import type {
-  CreateTransactionDto,
-  QueryTransactionsParams,
-  TransactionType,
-} from '../types/transaction.types';
-
-export const TRANSACTIONS_QUERY_KEY = ['transactions'];
+export const TRANSACTIONS_QUERY_KEY = ['transactions'] as const;
 
 export function useTransactions(params?: QueryTransactionsParams) {
   return useQuery({
@@ -59,7 +65,9 @@ export function useDeleteTransaction() {
 }
 
 export function useTransactionLedger() {
-  const [filterType, setFilterType] = useState<TransactionType | 'ALL'>('ALL');
+  const [filterType, setFilterType] = useState<TransactionFilterType>(
+    TRANSACTION_DEFAULTS.DEFAULT_FILTER_TYPE,
+  );
   const [filterAccountId, setFilterAccountId] = useState<string>('');
   const openQuickEntry = useUiStore((state) => state.openQuickEntry);
 
@@ -69,9 +77,9 @@ export function useTransactionLedger() {
     isLoading,
     isError,
   } = useTransactions({
-    type: filterType === 'ALL' ? undefined : filterType,
+    type: filterType === TRANSACTION_FILTER_TYPE.ALL ? undefined : filterType,
     accountId: filterAccountId || undefined,
-    limit: 50,
+    limit: TRANSACTION_DEFAULTS.LEDGER_LIMIT,
   });
   const deleteMutation = useDeleteTransaction();
 
@@ -79,11 +87,7 @@ export function useTransactionLedger() {
   const { totalIncome, totalExpense } = computeTransactionTotals(items);
 
   const handleDelete = async (id: string, label: string) => {
-    if (
-      window.confirm(
-        `Xóa giao dịch "${label}"? Số dư ví liên quan sẽ được hoàn lại tự động.`,
-      )
-    ) {
+    if (window.confirm(TRANSACTION_MESSAGES.CONFIRM_DELETE(label))) {
       await deleteMutation.mutateAsync(id);
     }
   };
@@ -107,7 +111,9 @@ export function useTransactionLedger() {
 }
 
 export function useQuickEntryForm({ onClose }: { onClose: () => void }) {
-  const [txType, setTxType] = useState<TransactionType>('EXPENSE');
+  const [txType, setTxType] = useState<TransactionType>(
+    TRANSACTION_DEFAULTS.DEFAULT_TYPE,
+  );
   const [rawAmount, setRawAmount] = useState<number>(0);
   const [accountId, setAccountId] = useState<string>('');
   const [targetAccountId, setTargetAccountId] = useState<string>('');
@@ -119,7 +125,7 @@ export function useQuickEntryForm({ onClose }: { onClose: () => void }) {
 
   const { data: accounts } = useAccounts();
   const { data: categories } = useCategories(
-    txType === 'TRANSFER' ? undefined : txType,
+    txType === TRANSACTION_TYPE.TRANSFER ? undefined : txType,
   );
   const createTransactionMutation = useCreateTransaction();
 
@@ -138,7 +144,7 @@ export function useQuickEntryForm({ onClose }: { onClose: () => void }) {
   });
 
   const handleClose = () => {
-    setTxType('EXPENSE');
+    setTxType(TRANSACTION_DEFAULTS.DEFAULT_TYPE);
     setRawAmount(0);
     setAccountId('');
     setTargetAccountId('');
@@ -164,7 +170,7 @@ export function useQuickEntryForm({ onClose }: { onClose: () => void }) {
     });
 
     if (validationError || !dto) {
-      setError(validationError ?? 'Dữ liệu giao dịch không hợp lệ');
+      setError(validationError ?? TRANSACTION_MESSAGES.INVALID_DATA);
       return;
     }
 
@@ -173,9 +179,7 @@ export function useQuickEntryForm({ onClose }: { onClose: () => void }) {
       handleClose();
     } catch (err: unknown) {
       setError(
-        err instanceof Error
-          ? err.message
-          : 'Không thể lưu giao dịch. Vui lòng thử lại.',
+        err instanceof Error ? err.message : TRANSACTION_MESSAGES.CREATE_ERROR,
       );
     }
   };

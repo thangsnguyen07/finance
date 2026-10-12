@@ -1,8 +1,11 @@
+import { CATEGORY_TYPE, type CategoryResponse } from '@/features/categories';
+
+import { BUDGET_LIMITS, BUDGET_MESSAGES } from '../constants/budget.constants';
+
 import type {
   MonthlyBudgetSummaryResponse,
   UpsertBudgetDto,
 } from '../types/budget.types';
-import type { CategoryResponse } from '@/features/categories';
 
 export function extractBudgetSummaryMetrics(
   summary?: MonthlyBudgetSummaryResponse,
@@ -25,7 +28,7 @@ export function resolveUpsertBudgetSelections(input: {
   initialAmount?: number;
 }) {
   const expenseCategories = input.categories.filter(
-    (c) => c.type === 'EXPENSE',
+    (c) => c.type === CATEGORY_TYPE.EXPENSE,
   );
   const effectiveCategoryId =
     input.selectedCategoryId ||
@@ -48,11 +51,11 @@ export function validateAndBuildUpsertBudgetDto(input: {
   effectiveAmount: number;
 }): { dto?: UpsertBudgetDto; error?: string } {
   if (!input.effectiveCategoryId) {
-    return { error: 'Vui lòng chọn một danh mục chi tiêu' };
+    return { error: BUDGET_MESSAGES.CATEGORY_REQUIRED };
   }
 
-  if (input.effectiveAmount < 1000) {
-    return { error: 'Vui lòng đặt hạn mức tối thiểu từ 1.000 ₫ trở lên' };
+  if (input.effectiveAmount < BUDGET_LIMITS.MIN_BUDGET_AMOUNT) {
+    return { error: BUDGET_MESSAGES.MIN_AMOUNT_REQUIRED };
   }
 
   return {

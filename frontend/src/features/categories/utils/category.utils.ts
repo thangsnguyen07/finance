@@ -1,18 +1,25 @@
-import type {
-  CategoryResponse,
-  CategoryType,
-  CreateCategoryDto,
+import {
+  CATEGORY_MESSAGES,
+  DEFAULT_CATEGORY_COLORS,
+} from '../constants/category.constants';
+import {
+  CATEGORY_TYPE,
+  type CategoryResponse,
+  type CategoryType,
+  type CreateCategoryDto,
 } from '../types/category.types';
 
 export function splitCategoriesByType(categories: CategoryResponse[] = []) {
   return {
-    expenseCategories: categories.filter((c) => c.type === 'EXPENSE'),
-    incomeCategories: categories.filter((c) => c.type === 'INCOME'),
+    expenseCategories: categories.filter(
+      (c) => c.type === CATEGORY_TYPE.EXPENSE,
+    ),
+    incomeCategories: categories.filter((c) => c.type === CATEGORY_TYPE.INCOME),
   };
 }
 
 export function getDefaultCategoryColor(type: CategoryType): string {
-  return type === 'EXPENSE' ? '#991B1B' : '#166534';
+  return DEFAULT_CATEGORY_COLORS[type];
 }
 
 export function validateAndBuildCreateCategoryDto(input: {
@@ -22,7 +29,7 @@ export function validateAndBuildCreateCategoryDto(input: {
 }): { dto?: CreateCategoryDto; error?: string } {
   const trimmedName = input.name.trim();
   if (!trimmedName) {
-    return { error: 'Vui lòng nhập tên danh mục' };
+    return { error: CATEGORY_MESSAGES.NAME_REQUIRED };
   }
 
   return {

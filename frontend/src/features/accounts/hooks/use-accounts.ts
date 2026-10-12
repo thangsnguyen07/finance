@@ -4,6 +4,10 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import {
+  ACCOUNT_MESSAGES,
+  DEFAULT_ACCOUNT_TYPE,
+} from '../constants/account.constants';
+import {
   getAccounts,
   createAccount,
   updateAccount,
@@ -20,7 +24,7 @@ import type {
   UpdateAccountDto,
 } from '../types/account.types';
 
-export const ACCOUNTS_QUERY_KEY = ['accounts'];
+export const ACCOUNTS_QUERY_KEY = ['accounts'] as const;
 
 export function useAccounts() {
   return useQuery({
@@ -73,7 +77,7 @@ export function useAccountOverview() {
   const closeCreateModal = () => setIsCreateModalOpen(false);
 
   const handleArchive = async (id: string, name: string) => {
-    if (window.confirm(`Bạn có chắc chắn muốn lưu trữ ví "${name}" không?`)) {
+    if (window.confirm(ACCOUNT_MESSAGES.CONFIRM_ARCHIVE(name))) {
       await deleteMutation.mutateAsync(id);
     }
   };
@@ -86,7 +90,7 @@ export function useAccountOverview() {
       error instanceof Error
         ? error.message
         : error
-          ? 'Lỗi tải danh sách tài khoản'
+          ? ACCOUNT_MESSAGES.LOAD_ERROR
           : null,
     isCreateModalOpen,
     openCreateModal,
@@ -97,7 +101,7 @@ export function useAccountOverview() {
 
 export function useCreateAccountForm({ onClose }: { onClose: () => void }) {
   const [name, setName] = useState('');
-  const [type, setType] = useState<AccountType>('BANK');
+  const [type, setType] = useState<AccountType>(DEFAULT_ACCOUNT_TYPE);
   const [initialBalance, setInitialBalance] = useState<number>(0);
   const [creditLimit, setCreditLimit] = useState<number>(0);
   const [statementDay, setStatementDay] = useState<string>('');
@@ -107,7 +111,7 @@ export function useCreateAccountForm({ onClose }: { onClose: () => void }) {
 
   const handleClose = () => {
     setName('');
-    setType('BANK');
+    setType(DEFAULT_ACCOUNT_TYPE);
     setInitialBalance(0);
     setCreditLimit(0);
     setStatementDay('');
@@ -128,7 +132,7 @@ export function useCreateAccountForm({ onClose }: { onClose: () => void }) {
     });
 
     if (validationError || !dto) {
-      setError(validationError ?? 'Dữ liệu không hợp lệ');
+      setError(validationError ?? ACCOUNT_MESSAGES.INVALID_DATA);
       return;
     }
 
@@ -137,9 +141,7 @@ export function useCreateAccountForm({ onClose }: { onClose: () => void }) {
       handleClose();
     } catch (err: unknown) {
       setError(
-        err instanceof Error
-          ? err.message
-          : 'Đã có lỗi xảy ra khi tạo tài khoản',
+        err instanceof Error ? err.message : ACCOUNT_MESSAGES.CREATE_ERROR,
       );
     }
   };

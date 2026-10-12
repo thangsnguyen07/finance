@@ -1,8 +1,11 @@
-import type {
-  CreateTransactionDto,
-  TransactionResponse,
-  TransactionType,
+import { TRANSACTION_MESSAGES } from '../constants/transaction.constants';
+import {
+  TRANSACTION_TYPE,
+  type CreateTransactionDto,
+  type TransactionResponse,
+  type TransactionType,
 } from '../types/transaction.types';
+
 import type { AccountResponse } from '@/features/accounts';
 import type { CategoryResponse } from '@/features/categories';
 
@@ -13,9 +16,9 @@ export function computeTransactionTotals(
   let totalExpense = 0;
 
   for (const tx of transactions) {
-    if (tx.type === 'INCOME') {
+    if (tx.type === TRANSACTION_TYPE.INCOME) {
       totalIncome += tx.amount;
-    } else if (tx.type === 'EXPENSE') {
+    } else if (tx.type === TRANSACTION_TYPE.EXPENSE) {
       totalExpense += tx.amount;
     }
   }
@@ -30,10 +33,13 @@ export function computeTransactionTotals(
 export function getTransactionDisplayTitle(tx: TransactionResponse): string {
   if (tx.description) return tx.description;
   if (tx.category?.name) return tx.category.name;
-  if (tx.type === 'TRANSFER') {
-    return `Chuyển khoản: ${tx.account?.name || ''} → ${tx.targetAccount?.name || ''}`;
+  if (tx.type === TRANSACTION_TYPE.TRANSFER) {
+    return TRANSACTION_MESSAGES.TRANSFER_TITLE(
+      tx.account?.name,
+      tx.targetAccount?.name,
+    );
   }
-  return 'Giao dịch';
+  return TRANSACTION_MESSAGES.FALLBACK_TITLE;
 }
 
 export function resolveQuickEntrySelections(input: {
@@ -83,19 +89,19 @@ export function validateAndBuildTransactionDto(input: {
   description: string;
 }): { dto?: CreateTransactionDto; error?: string } {
   if (input.rawAmount <= 0) {
-    return { error: 'Vui lòng nhập số tiền lớn hơn 0 ₫' };
+    return { error: TRANSACTION_MESSAGES.AMOUNT_REQUIRED };
   }
 
   if (!input.effectiveAccountId) {
-    return { error: 'Vui lòng chọn ví / tài khoản nguồn' };
+    return { error: TRANSACTION_MESSAGES.SOURCE_ACCOUNT_REQUIRED };
   }
 
-  if (input.txType === 'TRANSFER') {
+  if (input.txType === TRANSACTION_TYPE.TRANSFER) {
     if (!input.effectiveTargetAccountId) {
-      return { error: 'Vui lòng chọn ví đích để chuyển khoản' };
+      return { error: TRANSACTION_MESSAGES.TARGET_ACCOUNT_REQUIRED };
     }
     if (input.effectiveAccountId === input.effectiveTargetAccountId) {
-      return { error: 'Ví nguồn và ví đích phải khác nhau' };
+      return { error: TRANSACTION_MESSAGES.SAME_ACCOUNT_ERROR };
     }
   }
 
@@ -104,11 +110,11 @@ export function validateAndBuildTransactionDto(input: {
       clientTxId: generateClientTxId(),
       accountId: input.effectiveAccountId,
       targetAccountId:
-        input.txType === 'TRANSFER'
+        input.txType === TRANSACTION_TYPE.TRANSFER
           ? input.effectiveTargetAccountId
           : undefined,
       categoryId:
-        input.txType !== 'TRANSFER' && input.effectiveCategoryId
+        input.txType !== TRANSACTION_TYPE.TRANSFER && input.effectiveCategoryId
           ? input.effectiveCategoryId
           : undefined,
       amount: input.rawAmount,

@@ -1,4 +1,5 @@
 export * from './types/report.types';
+export * from './constants/report.constants';
 export * from './utils/compute-cashflow-analytics';
 export * from './hooks/use-cashflow-report';
 export * from './components/cashflow-balance-card';
