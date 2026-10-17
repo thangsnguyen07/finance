@@ -52,7 +52,7 @@ export function VndAmountInput({
             size="sm"
             tone="ghost"
             onPress={() => onChange(0)}
-            className="h-6 px-2 text-[11px] font-medium text-danger"
+            className="h-6 px-2 text-xs font-medium text-danger"
           >
             Đặt lại 0
           </Button>
@@ -94,7 +94,7 @@ export function VndAmountInput({
                     : 'secondary'
                 }
                 mono
-                className="cursor-pointer text-[11px] font-semibold"
+                className="cursor-pointer text-xs font-semibold"
               >
                 {preset.label}
               </Badge>
@@ -112,7 +112,7 @@ export function VndAmountInput({
                 color="warning"
                 variant="soft"
                 mono
-                className="cursor-pointer text-[11px] font-bold"
+                className="cursor-pointer text-xs font-bold"
               >
                 .000
               </Badge>

@@ -81,7 +81,7 @@ export function ListItem({
             {badge}
           </Row>
           {subtitle ? (
-            <Row gap="xs" wrap className="mt-0.5 text-[11px] text-muted">
+            <Row gap="xs" wrap className="mt-0.5 text-xs text-muted">
               {subtitle}
             </Row>
           ) : null}
@@ -97,7 +97,7 @@ export function ListItem({
                 as="p"
                 variant="mono"
                 tone="muted"
-                className="mt-0.5 text-[10px]"
+                className="mt-0.5 text-xs"
               >
                 {trailingSubtitle}
               </Text>

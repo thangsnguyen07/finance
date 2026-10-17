@@ -21,8 +21,8 @@ export function Badge({
       size={size}
       variant={variant}
       className={cn(
-        'inline-flex items-center gap-1 text-[11px] font-medium',
-        mono && 'font-mono text-[10px]',
+        'inline-flex items-center gap-1 text-xs font-medium',
+        mono && 'font-mono text-xs',
         className,
       )}
       {...props}

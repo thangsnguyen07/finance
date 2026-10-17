@@ -71,14 +71,14 @@ export function PocketWalletCarousel({
                   <div className="absolute -top-1.5 left-4 h-3.5 w-2 rounded-full bg-amber-800/80" />
 
                   <Row justify="between" className="mb-2 text-xs text-muted">
-                    <span className="font-mono text-[10px] tracking-wider uppercase">
+                    <span className="font-mono text-xs tracking-wider uppercase">
                       Thẻ #{idx + 1}
                     </span>
                     <Badge
                       size="sm"
                       variant={isCreditCard ? 'soft' : 'secondary'}
                       color={isCreditCard ? 'danger' : 'default'}
-                      className="h-5 px-1.5 text-[10px]"
+                      className="h-5 px-1.5 text-xs"
                     >
                       <TypeIcon className="h-3 w-3" />
                       <span>{typeLabel}</span>
@@ -112,7 +112,7 @@ export function PocketWalletCarousel({
               <div className="mb-1 flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-accent transition-transform group-hover:scale-110">
                 <Plus className="h-4 w-4" />
               </div>
-              <span className="text-[11px] font-medium">Thêm ví mới</span>
+              <span className="text-xs font-medium">Thêm ví mới</span>
             </Link>
           </>
         )}

@@ -43,7 +43,7 @@ export function NotebookHeader() {
             <NotebookTabs className="h-4 w-4 stroke-[2.2]" />
           </div>
           <div className="min-w-0">
-            <span className="block font-sans text-[10px] leading-tight font-semibold tracking-wider text-muted uppercase">
+            <span className="block font-sans text-xs leading-tight font-semibold tracking-wider text-muted uppercase">
               SỔ TAY TÀI CHÍNH CÁ NHÂN
             </span>
             <h2 className="truncate font-serif text-xs leading-tight font-bold text-foreground sm:text-sm">
@@ -53,7 +53,7 @@ export function NotebookHeader() {
         </Link>
 
         <div className="flex shrink-0 items-center gap-2">
-          <div className="rotate-[2deg] rounded border-2 border-dashed border-danger/80 px-2 py-0.5 font-mono text-[9px] font-bold tracking-wider text-danger shadow-2xs transition-transform select-none hover:rotate-0">
+          <div className="rotate-[2deg] rounded border-2 border-dashed border-danger/80 px-2 py-0.5 font-mono text-xs font-bold tracking-wider text-danger shadow-2xs transition-transform select-none hover:rotate-0">
             ✓ SỔ ĐÃ KIỂM KÊ
           </div>
 

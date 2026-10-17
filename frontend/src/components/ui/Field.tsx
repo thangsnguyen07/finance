@@ -44,7 +44,7 @@ function FieldLabel({
       className={cn(
         'flex items-center gap-1.5 text-xs font-semibold text-foreground',
         uppercase &&
-          'text-[11px] font-bold tracking-wider text-muted uppercase',
+          'text-xs font-semibold tracking-wider text-muted uppercase',
         className,
       )}
       {...props}

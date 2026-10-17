@@ -31,8 +31,8 @@ const VARIANT_CLASSES: Record<TextVariant, string> = {
   title: 'font-serif text-base font-bold tracking-tight',
   subtitle: 'text-xs sm:text-sm font-semibold',
   body: 'text-xs leading-relaxed',
-  caption: 'text-[11px]',
-  eyebrow: 'text-[11px] font-bold tracking-wider uppercase',
+  caption: 'text-xs',
+  eyebrow: 'text-xs font-semibold tracking-wider uppercase',
   mono: 'font-mono text-xs tabular-nums',
 };
 

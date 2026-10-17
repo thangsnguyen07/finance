@@ -27,9 +27,9 @@ export function PostItReminderCard({
     >
       <div className="rounded-2xs mx-auto -mt-6 mb-3 h-3 w-16 border border-amber-300/70 bg-amber-200/80 shadow-2xs dark:border-amber-600/50 dark:bg-amber-700/50" />
 
-      <Card.Header className="border-b border-[#FDE047] pb-2 text-[11px] font-bold tracking-wider uppercase dark:border-[#5C5627]">
+      <Card.Header className="border-b border-[#FDE047] pb-2 text-xs font-bold tracking-wider uppercase dark:border-[#5C5627]">
         <span>📌 Giấy Note Nhắc Việc</span>
-        <span className="font-mono text-[10px]">{monthLabel}</span>
+        <span className="font-mono text-xs">{monthLabel}</span>
       </Card.Header>
 
       <Stack gap="sm" className="mt-3 font-sans text-xs">
@@ -42,7 +42,7 @@ export function PostItReminderCard({
       </Stack>
 
       <Card.Footer className="mt-4 justify-end border-t border-[#FDE047] pt-3 dark:border-[#5C5627]">
-        <Link href="/budgets" className="text-[11px] font-bold hover:underline">
+        <Link href="/budgets" className="text-xs font-bold hover:underline">
           Xem chi tiết ngân sách →
         </Link>
       </Card.Footer>

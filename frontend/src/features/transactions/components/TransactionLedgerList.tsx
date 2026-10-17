@@ -63,7 +63,7 @@ export function TransactionLedgerList({
               className="group px-5 py-3.5"
               title={displayTitle}
               subtitle={
-                <Row wrap gap="xs" className="text-[11px] text-muted">
+                <Row wrap gap="xs" className="text-xs text-muted">
                   <span className="font-mono">{tx.transactionDate}</span>
                   <span>•</span>
                   <span>{tx.account?.name || 'Ví đã lưu'}</span>
@@ -81,7 +81,7 @@ export function TransactionLedgerList({
                       <Badge
                         size="sm"
                         variant="secondary"
-                        className="h-4 px-1.5 text-[10px]"
+                        className="h-4 px-1.5 text-xs"
                       >
                         {tx.category.name}
                       </Badge>
@@ -117,7 +117,7 @@ export function TransactionLedgerList({
 
       <Row
         justify="between"
-        className="border-t border-border bg-surface-secondary/30 px-5 py-3 font-mono text-[11px] text-muted"
+        className="border-t border-border bg-surface-secondary/30 px-5 py-3 font-mono text-xs text-muted"
       >
         <span>Hiển thị {items.length} bút toán gần nhất</span>
         <span>Tổng cộng: {totalCount} bút toán</span>

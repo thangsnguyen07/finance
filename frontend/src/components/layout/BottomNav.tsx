@@ -69,7 +69,7 @@ export function BottomNav() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-surface bg-accent text-accent-foreground shadow-md transition-transform duration-150 active:scale-95">
                   <Icon className="h-6 w-6 stroke-[2.5]" />
                 </div>
-                <span className="mt-1 text-[11px] font-medium text-foreground/80">
+                <span className="mt-1 text-xs font-medium text-foreground/80">
                   {item.label}
                 </span>
               </button>
@@ -91,9 +91,7 @@ export function BottomNav() {
                   item.isActive ? 'stroke-[2.5]' : 'stroke-[1.75]'
                 }`}
               />
-              <span className="mt-1 text-[11px] tracking-tight">
-                {item.label}
-              </span>
+              <span className="mt-1 text-xs tracking-tight">{item.label}</span>
             </Link>
           );
         })}
