@@ -22,15 +22,21 @@ import { TransactionsModule } from './transactions/transactions.module.js';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get<string>(
-          'DATABASE_URL',
-          'postgresql://postgres:postgres@localhost:5432/finance_db',
-        ),
-        autoLoadEntities: true,
-        synchronize: configService.get<string>('NODE_ENV') !== 'production',
-      }),
+      useFactory: (configService: ConfigService) => {
+        const isProd = configService.get<string>('NODE_ENV') === 'production';
+        const useSsl =
+          configService.get<string>('DATABASE_SSL') === 'true' || isProd;
+        return {
+          type: 'postgres',
+          url: configService.get<string>(
+            'DATABASE_URL',
+            'postgresql://postgres:postgres@localhost:5432/finance_db',
+          ),
+          ssl: useSsl ? { rejectUnauthorized: false } : false,
+          autoLoadEntities: true,
+          synchronize: !isProd,
+        };
+      },
     }),
   ],
   controllers: [AppController],

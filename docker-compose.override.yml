@@ -1,0 +1,6 @@
+# Local development override: exposes PostgreSQL to the host machine for local development.
+# Automatically merged with docker-compose.yml by Docker Compose.
+services:
+  postgres:
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
