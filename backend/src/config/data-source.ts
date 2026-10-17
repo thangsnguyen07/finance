@@ -7,7 +7,7 @@ import { Category } from '../categories/entities/category.entity.js';
 import { InitialSchema1729200000000 } from '../migrations/1729200000000-InitialSchema.js';
 import { Transaction } from '../transactions/entities/transaction.entity.js';
 
-export const AppDataSource = new DataSource({
+const AppDataSource = new DataSource({
   type: 'postgres',
   url:
     process.env.DATABASE_URL ||
