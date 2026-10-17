@@ -175,49 +175,26 @@ Next.js đã được cấu hình chế độ `output: 'standalone'` trong `fron
 
 ---
 
-## 7. Kiểm Thử Hệ Thống Với Docker Compose
+## 7. Khởi Chạy Local Development Với Docker Compose
 
-Dự án áp dụng mô hình phân tầng Compose chuẩn chính thức của Docker:
-
-```
-├── docker-compose.yml           # Base: Khai báo service postgres, network, volumes
-├── docker-compose.override.yml  # Local Dev: Tự động nạp, expose port 5432 ra host máy tính
-└── docker-compose.prod.yml      # Mirror Prod: Đóng gói cả frontend, backend và DB nội bộ
-```
-
-### 7.1. Chế độ Local Development Hàng Ngày (Hybrid DX)
-
-Khởi động database PostgreSQL trong Docker và chạy app trên máy thật (Hot-Reload tức thì):
+Để phục vụ môi trường phát triển cục bộ (Local Development) nhanh chóng mà không cần cài đặt PostgreSQL cồng kềnh lên hệ điều hành, dự án sử dụng duy nhất một file `docker-compose.yml` tinh gọn:
 
 ```bash
-# 1. Khởi động PostgreSQL container
+# 1. Khởi động PostgreSQL container chạy nền (port 5432)
 docker compose up -d
 
-# 2. Chạy ứng dụng trên máy thật (cả 2 song song)
+# 2. Chạy ứng dụng song song trên máy thật với Hot-Reload tức thì
 pnpm dev
 
-# Hoặc chạy riêng lẻ:
+# Hoặc khởi động riêng lẻ từng service:
 pnpm dev:backend
 pnpm dev:frontend
-```
 
-### 7.2. Chế độ Kiểm Thử Toàn Diện Chuẩn Production (Full Mirror)
-
-Để kiểm tra hành vi của Dockerfile, build standalone và network production ngay trên máy trước khi push:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
-```
-
-- Frontend sẽ chạy tại: `http://localhost:3000`
-- Backend API sẽ chạy tại: `http://localhost:4000`
-- Database sẽ được cô lập hoàn toàn bên trong mạng ảo `finance-network` không mở port ra host ngoài.
-
-Để dừng toàn bộ containers:
-
-```bash
+# 3. Khi kết thúc phiên làm việc, dừng container
 docker compose down
 ```
+
+> **Lưu ý kiến trúc Production**: Khi deploy lên Cloud (Koyeb cho Backend và Vercel cho Frontend), hệ thống sử dụng trực tiếp `backend/Dockerfile` và Vercel Edge Runtime độc lập, **hoàn toàn không cần Docker Compose trên Production**.
 
 ---
 
@@ -227,5 +204,5 @@ docker compose down
 - [x] Mọi kết nối tới Cloud Database đều được mã hóa bằng TLS/SSL (`DATABASE_SSL=true`).
 - [x] Backend NestJS bind địa chỉ `0.0.0.0` để tương thích môi trường container hóa.
 - [x] CORS được cấu hình chặt chẽ, chỉ cho phép domain Frontend được chỉ định và các URL Vercel preview.
-- [x] Cơ chế Layered Docker Compose tuân thủ chuẩn Docker, tách biệt hoàn toàn giữa dev và prod.
+- [x] Docker Compose được tinh gọn tối đa cho Local Dev, trong khi Production deploy độc lập qua Dockerfile (Koyeb) và Vercel.
 - [x] Toàn bộ hạ tầng Supabase, Koyeb, Vercel và Infisical vận hành 100% trong hạn mức miễn phí vĩnh viễn (0đ trọn đời).
