@@ -97,7 +97,7 @@ export function CashflowTrendChart({
               key={point.month}
               type="button"
               onClick={() => onSelectMonth(point.month)}
-              className={`cursor-pointer font-mono text-[11px] transition-colors ${
+              className={`cursor-pointer font-mono text-xs transition-colors ${
                 isCurrentSelected
                   ? 'font-bold text-accent underline underline-offset-4'
                   : 'text-muted hover:text-foreground'

@@ -69,7 +69,7 @@ export function Sidebar() {
           <h1 className="font-serif text-lg leading-tight font-bold tracking-tight text-foreground">
             Sổ Thu Chi
           </h1>
-          <p className="font-sans text-[11px] tracking-wider text-muted uppercase">
+          <p className="font-sans text-xs tracking-wider text-muted uppercase">
             Paperlike Ledger
           </p>
         </div>
@@ -115,7 +115,7 @@ export function Sidebar() {
           </div>
           <div className="truncate">
             <p className="truncate font-medium text-foreground">Thang Nguyen</p>
-            <p className="text-[10px] text-muted">Bản ghi sổ 2026</p>
+            <p className="text-xs text-muted">Bản ghi sổ 2026</p>
           </div>
         </div>
       </div>

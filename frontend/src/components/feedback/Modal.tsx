@@ -38,7 +38,7 @@ function ModalHeader({
           {title}
         </h2>
         {subtitle ? (
-          <div className="mt-0.5 text-[11px] text-muted">{subtitle}</div>
+          <div className="mt-0.5 text-xs text-muted">{subtitle}</div>
         ) : null}
       </div>
       <Button

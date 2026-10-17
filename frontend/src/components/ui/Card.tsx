@@ -107,7 +107,7 @@ function CardEyebrow({
   return (
     <span
       className={cn(
-        'block text-[11px] font-bold tracking-wider text-muted uppercase',
+        'block text-xs font-semibold tracking-wider text-muted uppercase',
         className,
       )}
       {...props}

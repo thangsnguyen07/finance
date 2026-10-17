@@ -37,7 +37,7 @@ export function HeroLedgerCard({
   return (
     <Card className="relative space-y-4 overflow-hidden">
       <Card.Header className="flex-col items-start">
-        <Card.Eyebrow className="mb-1 font-sans text-[10px]">
+        <Card.Eyebrow className="mb-1 font-sans text-xs">
           Sổ Cái Tổng Hợp • Số Dư Tích Lũy
         </Card.Eyebrow>
         <Card.Title className="font-serif text-3xl font-black tracking-tight text-foreground tabular-nums sm:text-4xl">
@@ -71,7 +71,7 @@ export function HeroLedgerCard({
 
         <Row
           justify="between"
-          className="font-mono text-[10px] text-muted tabular-nums"
+          className="font-mono text-xs text-muted tabular-nums"
         >
           <span>
             Đã chi: <CurrencyText amount={totalSpent} /> ({usagePercent}%)
