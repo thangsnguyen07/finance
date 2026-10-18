@@ -3,7 +3,7 @@ const DEV_USER_ID = 'dev_user_default';
 const API_BASE =
   typeof window !== 'undefined'
     ? '/api/v1'
-    : `${process.env['BACKEND_API_URL'] ?? 'http://localhost:4000'}/api/v1`;
+    : `${(process.env['BACKEND_API_URL'] ?? 'http://localhost:4000').replace(/\/+$/, '')}/api/v1`;
 
 export async function apiRequest<T>(
   path: string,
