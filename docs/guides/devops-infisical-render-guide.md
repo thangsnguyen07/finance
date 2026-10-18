@@ -82,7 +82,7 @@ Tạo 2 thư mục (folder paths):
 | Key                                 | Môi trường Dev          | Môi trường Prod                     | Mô tả                      |
 | :---------------------------------- | :---------------------- | :---------------------------------- | :------------------------- |
 | `PORT`                              | `3000`                  | `3000`                              | Port Next.js               |
-| `NEXT_PUBLIC_API_URL`               | `http://localhost:4000` | `https://your-backend.onrender.com` | URL gọi API Backend Render |
+| `BACKEND_API_URL`                   | `http://localhost:4000` | `https://your-backend.onrender.com` | URL Backend (Server Proxy) |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | `pk_test_...`           | `pk_live_...`                       | Public Key xác thực        |
 | `CLERK_SECRET_KEY`                  | `sk_test_...`           | `sk_live_...`                       | Secret Key xác thực        |
 
@@ -186,7 +186,7 @@ Next.js đã được cấu hình chế độ `output: 'standalone'` trong `fron
    - **Build Command**: `pnpm build`
    - **Output Directory**: Mặc định Next.js
 3. Khai báo biến môi trường trên Vercel Dashboard:
-   - `NEXT_PUBLIC_API_URL`: Điền URL Backend từ Render (`https://finance-api-xxxx.onrender.com`).
+   - `BACKEND_API_URL`: Điền URL Backend từ Render (`https://finance-api-xxxx.onrender.com`).
    - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`: Key từ Clerk dashboard.
 4. Bấm **Deploy**. Vercel sẽ phân phối frontend lên Edge CDN toàn cầu (bao gồm POP tại Singapore).
 5. **Cập nhật ngược lại Render**: Copy domain của Vercel (ví dụ `https://finance-web.vercel.app`) và điền vào biến `FRONTEND_URL` trên Render dashboard.

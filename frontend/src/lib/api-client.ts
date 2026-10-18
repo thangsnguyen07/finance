@@ -1,28 +1,16 @@
-function getApiBase(): string {
-  // In the browser, use relative path to route through Next.js reverse-proxy rewrite.
-  // This completely masks the real backend URL in browser DevTools Network tab.
-  if (typeof window !== 'undefined') {
-    return '/api/v1';
-  }
-
-  // Server-side (SSR / Node.js runtime)
-  const rawUrl =
-    process.env['BACKEND_API_URL'] ||
-    process.env['NEXT_PUBLIC_API_URL'] ||
-    'http://localhost:4000';
-  const cleanUrl = rawUrl.replace(/\/+$/, '');
-  return cleanUrl.endsWith('/api/v1') ? cleanUrl : `${cleanUrl}/api/v1`;
-}
-
 const DEV_USER_ID = 'dev_user_default';
+
+const API_BASE =
+  typeof window !== 'undefined'
+    ? '/api/v1'
+    : `${process.env['BACKEND_API_URL'] ?? 'http://localhost:4000'}/api/v1`;
 
 export async function apiRequest<T>(
   path: string,
   options?: RequestInit,
 ): Promise<T> {
-  const base = getApiBase();
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  const res = await fetch(`${base}${normalizedPath}`, {
+  const url = `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
+  const res = await fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
