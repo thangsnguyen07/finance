@@ -1,12 +1,16 @@
-const API_BASE =
-  process.env['NEXT_PUBLIC_API_URL'] || 'http://localhost:4000/api/v1';
 const DEV_USER_ID = 'dev_user_default';
+
+const API_BASE =
+  typeof window !== 'undefined'
+    ? '/api/v1'
+    : `${process.env['BACKEND_API_URL'] ?? 'http://localhost:4000'}/api/v1`;
 
 export async function apiRequest<T>(
   path: string,
   options?: RequestInit,
 ): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const url = `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
+  const res = await fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',

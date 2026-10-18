@@ -23,4 +23,5 @@ services:
 
 volumes:
   postgres_data:
+    name: finance-postgres-data
     driver: local
